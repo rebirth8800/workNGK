@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import request from '../api/requests.js'
+import {onMounted} from "vue";
+
+const loadVacancies = async () => {
+  const {data} = await request.getAdminProfiles() // можно сразу вытаскивать дату или просто писать responce и потом из него вытаскивать дату
+  console.log(data)
+}
+onMounted(() => {
+  loadVacancies()
+})
+
+
 </script>
 
 <template>

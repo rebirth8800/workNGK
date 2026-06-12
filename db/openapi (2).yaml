@@ -1,0 +1,1127 @@
+openapi: 3.0.4
+info:
+  title: API для платформы трудоустройства "НГК Работа"
+  description: Документация API для сервиса по трудоустройству студентов и выпускников Нижегородского Губернского колледжа.
+  version: 1.0.0
+  contact:
+    name: Администрация платформы
+    email: info@ngk-rabota.ru
+
+servers:
+  - url: https://api.ngk-rabota.ru/v1
+    description: Основной (production) сервер
+  - url: http://localhost:8080/v1
+    description: Локальный сервер для разработки
+
+tags:
+  - name: auth
+    description: Аутентификация и регистрация
+  - name: vacancies
+    description: Управление вакансиями
+  - name: responses
+    description: Отклики на вакансии
+  - name: profile
+    description: Профили пользователей (студент/работодатель)
+  - name: admin
+    description: Панель администратора (модерация)
+  - name: refines
+    description: Параметры сортировки и фильтрации
+    
+paths:
+  # --- АУТЕНТИФИКАЦИЯ / РЕГИСТРАЦИЯ ---
+  /auth/student/moodle-login:
+    get:
+      tags:
+        - auth
+      summary: Вход для студента через Moodle
+      description: Перенаправляет на портал Moodle для авторизации. После успешного входа возвращает на сайт с токеном.
+      operationId: studentMoodleLogin
+      responses:
+        '302':
+          description: Перенаправление на портал Moodle.
+        '401':
+          description: Ошибка авторизации.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  /auth/employer/login:
+    post:
+      tags:
+        - auth
+      summary: Вход для работодателя
+      description: Авторизация работодателя по email и паролю.
+      operationId: employerLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: hr@company.ru
+                password:
+                  type: string
+                  format: password
+                  example: mySecretPassword123
+      responses:
+        '200':
+          description: Успешный вход.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_in:
+                    type: integer
+                    example: 3600
+        '400':
+          description: Неверный email или пароль.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  /auth/employer/register-request:
+    post:
+      tags:
+        - auth
+      summary: Подача заявки на регистрацию от работодателя
+      description: Заявка отправляется на модерацию администратору.
+      operationId: registerEmployer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerRegistrationRequest'
+      responses:
+        '201':
+          description: Заявка успешно отправлена.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Ошибка валидации данных.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  # --- ВАКАНСИИ ---
+  /vacancies:
+    get:
+      tags:
+        - vacancies
+      summary: Получение списка вакансий (с фильтрацией)
+      description: Возвращает список активных вакансий для гостей и студентов. Поддерживает фильтрацию и пагинацию.
+      operationId: getVacancies
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Поиск по названию вакансии.
+          example: Бухгалтер
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum: [ИТ_и_программирование, Педагогика_и_образование, Экономика_и_бухгалтерия, Логистика_и_торговля, Юриспруденция, Документооборот_и_архив]
+          description: Категория вакансии.
+        - name: schedule
+          in: query
+          schema:
+            type: string
+            enum: [5/2, 2/2, Свободный, 6/1, 1/1]
+          description: График работы.
+        - name: employment
+          in: query
+          schema:
+            type: string
+            enum: [Полная_занятость, Частичная_занятость, Стажировка, Проектная_работа]
+          description: Тип занятости.
+        - name: work_format
+          in: query
+          schema:
+            type: string
+            enum: [Удалённо, Из_офиса, Гибрид, Разъездной]
+          description: Формат работы.
+        - name: salary_min
+          in: query
+          schema:
+            type: integer
+          description: Зарплата от.
+          example: 30000
+        - name: salary_max
+          in: query
+          schema:
+            type: integer
+          description: Зарплата до.
+          example: 50000
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Номер страницы.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: Количество элементов на странице.
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VacancyListItem'
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  limit:
+                    type: integer
+        '500':
+          description: Внутренняя ошибка сервера.
+
+    post:
+      tags:
+        - vacancies
+      summary: Создание новой вакансии (для работодателя)
+      description: Создает новую вакансию. Отправляет ее на модерацию.
+      operationId: createVacancy
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VacancyCreateUpdate'
+      responses:
+        '201':
+          description: Вакансия успешно создана и отправлена на модерацию.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Ошибка валидации данных.
+        '401':
+          description: Необходима авторизация.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  /vacancies/{id}:
+    get:
+      tags:
+        - vacancies
+      summary: Получение детальной информации о вакансии
+      description: Возвращает полную информацию о конкретной вакансии по её ID.
+      operationId: getVacancyById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID вакансии.
+          example: 123
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VacancyDetail'
+        '404':
+          description: Вакансия не найдена.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+    put:
+      tags:
+        - vacancies
+      summary: Редактирование вакансии (для владельца или админа)
+      description: Обновляет информацию о вакансии. Если изменения вносит работодатель, вакансия снова отправляется на модерацию.
+      operationId: updateVacancy
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VacancyCreateUpdate'
+      responses:
+        '200':
+          description: Вакансия успешно обновлена.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Ошибка валидации.
+        '401':
+          description: Необходима авторизация.
+        '403':
+          description: Нет прав на редактирование этой вакансии.
+        '404':
+          description: Вакансия не найдена.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+    delete:
+      tags:
+        - vacancies
+      summary: Удаление вакансии (для владельца или админа)
+      operationId: deleteVacancy
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Вакансия успешно удалена.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Необходима авторизация.
+        '403':
+          description: Нет прав на удаление.
+        '404':
+          description: Вакансия не найдена.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  # --- ОТКЛИКИ НА ВАКАНСИИ (ДЛЯ СТУДЕНТА)---
+  /vacancies/{id}/respond:
+    post:
+      tags:
+        - responses
+      summary: Отклик студента на вакансию
+      description: Студент отправляет отклик на выбранную вакансию. Работодатель получает контакты студента на почту.
+      operationId: respondToVacancy
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID вакансии.
+      responses:
+        '200':
+          description: Отклик успешно отправлен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Необходима авторизация.
+        '404':
+          description: Вакансия не найдена.
+        '409':
+          description: Вы уже откликались на эту вакансию.
+        '500':
+          description: Внутренняя ошибка сервера.
+
+  
+
+  # --- ПРОФИЛИ ПОЛЬЗОВАТЕЛЕЙ ---
+  /profile/employer/{id}:
+    get:
+      tags:
+        - profile
+      summary: Получение профиля работодателя
+      operationId: getEmployerProfile
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID работодателя.
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+        '401':
+          description: Необходима авторизация.
+        '500':
+          description: Внутренняя ошибка.
+
+    put:
+      tags:
+        - profile
+      summary: Обновление профиля работодателя
+      operationId: updateEmployerProfile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileUpdate'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID работодателя.
+      responses:
+        '200':
+          description: Профиль успешно обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Ошибка валидации.
+        '401':
+          description: Необходима авторизация.
+        '500':
+          description: Внутренняя ошибка.
+
+  /profile/employer/vacancies/{id}:
+    get:
+      tags:
+        - profile
+      summary: Получение списка вакансий текущего работодателя
+      description: Возвращает все вакансии, созданные авторизованным работодателем, с их статусами.
+      operationId: getMyEmployerVacancies
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID работодателя.
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MyVacancyListItem'
+        '401':
+          description: Необходима авторизация.
+        '500':
+          description: Внутренняя ошибка.
+
+  /profile/student/{id}:
+    get:
+      tags:
+        - profile
+      summary: Получение профиля студента
+      operationId: getStudentProfile
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID студента.
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentProfile'
+        '401':
+          description: Необходима авторизация.
+        '500':
+          description: Внутренняя ошибка.
+
+    put:
+      tags:
+        - profile
+      summary: Обновление профиля студента
+      operationId: updateStudentProfile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentProfileUpdate'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID студента.
+      responses:
+        '200':
+          description: Профиль успешно обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Ошибка валидации.
+        '401':
+          description: Необходима авторизация.
+
+  /profile/student/resume/{id}:
+    get:
+      tags:
+        - profile
+      summary: Получение резюме студента
+      operationId: getStudentResume
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID студента.
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResume'
+        '401':
+          description: Необходима авторизация.
+
+    put:
+      tags:
+        - profile
+      summary: Обновление резюме студента (текст и файлы)
+      operationId: updateStudentResume
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                about:
+                  type: string
+                  description: Текст "Коротко о себе".
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Загружаемые файлы резюме.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID студента.
+      responses:
+        '200':
+          description: Резюме успешно обновлено.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Необходима авторизация.
+  
+  /profile/student/responses/{id}:
+    get:
+      tags:
+        - profile
+      summary: История откликов студента
+      description: Возвращает список всех вакансий, на которые откликнулся текущий студент.
+      operationId: getStudentResponses
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID студента.
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponseListItem'
+        '401':
+          description: Необходима авторизация.
+        '500':
+          description: Внутренняя ошибка сервера.
+  
+  # --- АДМИНИСТРАТИВНЫЕ ЭНДПОИНТЫ ---
+  /admin/vacancies/moderation:
+    get:
+      tags:
+        - admin
+      summary: Получение списка вакансий на модерации (для админа)
+      operationId: getVacanciesForModeration
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VacancyModerationItem'
+        '403':
+          description: Недостаточно прав.
+
+  /admin/vacancies/{id}/moderate:
+    post:
+      tags:
+        - admin
+      summary: Модерация вакансии (опубликовать)
+      operationId: postModerateVacancy
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Статус вакансии обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '403':
+          description: Недостаточно прав.
+        '404':
+          description: Вакансия не найдена.
+          
+    delete:
+      tags:
+        - admin
+      summary: Модерация вакансии (отклонить)
+      operationId: deleteModerateVacancy
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: Статус вакансии обновлен.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '403':
+          description: Недостаточно прав.
+        '404':
+          description: Вакансия не найдена.
+
+  /admin/employer-requests:
+    get:
+      tags:
+        - admin
+      summary: Получение списка заявок на регистрацию от работодателей (для админа)
+      operationId: getEmployerRegistrationRequests
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployerRegistrationRequest'
+        '403':
+          description: Недостаточно прав.
+
+  /admin/employer-requests/{id}/moderate:
+    post:
+      tags:
+        - admin
+      summary: Модерация заявки работодателя (одобрить)
+      operationId: postModerateEmployerRequest
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Заявка обработана.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '403':
+          description: Недостаточно прав.
+        '404':
+          description: Заявка не найдена.
+          
+    delete:
+      tags:
+        - admin
+      summary: Модерация заявки работодателя (отклонить)
+      operationId: deleteModerateEmployerRequest
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Заявка обработана.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '403':
+          description: Недостаточно прав.
+        '404':
+          description: Заявка не найдена.
+  
+  /refines/sorts:
+    get:
+      tags:
+        - refines
+      summary: Получение параметров сортировки
+      description: Возвращает все параметры сортировки.
+      operationId: getSorts
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sorts'
+        '404':
+          description: Параметры сортировки не найдены.
+        '500':
+          description: Внутренняя ошибка сервера.
+          
+  /refines/filters:
+    get:
+      tags:
+        - refines
+      summary: Получение параметров фильтрации
+      description: Возвращает все параметры фильтрации.
+      operationId: getFilters
+      responses:
+        '200':
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Filters'
+        '404':
+          description: Параметры фильтрации не найдены.
+        '500':
+          description: Внутренняя ошибка сервера.
+  
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # --- БАЗОВЫЕ СХЕМЫ ---
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Операция выполнена успешно."
+
+    # --- СХЕМЫ ВАКАНСИЙ ---
+    VacancyListItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Помощник бухгалтера"
+        company_name:
+          type: string
+          example: "ООО 'НМЗ №1'"
+        city:
+          type: string
+          example: "Нижний Новгород"
+        employment:
+          type: string
+          example: "Частичная занятость"
+        salary:
+          type: string
+          example: "от 35 000 ₽"
+        created_at:
+          type: string
+          format: date
+          example: "2026-06-01"
+
+    VacancyDetail:
+      allOf:
+        - $ref: '#/components/schemas/VacancyListItem'
+        - type: object
+          properties:
+            description:
+              type: string
+              example: "Разработка бэкенда на Python, проектирование REST API..."
+            requirements:
+              type: string
+              example: "Понимание принципов ООП, базовые знания SQL."
+            conditions:
+              type: string
+              example: "Официальное оформление, гибкий график, обеды."
+            contact_email:
+              type: string
+              format: email
+              example: "hr@company.ru"
+            contact_phone:
+              type: string
+              example: "+7 (999) 000-00-00"
+            contact_person:
+              type: string
+              example: "Иван Иванович"
+            work_format:
+              type: string
+              example: "Из офиса"
+            schedule:
+              type: string
+              example: "5/2"
+
+    VacancyCreateUpdate:
+      type: object
+      required:
+        - title
+        - company_name
+        - city
+        - description
+        - requirements
+        - conditions
+        - contact_email
+        - contact_phone
+        - salary_min
+        - category
+      properties:
+        title:
+          type: string
+          example: "Python-разработчик"
+        company_name:
+          type: string
+          example: "ООО 'ТехноЛидер'"
+        city:
+          type: string
+          example: "Нижний Новгород"
+        salary_min:
+          type: integer
+          example: 60000
+        description:
+          type: string
+          example: "Разработка бэкенда на Python..."
+        requirements:
+          type: string
+          example: "Опыт от 1 года, знание Django..."
+        conditions:
+          type: string
+          example: "Гибкий график, ДМС."
+        contact_email:
+          type: string
+          format: email
+          example: "hr@company.ru"
+        contact_phone:
+          type: string
+          example: "+7 (999) 000-00-00"
+        contact_person:
+          type: string
+          example: "Иван Петров"
+        work_format:
+          type: string
+          enum: [Удалённо, Из_офиса, Гибрид, Разъездной]
+          example: "Из_офиса"
+        category:
+          type: string
+          enum: [ИТ_и_программирование, Педагогика_и_образование, Экономика_и_бухгалтерия, Логистика_и_торговля, Юриспруденция, Документооборот_и_архив]
+          example: "ИТ_и_программирование"
+        employment:
+          type: string
+          enum: [Полная_занятость, Частичная_занятость, Стажировка, Проектная_работа]
+          example: "Полная_занятость"
+        schedule:
+          type: string
+          enum: [5/2, 2/2, Свободный, 6/1, 1/1]
+          example: "5/2"
+
+    MyVacancyListItem:
+      allOf:
+        - $ref: '#/components/schemas/VacancyListItem'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum: [pending, published, rejected, closed]
+              example: "published"
+
+    VacancyModerationItem:
+      allOf:
+        - $ref: '#/components/schemas/VacancyDetail'
+        - type: object
+          properties:
+            employer_name:
+              type: string
+              example: "Иванов Иван Иванович"
+            employer_company:
+              type: string
+              example: "ООО 'Пример'"
+
+    # --- СХЕМЫ ПОЛЬЗОВАТЕЛЕЙ ---
+    EmployerRegistrationRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        company_name:
+          type: string
+          example: "ООО 'Пример'"
+        contact_first_name:
+          type: string
+          example: "Иван"
+        contact_last_name:
+          type: string
+          example: "Иванов"
+        contact_middle_name:
+          type: string
+          example: "Иванович"
+        email:
+          type: string
+          format: email
+          example: "info@company.ru"
+        phone:
+          type: string
+          example: "+7 (999) 000-00-00"
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        created_at:
+          type: string
+          format: date
+
+    EmployerProfile:
+      type: object
+      properties:
+        company_name:
+          type: string
+          example: "ООО 'Пример'"
+        contact_first_name:
+          type: string
+        contact_last_name:
+          type: string
+        contact_middle_name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        position:
+          type: string
+          example: "HR-менеджер"
+
+    EmployerProfileUpdate:
+      type: object
+      properties:
+        contact_first_name:
+          type: string
+        contact_last_name:
+          type: string
+        contact_middle_name:
+          type: string
+        phone:
+          type: string
+        position:
+          type: string
+
+    StudentProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        middle_name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        course:
+          type: integer
+        specialty:
+          type: string
+          example: "Информационные системы и программирование"
+
+    StudentProfileUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        middle_name:
+          type: string
+        phone:
+          type: string
+        course:
+          type: integer
+
+    StudentResume:
+      type: object
+      properties:
+        about:
+          type: string
+          description: "Коротко о себе."
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              url:
+                type: string
+
+    UserResponseListItem:
+      type: object
+      properties:
+        vacancy_id:
+          type: integer
+        vacancy_title:
+          type: string
+        company_name:
+          type: string
+        salary:
+          type: string
+        responded_at:
+          type: string
+          format: date
+          
+    # --- СХЕМЫ СОРТИРОВКИ И ФИЛЬТРАЦИИ ---
+    Sorts:
+      type: object
+      properties:
+        items:
+          type: object
+          example: [{ name: "По дате (новые)", value: "date_desc" },
+                    { name: "По дате (старые)", value: "date_asc" },
+                    { name: "По зарплате (высокие)", value: "salary_desc" },
+                    { name: "По зарплате (низкие)", value: "salary_asc" }]
+    Filters:
+      type: object
+      properties:
+        category:
+          type: object
+          example: [{ name: "IT и программирование", value: "it" },
+                    { name: "IT и программирование", value: "it" },
+                    { name: "Педагогика и образование", value: "education" },
+                    { name: "Экономика и бухгалтерия", value: "economics" },
+                    { name: "Логистика и торговля", value: "logistics" },
+                    { name: "Юриспруденция", value: "law" },
+                    { name: "Документооборот и архив", value: "records" }]
+        schedule:
+          type: object
+          example: [{name: "5/2 (пятидневка)", value: "5/2"},
+                    {name: "2/2 (сменный)", value: "2/2"},
+                    {name: "Свободный (гибкий)", value: "0/0"},
+                    {name: "6/1 (шестидневка)", value: "6/1"},
+                    {name: "1/1 (сутки через сутки)", value: "1/1"}]
+        employment:
+          type: object
+          example: [{ name: "Полная занятость", value: "full-time" },
+                    { name: "Частичная занятость", value: "part-time" },
+                    { name: "Стажировка", value: "internship" },
+                    { name: "Проектная работа / разовая", value: "project" }]            
+        work_format:
+          type: object
+          example: [{ name: "Удалённо", value: "remote" },
+                    { name: "Из офиса", value: "office" },
+                    { name: "Гибрид (офис + дом)", value: "hybrid" },
+                    { name: "Разъездной", value: "on-road" }]            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
