@@ -1,9 +1,9 @@
 export const sorts = () =>{
   return [
-      { name: "По дате (старые)", value: "date_asc" },
-      { name: "По дате (новые)", value: "date_desc" },
-      { name: "По зарплате (высокие)", value: "salary_desc" },
-      { name: "По зарплате (низкие)", value: "salary_asc" }
+    { name: "По дате (новые)", value: "date_desc" },
+    { name: "По дате (старые)", value: "date_asc" },
+    { name: "По зарплате (высокие)", value: "salary_desc" },
+    { name: "По зарплате (низкие)", value: "salary_asc" }
   ]
 }
 

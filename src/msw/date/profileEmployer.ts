@@ -1,8 +1,8 @@
-const { fakerRU } = require('@faker-js/faker')
-const _ = require('lodash')
-const statuses = ['Одобрен', 'На модерации', 'Отклонен']
+import {fakerRU } from '@faker-js/faker'
+import _  from 'lodash'
+const statuses = ['Одобрен', 'На модерации']
 
-module.exports = function(i, status = true) {
+export default function(i, status = true) {
     return _.times(i, function(n){
         return {
             id: n+1,

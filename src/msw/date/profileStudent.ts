@@ -1,8 +1,8 @@
-const { fakerRU } = require('@faker-js/faker')
-const _ = require('lodash')
-const {filters} = require('./paramsRefines.js')
+import { fakerRU } from '@faker-js/faker'
+import _ from 'lodash'
+import {filters} from './paramsRefines.ts'
 
-module.exports = function(i) {
+export default function(i) {
     return _.times(i, function(n){
         return {
             id: n+1,

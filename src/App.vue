@@ -5,8 +5,8 @@ import request from '../api/requests.js'
 import {onMounted} from "vue";
 
 const loadVacancies = async () => {
-  const {data} = await request.getAdminProfiles() // можно сразу вытаскивать дату или просто писать responce и потом из него вытаскивать дату
-  console.log(data)
+  const response = await request.getAdminVacation() // можно сразу вытаскивать дату или просто писать responce и потом из него вытаскивать дату
+  console.log(response)
 }
 onMounted(() => {
   loadVacancies()
