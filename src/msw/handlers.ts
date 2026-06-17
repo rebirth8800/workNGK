@@ -32,4 +32,7 @@ export const handlers = [
   http.get('https://api.ngk-rabota.ru/v1/admin/profiles', () => {
     return HttpResponse.json(profileEmployer(10, false))
   }),
+  http.get('https://api.ngk-rabota.ru/v1/vacancies/new', () => {
+    return HttpResponse.json(vacancies(3))
+  }),
 ]

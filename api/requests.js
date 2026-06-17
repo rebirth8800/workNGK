@@ -27,6 +27,9 @@ const request = {
     },
     getAdminProfiles: () => {
         return apiClient.get('/admin/profiles');
+    },
+    getNewVacation: () => {
+      return apiClient.get('/vacancies/new');
     }
 
 }

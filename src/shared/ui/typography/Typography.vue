@@ -1,97 +1,94 @@
 <script setup>
-import {computed} from 'vue'
-const props = defineProps({
+defineProps({
   size: {
     type: String,
-    default: 12,
-    validator: value => ['hero', 'h1', 'h2', 'h3', 'title', 'body', 'small'].includes(value),
+    default: 'body',
   },
   weight: {
     type: String,
     default: 'regular',
-    validator: value => ['light', 'regular', 'medium', 'semibold', 'bold'].includes(value),
   },
   color: {
     type: String,
     default: 'black',
-    validator: value => ['black', 'almost-black', 'primary-red', 'white', 'grey-light', 'background-grey', 'green-dark', 'green-light', 'orange-brown', 'yellow-light', 'red-light'].includes(value),
   },
-  customClass:{
-    type: String,
-    default: ' ',
-  }
-})
-
-const tags = computed(() => {
-  const tags = {
-    hero: 'h1',
-    h1: 'h1',
-    h2: 'h2',
-    h3: 'h3',
-    title: 'h4',
-    body: 'p',
-    small: 'span',
-  }
-  return tags[props.size] || 'p'
 })
 </script>
 
 <template>
-<component
-  :is="tag"
-  :class="[
-    'typography',
-    `typography--$(size}`,
-    `typography--$(weight)}`,
-    {
-      'typography--black': color === 'black',
-      'typography--almost-black': color === 'almost-black',
-      'typography--primary-red': color === 'primary-red',
-      'typography--white': color === 'white',
-      'typography--grey-light': color === 'grey-light',
-      'typography--background-grey': color === 'background-grey',
-      'typography--green-dark': color === 'green-dark',
-      'typography--green-light': color === 'green-light',
-      'typography--orange-brown': color === 'orange-brown',
-      'typography--yellow-light': color === 'yellow-light',
-      'typography--red-light': color === 'red-light',
-
-    },
-    customClass,
-  ]">
-  <slot />
-</component>
+  <component
+    :is="size === 'hero' || size === 'h1' ? 'h1' : size === 'h2' ? 'h2' : size === 'h3' ? 'h3' : size === 'title' ? 'h4' : size === 'body' ? 'p' : 'span'"
+    :class="[size, weight, color]"
+  >
+    <slot />
+  </component>
 </template>
 
 <style scoped>
-.typography {
+.hero, .h1, .h2, .h3, .title, .body, .small {
   font-family: 'Inter', sans-serif;
   margin: 0;
+  line-height: 1.2;
 }
 
-.typography--hero { font-size: 64px; }
-.typography--h1 { font-size: 40px; }
-.typography--h2 { font-size: 36px; }
-.typography--h3 { font-size: 32px; }
-.typography--title { font-size: 24px; }
-.typography--body { font-size: 20px; }
-.typography--small { font-size: 16px; }
+/* ===== Компьютер (1920px и больше) ===== */
+.hero { font-size: 64px; }
+.h1 { font-size: 40px; }
+.h2 { font-size: 36px; }
+.h3 { font-size: 32px; }
+.title { font-size: 24px; }
+.body { font-size: 20px; }
+.small { font-size: 16px; }
 
-.typography--light { font-weight: 300; }
-.typography--regular { font-weight: 400; }
-.typography--medium { font-weight: 500; }
-.typography--semibold { font-weight: 600; }
-.typography--bold { font-weight: 700; }
+/* ===== Ноутбук (1440px и меньше) ===== */
+@media (max-width: 1920px) {
+  .hero { font-size: 54px; }
+  .h1 { font-size: 36px; }
+  .h2 { font-size: 32px; }
+  .h3 { font-size: 28px; }
+  .title { font-size: 22px; }
+  .body { font-size: 18px; }
+  .small { font-size: 15px; }
+}
 
-.typography--black { color: var(--color-black); }
-.typography--almost-black { color: var(--color-almost-black); }
-.typography--primary-red { color: var(--color-primary-red); }
-.typography--white { color: var(--color-white); }
-.typography--grey-light { color: var(--color-grey-light); }
-.typography--background-grey { color: var(--color-background-grey); }
-.typography--green-dark { color: var(--color-green-dark); }
-.typography--green-light { color: var(--color-green-light); }
-.typography--orange-brown { color: var(--color-orange-brown); }
-.typography--yellow-light { color: var(--color-yellow-light); }
-.typography--red-light { color: var(--color-red-light); }
+/* ===== Планшет (768px и меньше) ===== */
+@media (max-width: 1440px) {
+  .hero { font-size: 32px; }
+  .h1 { font-size: 28px; }
+  .h2 { font-size: 24px; }
+  .h3 { font-size: 22px; }
+  .title { font-size: 20px; }
+  .body { font-size: 16px; }
+  .small { font-size: 14px; }
+}
+
+/* ===== Телефон (360px и меньше) ===== */
+@media (max-width: 768px) {
+  .hero { font-size: 28px; }
+  .h1 { font-size: 24px; }
+  .h2 { font-size: 20px; }
+  .h3 { font-size: 18px; }
+  .title { font-size: 18px; }
+  .body { font-size: 15px; }
+  .small { font-size: 13px; }
+}
+
+/* ===== Начертания ===== */
+.regular { font-weight: 400; }
+.medium { font-weight: 500; }
+.semibold { font-weight: 600; }
+.bold { font-weight: 700; }
+
+/* ===== Цвета ===== */
+.black { color: #000000; }
+.almost-black { color: #1E1E1E; }
+.primary-red { color: #C61818; }
+.white { color: #FFFFFF; }
+.grey-light { color: #E3E3E3; }
+.background-grey { color: #F5F5F5; }
+.green-dark { color: #537455; }
+.green-light { color: #E8F6E9; }
+.orange-brown { color: #C8825E; }
+.yellow-light { color: #FFF2DF; }
+.red-light { color: #FFE8EC; }
 </style>
