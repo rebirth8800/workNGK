@@ -1,94 +1,249 @@
 <script setup>
 defineProps({
-  size: {
+  type: {
     type: String,
     default: 'body',
-  },
-  weight: {
-    type: String,
-    default: 'regular',
-  },
-  color: {
-    type: String,
-    default: 'black',
+    validator: (value) =>
+        [
+          'light-24-black',
+          'regular-16-almost-black',
+          'regular-20-black',
+          'regular-20-almost-black',
+          'regular-20-primary-red',
+          'regular-24-white',
+          'regular-24-black',
+          'regular-24-grey-light',
+          'regular-24-almost-black',
+          'regular-32-almost-black',
+          'medium-16-primary-red',
+          'medium-24-almost-black',
+          'medium-24-black',
+          'medium-24-primary-red',
+          'medium-32-black',
+          'semibold-20-black',
+          'semibold-24-black',
+          'semibold-32-white',
+          'semibold-32-black',
+          'semibold-36-black',
+          'semibold-36-primary-red',
+          'semibold-40-grey-light',
+          'semibold-40-black',
+          'bold-40-black',
+          'bold-64-black',
+          'bold-64-red',
+        ].includes(value),
   },
 })
 </script>
 
 <template>
   <component
-    :is="size === 'hero' || size === 'h1' ? 'h1' : size === 'h2' ? 'h2' : size === 'h3' ? 'h3' : size === 'title' ? 'h4' : size === 'body' ? 'p' : 'span'"
-    :class="[size, weight, color]"
+      :is="type.includes('64') || type.includes('40') ? 'h1' : type.includes('36') ? 'h2' : type.includes('32') ? 'h3' : type.includes('24') ? 'h4' : 'p'"
+      :class="['typography', type]"
   >
     <slot />
   </component>
 </template>
 
 <style scoped>
-.hero, .h1, .h2, .h3, .title, .body, .small {
+.typography {
   font-family: 'Inter', sans-serif;
   margin: 0;
-  line-height: 1.2;
 }
 
-/* ===== Компьютер (1920px и больше) ===== */
-.hero { font-size: 64px; }
-.h1 { font-size: 40px; }
-.h2 { font-size: 36px; }
-.h3 { font-size: 32px; }
-.title { font-size: 24px; }
-.body { font-size: 20px; }
-.small { font-size: 16px; }
-
-/* ===== Ноутбук (1440px и меньше) ===== */
-@media (max-width: 1920px) {
-  .hero { font-size: 54px; }
-  .h1 { font-size: 36px; }
-  .h2 { font-size: 32px; }
-  .h3 { font-size: 28px; }
-  .title { font-size: 22px; }
-  .body { font-size: 18px; }
-  .small { font-size: 15px; }
+.light-24-black {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--color-black);
 }
 
-/* ===== Планшет (768px и меньше) ===== */
-@media (max-width: 1440px) {
-  .hero { font-size: 32px; }
-  .h1 { font-size: 28px; }
-  .h2 { font-size: 24px; }
-  .h3 { font-size: 22px; }
-  .title { font-size: 20px; }
-  .body { font-size: 16px; }
-  .small { font-size: 14px; }
+.regular-16-almost-black {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-almost-black);
+}
+.regular-20-black {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-black);
+}
+.regular-20-almost-black {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-almost-black);
+}
+.regular-20-primary-red {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-primary-red);
+}
+.regular-24-white {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-white);
+}
+.regular-24-black {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-black);
+}
+.regular-24-grey-light {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-grey-light);
+}
+.regular-24-almost-black {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-almost-black);
+}
+.regular-32-almost-black {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-almost-black);
 }
 
-/* ===== Телефон (360px и меньше) ===== */
-@media (max-width: 768px) {
-  .hero { font-size: 28px; }
-  .h1 { font-size: 24px; }
-  .h2 { font-size: 20px; }
-  .h3 { font-size: 18px; }
-  .title { font-size: 18px; }
-  .body { font-size: 15px; }
-  .small { font-size: 13px; }
+.medium-16-primary-red {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary-red);
+}
+.medium-24-almost-black {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-almost-black);
+}
+.medium-24-black {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-black);
+}
+.medium-24-primary-red {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-primary-red);
+}
+.medium-32-black {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--color-black);
 }
 
-/* ===== Начертания ===== */
-.regular { font-weight: 400; }
-.medium { font-weight: 500; }
-.semibold { font-weight: 600; }
-.bold { font-weight: 700; }
+.semibold-20-black {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+.semibold-24-black {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+.semibold-32-white {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-white);
+}
+.semibold-32-black {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+.semibold-36-black {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
+.semibold-36-primary-red {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--color-primary-red);
+}
+.semibold-40-grey-light {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--color-grey-light);
+}
+.semibold-40-black {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--color-black);
+}
 
-/* ===== Цвета ===== */
-.black { color: #000000; }
-.almost-black { color: #1E1E1E; }
-.primary-red { color: #C61818; }
-.white { color: #FFFFFF; }
-.grey-light { color: #E3E3E3; }
-.background-grey { color: #F5F5F5; }
-.green-dark { color: #537455; }
-.green-light { color: #E8F6E9; }
-.orange-brown { color: #C8825E; }
-.yellow-light { color: #FFF2DF; }
-.red-light { color: #FFE8EC; }
+.bold-40-black {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-black);
+}
+.bold-64-black {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-black);
+}
+.bold-64-red {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-primary-red);
+}
+
+@media (max-width: 1440px){
+  .medium-24-black {
+    font-size: 1.25rem;
+  }
+  .bold-64-black {
+    font-size: 3rem;
+  }
+  .bold-64-red {
+    font-size: 3rem;
+  }
+  .regular-32-almost-black {
+    font-size: 1.5rem;
+  }
+  .semibold-40-black {
+    font-size: 2rem;
+  }
+  .regular-32-almost-black {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 768px){
+  .medium-24-black {
+    font-size: 0.9375rem;
+  }
+  .bold-64-black {
+    font-size: 2.5rem;
+  }
+  .bold-64-red {
+    font-size: 2.5rem;
+  }
+  .regular-32-almost-black {
+    font-size: 1.25rem;
+  }
+  .semibold-40-black {
+    font-size: 	1.5rem;
+  }
+  .regular-32-almost-black {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 360px){
+  .medium-24-black {
+    font-size: 0.8125rem;
+  }
+  .bold-64-black {
+    font-size: 1.5rem;
+  }
+  .bold-64-red {
+    font-size: 1.5rem;
+  }
+  .regular-32-almost-black {
+    font-size: 0.875rem;
+  }
+  .semibold-40-black {
+    font-size: 	1.25rem;
+  }
+  .regular-32-almost-black {
+    font-size: 1rem;
+  }
+}
 </style>
