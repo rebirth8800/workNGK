@@ -1,0 +1,9 @@
+@import 'variables.css';
+*{
+    font-family: 'Inter', sans-serif;
+    margin: 0 auto;
+}
+a{
+    text-decoration: none;
+    /*border: none;*/
+}

@@ -6,12 +6,21 @@ import Logo from '@/shared/ui/logo/Logo.vue'
 
 </script>
 
-<template>
-  <Logo />
-  <MainMenu />
-  <ButtonBlock />
+<template >
+  <div class="container">
+    <Logo />
+    <MainMenu />
+    <ButtonBlock />
+  </div>
 </template>
 
 <style scoped>
-
+.container {
+  display: flex;
+  align-items: center;
+  gap: 347px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-grey-light);
+}
 </style>

@@ -3,8 +3,7 @@
 </script>
 
 <template>
-  logo
-
+  <div>logo</div>
 </template>
 
 <style scoped>

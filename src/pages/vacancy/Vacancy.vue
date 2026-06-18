@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query'
 import GuestLayout from '@/app/layout/GuestLayout.vue'
 import { getVacancy } from '@/pages/vacancy/api/get-vacancy'
 
