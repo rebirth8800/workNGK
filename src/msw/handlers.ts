@@ -3,6 +3,7 @@ import vacancies from '@/msw/date/vacancies.ts'
 import {filters, sorts} from '@/msw/date/paramsRefines'
 import profileStudent from '@/msw/date/profileStudent.ts'
 import profileEmployer from '@/msw/date/profileEmployer.ts'
+import newVacancies from '@/msw/date/newVacancies.ts'
 
 export const handlers = [
   http.get('https://api.ngk-rabota.ru/v1/vacancies', () => {
@@ -33,6 +34,6 @@ export const handlers = [
     return HttpResponse.json(profileEmployer(10, false))
   }),
   http.get('https://api.ngk-rabota.ru/v1/vacancies/new', () => {
-    return HttpResponse.json(vacancies(3))
+    return HttpResponse.json(newVacancies())
   }),
 ]

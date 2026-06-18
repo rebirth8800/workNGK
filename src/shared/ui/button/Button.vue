@@ -24,6 +24,7 @@ button {
   padding: 15px 45px;
   display: flex;
   gap: 10px;
+  white-space: nowrap;
   align-items: center;
 }
 .default {
