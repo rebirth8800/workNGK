@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
+import IconBox from "@/shared/ui/iconBox/IconBox.vue";
 defineProps({
   number: String,
   h1: String,
@@ -12,7 +13,7 @@ defineProps({
 <template>
   <div class="card">
     <div class="ui">
-      <div class="square"></div>
+      <IconBox type="red" class="square"></IconBox>
       <Typography type="semibold-40-grey-light">{{number}}</Typography>
     </div>
     <Typography type="semibold-32-black">{{h1}}</Typography>

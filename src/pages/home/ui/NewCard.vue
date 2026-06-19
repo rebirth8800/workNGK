@@ -3,7 +3,7 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import * as process from 'node:process'
 import Tag from "@/shared/ui/tag/Tag.vue";
-
+import IconBox from "@/shared/ui/iconBox/IconBox.vue";
 const props = defineProps({
   item: Object
 })
@@ -17,7 +17,7 @@ console.log(props.item)
         <Typography type="semibold-32-black" class="card-title">{{ item.title }}</Typography>
         <Typography type="regular-20-almost-black">{{item.company_name}}</Typography>
       </div>
-      <div class="square"></div>
+      <IconBox type="grey" ></IconBox>
     </div>
     <div class="tags_wrapper">
       <Tag type="grey">{{item.city}}</Tag>
