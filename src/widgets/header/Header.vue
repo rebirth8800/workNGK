@@ -3,6 +3,7 @@
 import MainMenu from '@/features/main-menu/MainMenu.vue'
 import ButtonBlock from '@/widgets/header/ui/ButtonBlock.vue'
 import Logo from '@/shared/ui/logo/Logo.vue'
+import Tag from "@/shared/ui/tag/tag.vue";
 
 </script>
 
