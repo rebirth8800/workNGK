@@ -2,6 +2,7 @@
 import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import * as process from 'node:process'
+import Tag from "@/shared/ui/tag/Tag.vue";
 
 const props = defineProps({
   item: Object
@@ -13,33 +14,39 @@ console.log(props.item)
   <div class="card">
     <div class="flex">
       <div class="text_flex">
-        <Typography type="semibold-32-black">{{item.title}}</Typography>
+        <Typography type="semibold-32-black" class="card-title">{{ item.title }}</Typography>
         <Typography type="regular-20-almost-black">{{item.company_name}}</Typography>
       </div>
       <div class="square"></div>
     </div>
-    <div class="text_flex">
-      <Typography type="regular-20-almost-black">{{item.city}}</Typography>
-      <Typography type="regular-20-almost-black">{{item.employment}}</Typography>
+    <div class="tags_wrapper">
+      <Tag type="grey">{{item.city}}</Tag>
+      <Tag type="grey">{{item.employment}}</Tag>
     </div>
-    <hr>
-    <div class="flex">
+    <div class="line"></div>
+    <div class="flex_bottom">
       <Typography type="semibold-32-black">от {{item.salary_min}}$</Typography>
-      <Button type="text-red">Подробнее</Button>
+      <Button type="text-red" class="b">Подробнее</Button>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .square{
   width: 60px;
   height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+  flex-shrink: 0;
   background: black;
   border-radius: 10px;
   margin: 0px;
 }
 .card{
+  width: 515px;
+  height: 375px;
+  min-width: 515px;
+  min-height: 375px;
   padding: 35px 25px;
   text-align: left;
   display: flex;
@@ -47,9 +54,30 @@ console.log(props.item)
   gap: 1rem;
   border: 2px solid var(--color-grey-light);
   border-radius: 10px;
+  box-sizing: border-box;
 }
-hr{
+.card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  max-height: 3.6em;
+  line-height: 1.4em;
+  margin: 0;
+  padding: 0;
+}
+.card-title :deep(*) {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4em;
+}
+.line {
   border: none;
+  border-top: 1px solid var(--color-almost-black);
+  width: 100%;
+  margin: 0;
 }
 
 .flex{
@@ -59,14 +87,33 @@ hr{
   gap: 1rem;
   margin: 0;
 }
+.flex_bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-right: 0;
+}
 .text_flex{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-left: 0;
 }
-.line{
-  border-bottom: 1px solid var(--color-almost-black);
+.tags_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  width: 100%;
 }
-
+.tags_wrapper :deep(*) {
+  margin: 0;
+}
+.black-square {
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
+  flex-shrink: 0 !important;
+}
 </style>

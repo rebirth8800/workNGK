@@ -15,22 +15,16 @@ const { isPending, isError, data, error } = useQuery({
     return response.data
   },
 })
-// for (let item in data){
-//   console.log(item)
-// }
-// console.log(isPending)
 </script>
 
 <template>
   <div class="container">
     <Typography type="semibold-40-black">Свежие вакансии</Typography>
     <Typography type="regular-16-almost-black" v-if="isPending">Загрузка...</Typography>
-<!--    <Skeleton v-if="isPending" />-->
-<!--    <Error v-else-if="isError" :error="error" />-->
-    <div class="card_list">
+    <div v-else-if="data && data.length > 0" class="card_list">
       <NewCard v-for="todo in data" :key="todo.id" :item="todo" />
-
     </div>
+    <Typography v-else type="regular-16-almost-black">Нет вакансий</Typography>
   </div>
 </template>
 
@@ -41,11 +35,16 @@ const { isPending, isError, data, error } = useQuery({
   gap: 2.5rem;
   flex-direction: column;
 }
-.card_list{
+
+.card_list {
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
-
 }
 
+.card_list > * {
+  flex: 0 0 515px;
+  width: 515px;
+  height: 375px;
+}
 </style>
