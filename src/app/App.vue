@@ -11,9 +11,7 @@ import { Footer } from '@/widgets/footer'
 </script>
 
 <template>
-  <Header />
   <RouterView />
-  <Footer/>
 </template>
 
 <style>

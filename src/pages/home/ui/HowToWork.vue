@@ -3,9 +3,9 @@ import { Typography } from '@/shared/ui/typography'
 import HowCard from '@/pages/home/ui/HowCard.vue'
 
 const data = [
-  {number: '01', h1: 'Разместите вакансию', h2: 'Работодатель публикует вакансию с требованиями и условиями работы'},
-  {number: '02', h1: 'Студент откликается',h2: 'Студент просматривает подходящие вакансии и отправляет отклик в один клик'},
-  {number: '03', h1: 'Ответ на почту', h2: 'Работодатель получает контакты кандидата и связывается с ним напрямую'}
+  {number: '01', h1: 'Разместите вакансию', h2: 'Работодатель публикует вакансию с требованиями и условиями работы', svg: 'plus'},
+  {number: '02', h1: 'Студент откликается',h2: 'Студент просматривает подходящие вакансии и отправляет отклик в один клик', svg: 'mail-red'},
+  {number: '03', h1: 'Ответ на почту', h2: 'Работодатель получает контакты кандидата и связывается с ним напрямую', svg: 'mail-red'}
 ]
 
 </script>
@@ -15,7 +15,7 @@ const data = [
     <Typography type="semibold-40-black">Как это работает</Typography>
     <Typography type="regular-32-almost-black">Три простых шага - и студент уже на работе</Typography>
     <div class="card_list">
-      <HowCard v-for="item in data" :number="item.number" :h1="item.h1" :h2="item.h2" :key="item.number" />
+      <HowCard v-for="item in data" :number="item.number" :svg="item.svg" :h1="item.h1" :h2="item.h2" :key="item.number" />
 
     </div>
   </div>

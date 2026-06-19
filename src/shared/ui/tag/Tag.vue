@@ -1,6 +1,8 @@
 <script setup>
+import { defineComponent } from 'vue'
+
 defineProps({
-  svg: String,
+  svg: Object,
   type: {
     type: String,
     default: 'grey',
@@ -12,7 +14,7 @@ defineProps({
 
 <template>
   <span :class="type">
-    <span v-if="svg" class="tag-icon" v-html="svg"></span>
+    <component :is="svg"  v-if="svg" class="tag-icon" />
     <slot />
   </span>
 </template>
@@ -24,6 +26,7 @@ span {
   gap: 5px;
   border-radius: 10px;
   font-size: 1.25rem;
+  margin-left: 0;
 }
 
 .tag-icon {

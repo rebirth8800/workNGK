@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
+import SearchIcon from '@/shared/svg/search-white.svg'
+import FileIcon from '@/shared/svg/file-add.svg'
 </script>
 
 <template>
@@ -9,8 +11,8 @@ import { Button } from '@/shared/ui/button'
     <Typography type="bold-64-red">найти работу</Typography>
     <Typography type="regular-32-almost-black">Актуальные вакансии от проверенных <br> работодателей — специально для студентов и <br> выпускников колледжа</Typography>
     <div class="button_block">
-      <Button type="default">Смотреть вакансии</Button>
-      <Button type="none-back-black">Разместить вакансию</Button>
+      <Button type="default" :svg="SearchIcon">Смотреть вакансии</Button>
+      <Button type="none-back-black" :svg="FileIcon">Разместить вакансию</Button>
     </div>
   </div>
 </template>

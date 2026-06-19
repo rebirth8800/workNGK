@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
-
+import { Tag } from '@/shared/ui/tag'
+import Icon from '@/shared/svg/clip.svg'
 const text = ['Бесплатное размещение', 'Быстрая модерация', 'Прямая связь']
 </script>
 
@@ -9,11 +10,12 @@ const text = ['Бесплатное размещение', 'Быстрая мо�
   <div class="backgraund">
     <div class="container">
       <div class="info_flex">
-        <Typography type="regular-24-white">Для работодателей</Typography>
+        <Tag type="red-light">Для работодателей</Tag>
         <Typography type="semibold-32-white">Найдите сотрудников среди <br> студентов НГК</Typography>
         <Typography type="regular-24-white">Более 1000 студентов готовы к стажировке и подработке. Разместите вакансию бесплатно и получите отклики уже сегодня</Typography>
         <div class="flex">
           <div v-for="item in text" :key="item" class="flex-text">
+            <Icon/>
             <Typography type="regular-24-white">{{item}}</Typography>
           </div>
         </div>

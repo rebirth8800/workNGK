@@ -10,7 +10,7 @@ export default function() {
       company_name: fakerRU.company.name(),
       city: fakerRU.location.city(),
       salary_min: fakerRU.number.int({ min: 50000, max: 300000 }),
-      category: _.sample(filters().category).name,
+      svg: _.sample(filters().category).svg,
       employment: _.sample(filters().employment).name,
     }
   })

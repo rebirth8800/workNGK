@@ -1,48 +1,46 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
-import * as process from 'node:process'
-import Tag from "@/shared/ui/tag/Tag.vue";
-import IconBox from "@/shared/ui/iconBox/IconBox.vue";
+import Tag from '@/shared/ui/tag/Tag.vue'
+import IconBox from '@/shared/ui/iconBox/IconBox.vue'
+import { computed, defineAsyncComponent } from 'vue'
+
 const props = defineProps({
-  item: Object
+  item: Object,
 })
-console.log(props.item)
+const Icon = computed(() => {
+  if (!props.item.svg) return null
+
+  return defineAsyncComponent(() =>
+    import(`@/shared/svg/${props.item.svg}.svg`)
+  )
+})
 </script>
 
 <template>
   <div class="card">
     <div class="flex">
       <div class="text_flex">
-        <Typography type="semibold-32-black" class="card-title">{{ item.title }}</Typography>
-        <Typography type="regular-20-almost-black">{{item.company_name}}</Typography>
+        <Typography type="semibold-32-black" class="card-title">{{ props.item.title }}</Typography>
+        <Typography type="regular-20-almost-black">{{ props.item.company_name }}</Typography>
       </div>
-      <IconBox type="grey" ></IconBox>
+      <IconBox type="grey"><Icon/></IconBox>
     </div>
     <div class="tags_wrapper">
-      <Tag type="grey">{{item.city}}</Tag>
-      <Tag type="grey">{{item.employment}}</Tag>
+      <Tag type="grey">{{ props.item.city }}</Tag>
+      <Tag type="grey">{{ props.item.employment }}</Tag>
     </div>
     <div class="line"></div>
     <div class="flex_bottom">
-      <Typography type="semibold-32-black">от {{item.salary_min}}$</Typography>
+      <Typography type="semibold-32-black">от {{ props.item.salary_min }}$</Typography>
       <Button type="text-red" class="b">Подробнее</Button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.square{
-  width: 60px;
-  height: 60px;
-  min-width: 60px;
-  min-height: 60px;
-  flex-shrink: 0;
-  background: black;
-  border-radius: 10px;
-  margin: 0px;
-}
-.card{
+
+.card {
   width: 515px;
   height: 375px;
   min-width: 515px;
@@ -80,21 +78,25 @@ console.log(props.item)
   margin: 0;
 }
 
-.flex{
+.flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   margin: 0;
 }
-.flex_bottom{
+.flex_bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-right: 0;
 }
-.text_flex{
+.b{
+  margin-right: 0;
+  padding-right: 0;
+}
+.text_flex {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -108,12 +110,5 @@ console.log(props.item)
 }
 .tags_wrapper :deep(*) {
   margin: 0;
-}
-.black-square {
-  width: 60px !important;
-  height: 60px !important;
-  min-width: 60px !important;
-  min-height: 60px !important;
-  flex-shrink: 0 !important;
 }
 </style>

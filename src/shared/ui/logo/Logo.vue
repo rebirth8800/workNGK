@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <a href="/" class="logo">
+  <RouterLink to="/" class="logo">
     <div class="logo-square">
       <svg class="logo-icon" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M50.9411 28.0173V42.8802C50.9411 44.2582 50.288 45.5546 49.1809 46.3747C40.98 52.4494 29.7718 52.4494 21.571 46.3747C20.4639 45.5546 19.8109 44.2582 19.8109 42.8802V29.0078M39.6211 22.6403L54.5981 27.2166C55.7881 27.5803 56.6012 28.6786 56.6012 29.923V44.8762M56.6012 50.0645V53.7704M36.7656 32.9789L54.6292 26.7264C57.1561 25.8421 57.1561 22.2686 54.6292 21.3842L36.7656 15.1319C34.9498 14.4964 32.972 14.4964 31.1562 15.1319L13.2926 21.3842C10.7658 22.2686 10.7658 25.8421 13.2926 26.7264L31.1562 32.9789C32.972 33.6142 34.9498 33.6142 36.7656 32.9789Z" stroke="white" stroke-width="1.25" stroke-linecap="round"/>
@@ -12,7 +12,7 @@
       <p class="h1">НГК</p>
       <p class="h2">работа</p>
     </div>
-  </a>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -21,6 +21,9 @@
   align-items: center;
   gap: 15px;
   text-decoration: none;
+}
+a{
+  margin-left: 0;
 }
 
 .logo-square {

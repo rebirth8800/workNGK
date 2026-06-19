@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
+import { Logo } from '@/shared/ui/logo'
 </script>
 
 <template>
   <div class="block">
-    <Typography type="regular-20-almost-black">logo</Typography>
+    <Logo/>
     <Typography type="regular-20-almost-black">Платформа трудоустройства студентов Нижегородского Губернского колледжа</Typography>
   </div>
 

@@ -1,4 +1,4 @@
-import { CategoryVacancy, CategoryVacancyType } from '@/entities/model';
+import CategoryVacancyType from '@/entities/model';
 import apiClient from '../../../../api/axios'
 
 
@@ -10,7 +10,7 @@ export type VacancyParams = {
 
 
 export const getVacancy = (params: VacancyParams) => {
-  return apiClient.get('/api/v1/vacancy', {
+  return apiClient.get('/vacancies', {
     params
   })
 }

@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  svg: String,
+  svg: Object,
   type: {
     type: String,
     default: 'default',
@@ -12,7 +12,7 @@ defineProps({
 
 <template>
   <button :class="type">
-    <svg v-if="svg">{{ svg }}</svg><slot />
+    <component :is="svg"/><slot />
   </button>
 </template>
 

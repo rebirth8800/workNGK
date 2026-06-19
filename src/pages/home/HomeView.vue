@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-import Header from '../../widgets/header/Header.vue'
 import WelcomeBlock from './ui/WelcomeBlock.vue'
 import HowToWork from './ui/HowToWork.vue'
 import NewVacancy from './ui/NewVacancy.vue'
 import BannerEmploy from './ui/BannerEmploy.vue'
+import HomeLayout from '@/app/layout/HomeLayout.vue'
 </script>
 
 <template>
-  <main>
-<!--    <Header />-->
+  <HomeLayout >
     <WelcomeBlock/>
     <HowToWork />
     <NewVacancy />
     <BannerEmploy />
-<!--    <Footer />-->
-  </main>
+  </HomeLayout>
+
 </template>
-<style scoped>
+<style>
 main{
   display: flex;
   flex-direction: column;

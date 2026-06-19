@@ -18,7 +18,7 @@ import Navig from './ui/Navig.vue';
 .container {
   display: flex;
   justify-content: space-between;
-  padding-top: 2.5rem;
+  padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   gap: 355px;
 }

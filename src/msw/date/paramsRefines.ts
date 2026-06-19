@@ -10,12 +10,12 @@ export const sorts = () =>{
 export const filters = () =>{
   return {
     category: [
-        { name: "IT и программирование", value: "it" },
-        { name: "Педагогика и образование", value: "education" },
-        { name: "Экономика и бухгалтерия", value: "economics" },
-        { name: "Логистика и торговля", value: "logistics" },
-        { name: "Юриспруденция", value: "law" },
-        { name: "Документооборот и архив", value: "records" }
+        { name: "IT и программирование", value: "it", svg: 'it'},
+        { name: "Педагогика и образование", value: "education", svg: 'teacher' },
+        { name: "Экономика и бухгалтерия", value: "economics", svg: 'buchalter' },
+        { name: "Логистика и торговля", value: "logistics", svg: 'logist' },
+        { name: "Юриспруденция", value: "law", svg: 'lawyer' },
+        { name: "Документооборот и архив", value: "records", svg: 'document' }
     ],
     schedule: [
       {name: "5/2 (пятидневка)", value: "5/2"},

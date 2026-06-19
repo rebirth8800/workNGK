@@ -1,9 +1,5 @@
 <script setup>
 defineProps({
-  svg: {
-    type: String,
-    default: '',
-  },
   type:{
     type: String,
     default: 'grey',
@@ -14,7 +10,7 @@ defineProps({
 
 <template>
 <div :class="['icon-box', `icon-box-${type}`]">
-  <span v-if="svg" class="icon-box-svg"></span>
+  <slot class="icon-box-svg"/>
 </div>
 </template>
 
@@ -27,6 +23,7 @@ defineProps({
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin: 0;
 }
 .icon-box-grey {
   background-color: var(--color-grey-light);

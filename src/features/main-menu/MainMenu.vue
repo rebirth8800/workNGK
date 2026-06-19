@@ -5,7 +5,7 @@ import Typography from '@/shared/ui/typography/Typography.vue'
 
 <template>
   <div class="main">
-    <RouterLink to=""><Typography type="medium-24-black">Вакансии</Typography></RouterLink>
+    <RouterLink to="/vacancies"><Typography type="medium-24-black">Вакансии</Typography></RouterLink>
     <RouterLink to=""><Typography type="medium-24-black">Создать вакансию</Typography></RouterLink>
     <RouterLink to=""><Typography type="medium-24-black">Контакты</Typography></RouterLink>
   </div>
