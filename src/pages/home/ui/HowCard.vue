@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import {computed, defineComponent} from 'vue'
 import { Typography } from '@/shared/ui/typography'
 import { IconBox } from '@/shared/ui/iconBox'
-const props = defineProps({
+defineProps({
   number: String,
   h1: String,
   h2: String,
   svg: String,
-})
-const Icon = computed(() => {
-  // Используем import.meta.glob для Vite
-  const icons = import.meta.glob(`@/shared/svg/*.svg`, {
-    eager: true,
-    import: 'default'
-  })
-  // Ищем иконку по имени
-  const path = `/src/shared/svg/${props.svg}.svg`
-  return icons[path]
 })
 
 </script>
@@ -24,7 +13,7 @@ const Icon = computed(() => {
 <template>
   <div class="card">
     <div class="ui">
-      <IconBox type="red" class="square" ><Icon/></IconBox>
+      <IconBox type="red" class="square" :svg="svg"/>
       <Typography type="semibold-40-grey-light">{{ number }}</Typography>
     </div>
     <Typography type="semibold-32-black">{{ h1 }}</Typography>

@@ -3,18 +3,15 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import Tag from '@/shared/ui/tag/Tag.vue'
 import IconBox from '@/shared/ui/iconBox/IconBox.vue'
-import { computed, defineAsyncComponent } from 'vue'
 
 const props = defineProps({
   item: Object,
 })
-const Icon = computed(() => {
-  if (!props.item.svg) return null
 
-  return defineAsyncComponent(() =>
-    import(`@/shared/svg/${props.item.svg}.svg`)
-  )
-})
+
+
+
+
 </script>
 
 <template>
@@ -24,7 +21,7 @@ const Icon = computed(() => {
         <Typography type="semibold-32-black" class="card-title">{{ props.item.title }}</Typography>
         <Typography type="regular-20-almost-black">{{ props.item.company_name }}</Typography>
       </div>
-      <IconBox type="grey"><Icon/></IconBox>
+      <IconBox type="grey" :svg="props.item.svg"/>
     </div>
     <div class="tags_wrapper">
       <Tag type="grey">{{ props.item.city }}</Tag>

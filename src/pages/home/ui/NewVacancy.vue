@@ -11,10 +11,10 @@ const { isPending, isError, data, error } = useQuery({
   queryKey: ['todo', 3],
   queryFn: async () => {
     const response = await getNewVacancy()
-    console.log(response)
     return response.data
   },
 })
+console.log(data)
 </script>
 
 <template>
