@@ -36,7 +36,46 @@ const model = defineModel({
   margin-left: 0;
 }
 input {
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
+  //background-color: var(--color-background-grey);
+  //border: 1px solid var(--color-grey-light);
+  //border-radius: 5px;
+}
+input[type="checkbox"] {
+  accent-color: var(--color-primary-red);
+  width: 35px;
+  height: 35px;
+}
+
+@media (max-width: 1440px){
+  input {
+    width: 25px;
+    height: 25px;
+  }
+  input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+  }
+}
+@media (max-width: 768px){
+  input {
+    width: 20px;
+    height: 20px;
+  }
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+}
+@media (max-width: 360px){
+  input {
+    width: 20px;
+    height: 20px;
+  }
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>

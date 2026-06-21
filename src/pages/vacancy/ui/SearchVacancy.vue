@@ -47,4 +47,23 @@ import {Typography} from "@/shared/ui/typography";
   font-family: 'Inter', sans-serif;
   width: auto;
 }
+
+@media (max-width: 768px){
+  .search-input {
+    font-size: 1rem;
+  }
+  .icon-search {
+    width: 22px;
+    height: 22px;
+  }
+}
+@media (max-width: 360px){
+  .search-input {
+    font-size: 0.875rem;
+  }
+  .icon-search {
+    width: 17px;
+    height: 17px;
+  }
+}
 </style>

@@ -87,11 +87,30 @@ const flag = ref(false)
 }
 
 .radio:hover {
-  background-color: var(--color-red-light, #FFE8EC);
+  background-color: var(--color-red-light);
 }
 
 .active {
-  background-color: var(--color-red-light, #FFE8EC);
+  background-color: var(--color-red-light);
   font-weight: 600;
+}
+
+@media (max-width: 1440px){
+  .toggle-btn {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 768px){
+  .toggle-btn {
+    font-size: 1rem;
+    height: 47px;
+  }
+
+}
+@media (max-width: 360px){
+  .toggle-btn {
+    font-size: 1rem;
+    height: 47px;
+  }
 }
 </style>

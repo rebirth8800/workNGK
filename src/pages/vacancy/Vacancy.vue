@@ -7,6 +7,7 @@ import Filters from '@/pages/vacancy/ui/Filters.vue'
 import { provide, reactive, ref } from 'vue'
 import { Button } from '@/shared/ui/button'
 import SearchVacancy from "@/pages/vacancy/ui/SearchVacancy.vue";
+import Zarplata from "@/pages/vacancy/ui/Zarplata.vue";
 
 const filters = {
   page: 1,
@@ -40,6 +41,7 @@ const selectedFilters = reactive({
       <Button @click="console.log(selectedFilters)">244</Button>
       <SearchVacancy></SearchVacancy>
       <Filters v-model="selectedFilters" />
+      <Zarplata></Zarplata>
       <!--    <Typogra.Header level={2}></Typogra.Header>-->
       <!--    <Typo></Typo>-->
       <!--    <Skeleton v-if="isPending" />-->
