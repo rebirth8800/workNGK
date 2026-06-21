@@ -1,16 +1,20 @@
-import CategoryVacancyType from '@/entities/model';
+import type {  ScheduleVacancyType, WorkFormatVacancyType, EmploymentVacancyType, CategoryVacancyType } from '@/entities/model'
+
+
 import apiClient from '../../../../api/axios'
 
 
-export type VacancyParams = {
+type VacancyParams = {
   page: number;
   per_page: number;
-  category?: CategoryVacancyType;
+  category: CategoryVacancyType;
+  schedule: ScheduleVacancyType;
+  work_format: WorkFormatVacancyType;
+  employment: EmploymentVacancyType;
 }
-
 
 export const getVacancy = (params: VacancyParams) => {
   return apiClient.get('/vacancies', {
-    params
+    params:params
   })
 }

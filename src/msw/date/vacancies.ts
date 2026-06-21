@@ -3,8 +3,9 @@ import _ from 'lodash'
 import { filters } from './paramsRefines.ts'
 const statuses = ['Опубликована', 'На модерации', 'Отклонена']
 
-export default function(i: Number, status = true) {
-  return _.times(i, function(n){
+export default function(params: Object) {
+  // console.log(params)
+  return _.times(50, function(n){
       return {
         id: n+1,
         title: fakerRU.person.jobTitle(),
@@ -27,7 +28,6 @@ export default function(i: Number, status = true) {
         work_format: _.map(_.sampleSize(filters().work_format, _.random(1,4)), (elem)=> elem.name),
         employment: _.map(_.sampleSize(filters().employment, _.random(1,4)), (elem)=> elem.name),
         schedule: _.map(_.sampleSize(filters().schedule, _.random(1,4)), (elem)=> elem.name),
-        status: status ? statuses[0] : _.sample(statuses)
       }
     })
 
