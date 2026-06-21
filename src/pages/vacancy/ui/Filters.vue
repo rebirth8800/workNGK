@@ -18,12 +18,10 @@ const { isPending, isError, data, error } = useQuery({
   queryKey: ['filter'],
   queryFn: async () => {
     const response = await getFilters()
-    console.log(response)
     return response.data
   },
 })
 
-console.log(data)
 
 
 </script>

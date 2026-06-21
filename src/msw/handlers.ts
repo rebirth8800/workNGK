@@ -6,8 +6,9 @@ import profileEmployer from '@/msw/date/profileEmployer.ts'
 import newVacancies from '@/msw/date/newVacancies.ts'
 
 export const handlers = [
-  http.get('https://api.ngk-rabota.ru/v1/vacancies', () => {
-    return HttpResponse.json(vacancies(50))
+  http.get('https://api.ngk-rabota.ru/v1/vacancies', ({ params }) => {
+    console.log(params)
+    return HttpResponse.json(vacancies(params))
   }),
   http.get('https://api.ngk-rabota.ru/v1/filters', () => {
     return HttpResponse.json(filters())

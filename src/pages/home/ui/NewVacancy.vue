@@ -14,7 +14,6 @@ const { isPending, isError, data, error } = useQuery({
     return response.data
   },
 })
-console.log(data)
 </script>
 
 <template>
