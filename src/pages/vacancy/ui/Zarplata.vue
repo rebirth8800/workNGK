@@ -2,6 +2,7 @@
 
 
 import {Typography} from "@/shared/ui/typography";
+import {Button} from "@/shared/ui/button";
 </script>
 
 <template>
@@ -20,6 +21,8 @@ import {Typography} from "@/shared/ui/typography";
           class="salary-input"
       />
     </div>
+    <Button type="default">Применить фильтры</Button>
+    <Button type="text-black">Сбросить фильтры</Button>
   </div>
 </template>
 
