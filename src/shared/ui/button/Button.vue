@@ -46,6 +46,7 @@ button {
   color: var(--color-primary-red);
   background-color: var(--color-white);
   border: none;
+  padding: 0px;
 }
 .text-black{
   color: var(--color-black);
