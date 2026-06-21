@@ -1,34 +1,74 @@
 import { fakerRU } from '@faker-js/faker'
 import _ from 'lodash'
 import { filters } from './paramsRefines.ts'
-const statuses = ['Опубликована', 'На модерации', 'Отклонена']
 
-export default function(params: Object) {
-  // console.log(params)
+const zapoln = ()=>{
   return _.times(50, function(n){
-      return {
-        id: n+1,
-        title: fakerRU.person.jobTitle(),
-        company_name: fakerRU.company.name(),
-        city: fakerRU.location.city(),
-        salary_min: fakerRU.number.int({ min: 50000, max: 300000 }),
-        responsibilities: _.times(_.random(1,4), function(){
-          return fakerRU.lorem.sentence()
-        }),
-        requirements: _.times(_.random(1,4), function(){
-          return fakerRU.lorem.sentence()
-        }),
-        conditions: _.times(_.random(1,4), function(){
-          return fakerRU.lorem.sentence()
-        }),
-        contact_email: fakerRU.internet.email(),
-        contact_phone: '+7'+fakerRU.phone.number('(###) ###-##-##'),
-        contact_person: fakerRU.person.fullName(),
-        category: _.sample(filters().category).name,
-        work_format: _.map(_.sampleSize(filters().work_format, _.random(1,4)), (elem)=> elem.name),
-        employment: _.map(_.sampleSize(filters().employment, _.random(1,4)), (elem)=> elem.name),
-        schedule: _.map(_.sampleSize(filters().schedule, _.random(1,4)), (elem)=> elem.name),
-      }
-    })
+    return {
+      id: n+1,
+      title: fakerRU.person.jobTitle(),
+      company_name: fakerRU.company.name(),
+      city: fakerRU.location.city(),
+      salary_min: fakerRU.number.int({ min: 50000, max: 300000 }),
+      responsibilities: _.times(_.random(1,4), function(){
+        return fakerRU.lorem.sentence()
+      }),
+      requirements: _.times(_.random(1,4), function(){
+        return fakerRU.lorem.sentence()
+      }),
+      conditions: _.times(_.random(1,4), function(){
+        return fakerRU.lorem.sentence()
+      }),
+      contact_email: fakerRU.internet.email(),
+      contact_phone: '+7'+fakerRU.phone.number('(###) ###-##-##'),
+      contact_person: fakerRU.person.fullName(),
+      category: _.sample(filters().category).name,
+      work_format: _.map(_.sampleSize(filters().work_format, _.random(1,4)), (elem)=> elem.name),
+      employment: _.map(_.sampleSize(filters().employment, _.random(1,4)), (elem)=> elem.name),
+      schedule: _.map(_.sampleSize(filters().schedule, _.random(1,4)), (elem)=> elem.name),
+    }
+  })
+}
+
+const vacancies = zapoln()
+
+export default function(page, per_page, category, schedule, work_format, employment) {
+  console.log(page*per_page-per_page, per_page)
+  let response = []
+  schedule = schedule.split(',')
+  const schedule_list = schedule.map(elem => filters().schedule.find(item => item.value === elem)?.name)
+
+  work_format = work_format.split(',')
+  const work_format_list = work_format.map(elem => filters().schedule.find(item => item.value === elem)?.name)
+
+  employment = employment.split(',')
+  const employment_list = employment.map(elem => filters().schedule.find(item => item.value === elem)?.name)
+
+
+  for (let item of vacancies) {
+    if (category && item.category != filters().category.find(item => item.value === category)?.name) {
+      continue
+    }
+    if (schedule[0] != '' && !item.schedule.some(i => schedule_list.includes(i))){
+      continue
+    }
+    if (work_format[0] && !item.work_format.some(i => work_format_list.includes(i))){
+
+      continue
+    }
+    if (employment[0] && !item.employment.some(i => employment_list.includes(i))){
+
+      continue
+    }
+
+    response.push(item)
+
+
+  }
+  return {
+    len: response.length,
+    items: response.slice(+page*+per_page-+per_page, +per_page*+page),
+  }
+
 
 }

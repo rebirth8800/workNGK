@@ -5,10 +5,17 @@ import CheckBox from '@/pages/vacancy/ui/CheckBox.vue'
 import Category from '@/pages/vacancy/ui/Category.vue'
 import { Button } from '@/shared/ui/button'
 import { reactive } from 'vue'
+import SearchVacancy from '@/pages/vacancy/ui/SearchVacancy.vue'
+import Zarplata from '@/pages/vacancy/ui/Zarplata.vue'
 
 const selectedFilters = defineModel({
   type: Object,
   default: () => ({}),
+})
+
+defineProps({
+  updateParam: Function,
+  deleteParam: Function,
 })
 
 const queryClient = useQueryClient()
@@ -28,12 +35,16 @@ const { isPending, isError, data, error } = useQuery({
 
 <template>
   <div class="block" v-if="data">
-    <!--  <Search/>-->
+    <SearchVacancy/>
     <Category :item="data.category" v-model="selectedFilters.category"/>
     <CheckBox name="График работы" :item="data.schedule" v-model="selectedFilters.schedule" />
     <CheckBox name="Занятость" :item="data.employment" v-model="selectedFilters.employment"  />
     <CheckBox name="Формат работы" :item="data.work_format" v-model="selectedFilters.work_format" />
-    <!--  <Sale/>-->
+    <Zarplata/>
+    <div class="button_block">
+      <Button type="default" @click="()=>updateParam()">Применить фильтры</Button>
+      <Button type="text-black" @click="()=>deleteParam()">Сбросить фильтры</Button>
+    </div>
   </div>
 
 </template>
@@ -45,4 +56,10 @@ const { isPending, isError, data, error } = useQuery({
   gap: 1.5rem;
   margin-left: 0;
 }
+.button_block{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 </style>

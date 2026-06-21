@@ -21,8 +21,7 @@ import {Button} from "@/shared/ui/button";
           class="salary-input"
       />
     </div>
-    <Button type="default">Применить фильтры</Button>
-    <Button type="text-black">Сбросить фильтры</Button>
+
   </div>
 </template>
 
@@ -40,7 +39,7 @@ import {Button} from "@/shared/ui/button";
 }
 
 .salary-input {
-  width: 155px;
+  width: 130px;
   padding: 20px 20px;
   font-size: 1.5rem;
   background-color: var(--color-background-grey);

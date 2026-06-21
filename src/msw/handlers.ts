@@ -6,9 +6,9 @@ import profileEmployer from '@/msw/date/profileEmployer.ts'
 import newVacancies from '@/msw/date/newVacancies.ts'
 
 export const handlers = [
-  http.get('https://api.ngk-rabota.ru/v1/vacancies', ({ params }) => {
-    console.log(params)
-    return HttpResponse.json(vacancies(params))
+  http.get('https://api.ngk-rabota.ru/v1/vacancies', ({ request }) => {
+    const url = new URL(request.url)
+    return HttpResponse.json(vacancies(url.searchParams.get('page'), url.searchParams.get('per_page'), url.searchParams.get('category'), url.searchParams.get('schedule'), url.searchParams.get('work_format'), url.searchParams.get('employment')))
   }),
   http.get('https://api.ngk-rabota.ru/v1/filters', () => {
     return HttpResponse.json(filters())

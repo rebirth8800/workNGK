@@ -6,13 +6,17 @@ import ArrowRight from '@/shared/svg/arrow-right.svg'
 
 defineProps({
   data: Array,
+  len: Number,
+  pagePlus: Function,
+  pageMinus: Function,
+  page: Number,
 })
 </script>
 
 <template>
   <div class="block">
     <div class="info">
-      <Typography>12334</Typography>
+      <Typography type="medium-32-black">{{len}}</Typography>
     </div>
 
     <div class="card_list">
@@ -20,13 +24,13 @@ defineProps({
     </div>
 
     <div class="controls-between">
-      <button class="arrow-btn">
+      <button class="arrow-btn" :disabled="page<=1" @click="pageMinus()">
         <ArrowRight />
       </button>
 
-      <Typography type="regular-20-black">1 / 3</Typography>
+      <Typography type="regular-20-black">{{page}} /{{Math.ceil(len/6)}}</Typography>
 
-      <button class="arrow-btn">
+      <button class="arrow-btn" @click="pagePlus()" :disabled="page>=Math.ceil(len/6)">
         <ArrowLeft />
       </button>
     </div>
