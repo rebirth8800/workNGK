@@ -12,24 +12,27 @@ const selected = defineModel({
 })
 
 const flag = ref(false)
-
 </script>
 
 <template>
   <div class="block">
     <Typography type="semibold-24-black">Категория</Typography>
-    <button @click="flag = !flag">Все категории</button>
-    <div class="block" v-if="flag">
-      <Typography
-        type="regular-20-black"
-        v-for="option in item"
-        :key="option.value"
-        class="radio"
-        :class="{active: selected === option.value }"
-        @click="selected = option.value"
-      >
-      {{ option.name }}
-    </Typography>
+
+    <div class="dropdown-wrapper">
+      <button @click="flag = !flag" class="toggle-btn">Все категории</button>
+
+      <div v-if="flag" class="dropdown-list">
+        <Typography
+            type="regular-20-black"
+            v-for="option in item"
+            :key="option.value"
+            class="radio"
+            :class="{ active: selected === option.value }"
+            @click="selected = option.value"
+        >
+          {{ option.name }}
+        </Typography>
+      </div>
     </div>
   </div>
 </template>
@@ -41,11 +44,73 @@ const flag = ref(false)
   gap: 1.5rem;
   margin-left: 0;
 }
+
+.dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.toggle-btn {
+  background-color: var(--color-red-light);
+  border: none;
+  color: var(--color-primary-red);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px 16px;
+  text-align: left;
+  border-radius: 6px;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
+}
+
+.dropdown-list {
+  background-color: var(--color-white);
+  border-radius: 6px;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .radio {
   cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
-.active{
-  border: 1px solid var(--color-grey-light);
-  padding: 5px;
+
+.radio:hover {
+  background-color: var(--color-red-light);
+}
+
+.active {
+  background-color: var(--color-red-light);
+  font-weight: 600;
+}
+
+@media (max-width: 1440px){
+  .toggle-btn {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 768px){
+  .toggle-btn {
+    font-size: 1rem;
+    height: 47px;
+  }
+
+}
+@media (max-width: 360px){
+  .toggle-btn {
+    font-size: 1rem;
+    height: 47px;
+  }
 }
 </style>
