@@ -9,7 +9,7 @@ const zapoln = ()=>{
       title: fakerRU.person.jobTitle(),
       company_name: fakerRU.company.name(),
       city: fakerRU.location.city(),
-      salary_min: fakerRU.number.int({ min: 50000, max: 300000 }),
+      salary: fakerRU.number.int({ min: 50000, max: 300000 }),
       responsibilities: _.times(_.random(1,4), function(){
         return fakerRU.lorem.sentence()
       }),
@@ -32,8 +32,7 @@ const zapoln = ()=>{
 
 const vacancies = zapoln()
 
-export default function(page, per_page, category, schedule, work_format, employment) {
-  console.log(page*per_page-per_page, per_page)
+export default function(page, per_page, category, schedule, work_format, employment, salary_min, salary_max) {
   let response = []
   schedule = schedule.split(',')
   const schedule_list = schedule.map(elem => filters().schedule.find(item => item.value === elem)?.name)
@@ -58,6 +57,13 @@ export default function(page, per_page, category, schedule, work_format, employm
     }
     if (employment[0] && !item.employment.some(i => employment_list.includes(i))){
 
+      continue
+    }
+    console.log(salary_min)
+    if (salary_min !=0 && item.salary < salary_min) {
+      continue
+    }
+    if (salary_max != 0 && item.salary > salary_max) {
       continue
     }
 

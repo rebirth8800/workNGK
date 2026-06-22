@@ -8,7 +8,7 @@ const queryClient = useQueryClient()
 
 // Query
 const { isPending, isError, data, error } = useQuery({
-  queryKey: ['todo', 3],
+  queryKey: ['todo', 4],
   queryFn: async () => {
     const response = await getNewVacancy()
     return response.data

@@ -8,7 +8,6 @@ import { Button } from '@/shared/ui/button'
 import VacancyList from './ui/VacancyList.vue'
 import { Typography } from '@/shared/ui/typography'
 
-
 const selectedFilters = reactive({
   page: 1,
   per_page: 6,
@@ -16,8 +15,10 @@ const selectedFilters = reactive({
   schedule: [],
   employment: [],
   work_format: [],
+  salary_min: '',
+  salary_max: '',
 })
-const getParams = ()=>{
+const getParams = () => {
   return {
     page: selectedFilters.page,
     per_page: selectedFilters.per_page,
@@ -25,59 +26,65 @@ const getParams = ()=>{
     schedule: selectedFilters.schedule.join(','),
     employment: selectedFilters.employment.join(','),
     work_format: selectedFilters.work_format.join(','),
+    salary_min: +selectedFilters.salary_min,
+    salary_max: +selectedFilters.salary_max,
   }
 }
 let params = getParams()
 
-const updateParam=()=>{
-  params=getParams()
+const updateParam = () => {
+  params = getParams()
   refetch()
 }
 
-const deleteParam=()=>{
+const deleteParam = () => {
   selectedFilters.page = 1
   selectedFilters.per_page = 6
   selectedFilters.category = ''
   selectedFilters.schedule = []
   selectedFilters.employment = []
   selectedFilters.work_format = []
-  params=getParams()
+  params = getParams()
   refetch()
 }
 
-const pagePlus = ()=>{
+const pagePlus = () => {
   selectedFilters.page += 1
   updateParam()
 }
-const pageMinus = ()=>{
+const pageMinus = () => {
   selectedFilters.page -= 1
   updateParam()
 }
 
 const queryClient = useQueryClient()
 
-
 const { isPending, isError, data, error, refetch } = useQuery({
   queryKey: ['vacancies'],
   queryFn: async () => {
     const response = await getVacancy(params)
-    console.log(response)
     return response.data
   },
 })
-
 </script>
 
 <template>
   <VacancyListLayout name="Вакансии">
     <div class="container">
-<!--      <Button @click="console.log(selectedFilters)">244</Button>-->
-      <Filters v-model="selectedFilters" :updateParam="updateParam" :deleteParam="deleteParam"/>
+      <!--      <Button @click="console.log(selectedFilters)">244</Button>-->
+      <Filters v-model="selectedFilters" :updateParam="updateParam" :deleteParam="deleteParam" />
       <!--    <Typogra.Header level={2}></Typogra.Header>-->
       <!--    <Typo></Typo>-->
       <!--    <Skeleton v-if="isPending" />-->
       <!--    <Error v-if="isError" :error="error" />-->
-      <VacancyList v-if="data" :data="data.items" :len="data.len" :pagePlus="pagePlus" :pageMinus="pageMinus" :page="selectedFilters.page"/>
+      <VacancyList
+        v-if="data"
+        :data="data.items"
+        :len="data.len"
+        :pagePlus="pagePlus"
+        :pageMinus="pageMinus"
+        :page="selectedFilters.page"
+      />
     </div>
   </VacancyListLayout>
 </template>

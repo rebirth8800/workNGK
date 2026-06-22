@@ -1,27 +1,24 @@
 <script setup lang="ts">
+import { Typography } from '@/shared/ui/typography'
+import { Button } from '@/shared/ui/button'
 
+const salary_min = defineModel('min', {
+  type: String,
+})
 
-import {Typography} from "@/shared/ui/typography";
-import {Button} from "@/shared/ui/button";
+const salary_max = defineModel('max', {
+  type: String,
+})
 </script>
 
 <template>
   <div class="block">
     <Typography type="semibold-24-black">Зарплата, ₽</Typography>
     <div class="salary">
-      <input
-          type="text"
-          placeholder="от 20 000"
-          class="salary-input"
-      />
+      <input v-model="salary_min" type="text" placeholder="от 20 000" class="salary-input" />
       <span class="line"></span>
-      <input
-          type="text"
-          placeholder="до 50 000"
-          class="salary-input"
-      />
+      <input v-model="salary_max" type="text" placeholder="до 50 000" class="salary-input" />
     </div>
-
   </div>
 </template>
 
@@ -59,7 +56,7 @@ import {Button} from "@/shared/ui/button";
   background-color: var(--color-almost-black);
 }
 
-@media (max-width: 1440px){
+@media (max-width: 1440px) {
   .salary-input {
     width: 100px;
     font-size: 1.25rem;
@@ -68,7 +65,7 @@ import {Button} from "@/shared/ui/button";
     gap: 10px;
   }
 }
-@media (max-width: 768px){
+@media (max-width: 768px) {
   .salary-input {
     width: 100px;
     padding: 15px 10px;
@@ -78,7 +75,7 @@ import {Button} from "@/shared/ui/button";
     gap: 10px;
   }
 }
-@media (max-width: 360px){
+@media (max-width: 360px) {
   .salary-input {
     width: 100px;
     padding: 15px 10px;

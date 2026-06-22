@@ -11,10 +11,10 @@ const props = defineProps({
 
 const Icon = computed(() => {
   if (!props.svg) return null
-
-  return defineAsyncComponent(() => import(`@/shared/svg/${props.svg}.svg`))
+  const s = defineAsyncComponent(() => import(`@/shared/svg/${props.svg}.svg`))
+  console.log(s)
+  return s;
 })
-
 
 // const Icon = computed(() => {
 //   // Используем import.meta.glob для Vite

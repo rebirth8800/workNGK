@@ -28,25 +28,21 @@ const { isPending, isError, data, error } = useQuery({
     return response.data
   },
 })
-
-
-
 </script>
 
 <template>
   <div class="block" v-if="data">
-    <SearchVacancy/>
-    <Category :item="data.category" v-model="selectedFilters.category"/>
+    <SearchVacancy />
+    <Category :item="data.category" v-model="selectedFilters.category" />
     <CheckBox name="График работы" :item="data.schedule" v-model="selectedFilters.schedule" />
-    <CheckBox name="Занятость" :item="data.employment" v-model="selectedFilters.employment"  />
+    <CheckBox name="Занятость" :item="data.employment" v-model="selectedFilters.employment" />
     <CheckBox name="Формат работы" :item="data.work_format" v-model="selectedFilters.work_format" />
-    <Zarplata/>
+    <Zarplata v-model:min="selectedFilters.salary_min" v-model:max="selectedFilters.salary_max" />
     <div class="button_block">
-      <Button type="default" @click="()=>updateParam()">Применить фильтры</Button>
-      <Button type="text-black" @click="()=>deleteParam()">Сбросить фильтры</Button>
+      <Button type="default" @click="() => updateParam()">Применить фильтры</Button>
+      <Button type="text-black" @click="() => deleteParam()">Сбросить фильтры</Button>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -56,10 +52,9 @@ const { isPending, isError, data, error } = useQuery({
   gap: 1.5rem;
   margin-left: 0;
 }
-.button_block{
+.button_block {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-
 </style>

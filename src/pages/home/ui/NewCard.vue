@@ -3,15 +3,11 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import Tag from '@/shared/ui/tag/Tag.vue'
 import IconBox from '@/shared/ui/iconBox/IconBox.vue'
+import { iconConfig } from '@/pages/home/config/icon-config.ts'
 
 const props = defineProps({
   item: Object,
 })
-
-
-
-
-
 </script>
 
 <template>
@@ -21,7 +17,8 @@ const props = defineProps({
         <Typography type="semibold-32-black" class="card-title">{{ props.item.title }}</Typography>
         <Typography type="regular-20-almost-black">{{ props.item.company_name }}</Typography>
       </div>
-      <IconBox type="grey" :svg="props.item.svg"/>
+      <component v-if="iconConfig" :is="iconConfig[props.item.svg]" />
+      <IconBox type="grey" :svg="props.item.svg" />
     </div>
     <div class="tags_wrapper">
       <Tag type="grey">{{ props.item.city }}</Tag>
@@ -36,7 +33,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-
 .card {
   width: 515px;
   height: 375px;
@@ -89,7 +85,7 @@ const props = defineProps({
   width: 100%;
   margin-right: 0;
 }
-.b{
+.b {
   margin-right: 0;
   padding-right: 0;
 }
