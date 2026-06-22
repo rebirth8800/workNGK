@@ -3,9 +3,9 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import Tag from '@/shared/ui/tag/Tag.vue'
 import IconBox from '@/shared/ui/iconBox/IconBox.vue'
-import { iconConfig } from '@/pages/home/config/icon-config.ts'
+import { iconConfig } from '@/shared/config'
 
-const props = defineProps({
+defineProps({
   item: Object,
 })
 </script>
@@ -14,19 +14,20 @@ const props = defineProps({
   <div class="card">
     <div class="flex">
       <div class="text_flex">
-        <Typography type="semibold-32-black" class="card-title">{{ props.item.title }}</Typography>
-        <Typography type="regular-20-almost-black">{{ props.item.company_name }}</Typography>
+        <Typography type="semibold-32-black" class="card-title">{{ item.title }}</Typography>
+        <Typography type="regular-20-almost-black">{{ item.company_name }}</Typography>
       </div>
-      <component v-if="iconConfig" :is="iconConfig[props.item.svg]" />
-      <IconBox type="grey" :svg="props.item.svg" />
+      <!--      <component v-if="iconConfig" :is="iconConfig[props.item.svg]" />-->
+      <!--      <component :is="iconConfig[item.svg]" :key="item.id"/>-->
+      <IconBox type="grey" :svg="iconConfig[item.svg]" :key="item.id"/>
     </div>
     <div class="tags_wrapper">
-      <Tag type="grey">{{ props.item.city }}</Tag>
-      <Tag type="grey">{{ props.item.employment }}</Tag>
+      <Tag type="grey">{{ item.city }}</Tag>
+      <Tag type="grey">{{ item.employment }}</Tag>
     </div>
     <div class="line"></div>
     <div class="flex_bottom">
-      <Typography type="semibold-32-black">от {{ props.item.salary_min }}$</Typography>
+      <Typography type="semibold-32-black">от {{ item.salary_min }}$</Typography>
       <Button type="text-red" class="b">Подробнее</Button>
     </div>
   </div>

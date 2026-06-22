@@ -18,17 +18,17 @@ export const filters = () =>{
         { name: "Документооборот и архив", value: "records", svg: 'document' }
     ],
     schedule: [
-      {name: "5/2 (пятидневка)", value: "5/2"},
-      {name: "2/2 (сменный)", value: "2/2"},
-      {name: "Свободный (гибкий)", value: "0/0"},
-      {name: "6/1 (шестидневка)", value: "6/1"},
-      {name: "1/1 (сутки через сутки)", value: "1/1"}
+      {name: "5/2", value: "5/2"},
+      {name: "2/2", value: "2/2"},
+      {name: "Свободный", value: "0/0"},
+      {name: "6/1", value: "6/1"},
+      {name: "1/1", value: "1/1"}
     ],
     employment: [
       { name: "Полная занятость", value: "full-time" },
       { name: "Частичная занятость", value: "part-time" },
       { name: "Стажировка", value: "internship" },
-      { name: "Проектная работа / разовая", value: "project" }
+      { name: "Разовая", value: "project" }
     ],
     work_format: [
       { name: "Удалённо", value: "remote" },

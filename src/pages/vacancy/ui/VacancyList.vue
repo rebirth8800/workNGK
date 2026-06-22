@@ -16,7 +16,8 @@ defineProps({
 <template>
   <div class="block">
     <div class="info">
-      <Typography type="medium-32-black">{{len}}</Typography>
+      <Typography type="light-24-black">Найдено:</Typography>
+      <Typography type="medium-24-black">{{len}} вакансий</Typography>
     </div>
 
     <div class="card_list">
@@ -38,6 +39,11 @@ defineProps({
 </template>
 
 <style scoped>
+.block{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
 .card_list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -82,5 +88,10 @@ defineProps({
   font-size: 1rem;
   color: var(--color-almost-black);
   font-weight: 500;
+}
+.info{
+  display: flex;
+  gap: 5px;
+  margin-left: 0;
 }
 </style>

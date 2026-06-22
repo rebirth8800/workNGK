@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
 import { IconBox } from '@/shared/ui/iconBox'
+import { iconConfig } from '@/shared/config'
+
 defineProps({
   number: String,
   h1: String,
@@ -13,7 +15,7 @@ defineProps({
 <template>
   <div class="card">
     <div class="ui">
-      <IconBox type="red" class="square" :svg="svg"/>
+      <IconBox type="red" class="square" :svg="iconConfig[svg]"/>
       <Typography type="semibold-40-grey-light">{{ number }}</Typography>
     </div>
     <Typography type="semibold-32-black">{{ h1 }}</Typography>

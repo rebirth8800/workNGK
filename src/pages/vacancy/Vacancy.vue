@@ -44,6 +44,8 @@ const deleteParam = () => {
   selectedFilters.schedule = []
   selectedFilters.employment = []
   selectedFilters.work_format = []
+  selectedFilters.salary_min = ''
+  selectedFilters.salary_max = ''
   params = getParams()
   refetch()
 }

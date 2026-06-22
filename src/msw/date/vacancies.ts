@@ -60,10 +60,10 @@ export default function(page, per_page, category, schedule, work_format, employm
       continue
     }
     console.log(salary_min)
-    if (salary_min !=0 && item.salary < salary_min) {
+    if (+salary_min !=0 && item.salary < +salary_min) {
       continue
     }
-    if (salary_max != 0 && item.salary > salary_max) {
+    if (+salary_max != 0 && item.salary > +salary_max) {
       continue
     }
 

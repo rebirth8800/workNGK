@@ -9,15 +9,21 @@ const salary_min = defineModel('min', {
 const salary_max = defineModel('max', {
   type: String,
 })
+
+const onInput = (event: Event, model: any) => {
+  const input = event.target as HTMLInputElement
+  input.value = input.value.replace(/\D/g, '')
+  model.value = input.value
+}
 </script>
 
 <template>
   <div class="block">
     <Typography type="semibold-24-black">Зарплата, ₽</Typography>
     <div class="salary">
-      <input v-model="salary_min" type="text" placeholder="от 20 000" class="salary-input" />
+      <input @input="onInput($event, salary_min)" v-model="salary_min" type="text" placeholder="от 20 000" class="salary-input" />
       <span class="line"></span>
-      <input v-model="salary_max" type="text" placeholder="до 50 000" class="salary-input" />
+      <input @input="onInput($event, salary_max)" v-model="salary_max" type="text" placeholder="до 50 000" class="salary-input" />
     </div>
   </div>
 </template>

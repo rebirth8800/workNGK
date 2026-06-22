@@ -1,7 +1,7 @@
 <script setup>
 import { computed, defineAsyncComponent } from 'vue'
 const props = defineProps({
-  svg: String,
+  svg: Object,
   type: {
     type: String,
     default: 'grey',
@@ -9,28 +9,11 @@ const props = defineProps({
   },
 })
 
-const Icon = computed(() => {
-  if (!props.svg) return null
-  const s = defineAsyncComponent(() => import(`@/shared/svg/${props.svg}.svg`))
-  console.log(s)
-  return s;
-})
-
-// const Icon = computed(() => {
-//   // Используем import.meta.glob для Vite
-//   const icons = import.meta.glob(`@/shared/svg/*.svg`, {
-//     eager: true,
-//     import: 'default'
-//   })
-//   // Ищем иконку по имени
-//   const path = `/src/shared/svg/${props.svg}.svg`
-//   return icons[path]
-// })
 </script>
 
 <template>
   <div :class="['icon-box', `icon-box-${type}`]">
-    <component v-if="Icon" :is="Icon" class="icon-box-svg" />
+    <component v-if="svg" :is="svg" class="icon-box-svg" />
   </div>
 </template>
 
