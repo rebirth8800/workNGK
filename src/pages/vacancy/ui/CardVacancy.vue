@@ -4,6 +4,7 @@ import { Tag } from '@/shared/ui/tag'
 import { IconBox } from '@/shared/ui/iconBox'
 import { Button } from '@/shared/ui/button'
 import IconAdress from '@/shared/svg/adress-tag.svg'
+import IconTime from "@/shared/svg/time-forward.svg";
 import { iconConfig } from '@/shared/config'
 
 defineProps({
@@ -25,22 +26,21 @@ defineProps({
       <div class="content">
         <div class="title">
           <div class="title-name">
-            <Typography type="semibold-32-black">{{ item.title }}</Typography>
-            <Typography type="regular-20-black">{{ item.company_name }}</Typography>
+            <Typography class="title-text" type="semibold-32-black">{{ item.title }}</Typography>
+            <Typography class="company-text" type="regular-20-black">{{ item.company_name }}</Typography>
           </div>
           <div class="title-squre">
             <IconBox type="grey" :svg="iconConfig[item.svg]" />
+
           </div>
         </div>
       </div>
 
       <Tag :svg="IconAdress"> {{ item.city }}</Tag>
+      <Tag :svg="IconTime"> {{ item.employment[0] }}</Tag>
 
-      <div class="opisanie">
-        <Typography type="regular-20-almost-black"
-          >Младший воспитатель помогает старшему в воспитание детей</Typography
-        >
-      </div>
+
+
     </div>
     <span class="line"></span>
     <div class="footer-content">
@@ -125,5 +125,23 @@ defineProps({
   padding: 0;
   margin: 0;
   margin-left: auto;
+}
+
+.title-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.company-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 </style>

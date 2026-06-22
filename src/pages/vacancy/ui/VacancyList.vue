@@ -3,6 +3,8 @@ import { Typography } from '@/shared/ui/typography'
 import CardVacancy from '@/pages/vacancy/ui/CardVacancy.vue'
 import ArrowLeft from '@/shared/svg/arrow-left.svg'
 import ArrowRight from '@/shared/svg/arrow-right.svg'
+import SearchVacancy from "@/pages/vacancy/ui/SearchVacancy.vue";
+import SortVacancy from "@/pages/vacancy/ui/SortVacancy.vue";
 
 defineProps({
   data: Array,
@@ -15,10 +17,16 @@ defineProps({
 
 <template>
   <div class="block">
-    <div class="info">
-      <Typography type="light-24-black">Найдено:</Typography>
-      <Typography type="medium-24-black">{{len}} вакансий</Typography>
+    <div class="header-info">
+      <div class="info">
+        <Typography type="light-24-black">Найдено:</Typography>
+        <Typography type="medium-24-black">{{len}} вакансий</Typography>
+      </div>
+
+      <SortVacancy class="sort"></SortVacancy>
+
     </div>
+
 
     <div class="card_list">
       <CardVacancy v-for="item in data" :key="item.id" :item="item"/>
@@ -93,5 +101,13 @@ defineProps({
   display: flex;
   gap: 5px;
   margin-left: 0;
+}
+.header-info{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.sort{
+  margin-right: 0;
 }
 </style>

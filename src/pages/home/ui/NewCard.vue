@@ -4,6 +4,9 @@ import { Button } from '@/shared/ui/button'
 import Tag from '@/shared/ui/tag/Tag.vue'
 import IconBox from '@/shared/ui/iconBox/IconBox.vue'
 import { iconConfig } from '@/shared/config'
+import IconAdress from "@/shared/svg/adress-tag.svg";
+import IconTime from "@/shared/svg/time-forward.svg";
+
 
 defineProps({
   item: Object,
@@ -22,12 +25,12 @@ defineProps({
       <IconBox type="grey" :svg="iconConfig[item.svg]" :key="item.id"/>
     </div>
     <div class="tags_wrapper">
-      <Tag type="grey">{{ item.city }}</Tag>
-      <Tag type="grey">{{ item.employment }}</Tag>
+      <Tag type="grey" :svg="IconAdress">{{ item.city }}</Tag>
+      <Tag type="grey" :svg="IconTime">{{ item.employment }}</Tag>
     </div>
     <div class="line"></div>
     <div class="flex_bottom">
-      <Typography type="semibold-32-black">от {{ item.salary_min }}$</Typography>
+      <Typography type="semibold-32-black">от {{ item.salary_min }} ₽</Typography>
       <Button type="text-red" class="b">Подробнее</Button>
     </div>
   </div>
