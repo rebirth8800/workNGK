@@ -1,29 +1,48 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
-import IconArrowDown from "@/shared/svg/arrow-down.svg";
+import IconArrowDown from '@/shared/svg/arrow-down.svg'
+import { useQuery, useQueryClient } from '@tanstack/vue-query'
+import { getSorts } from '@/pages/vacancy/api/get-sorts.ts'
 
+const selectedSort = defineModel({
+  type: String,
+})
+defineProps({
+  updateSort: Function,
+})
+const queryClient = useQueryClient()
+
+const { isPending, isError, data, error } = useQuery({
+  queryKey: ['sorts'],
+  queryFn: async () => {
+    const response = await getSorts()
+    return response.data
+  },
+})
 </script>
 
 <template>
-  <div class="block">
+  <div class="select">
     <Typography type="light-24-black">Сортировка:</Typography>
 
     <div class="sort-selector">
-      <span class="sort-label">По дате (сначала новые)</span>
-      <IconArrowDown></IconArrowDown>
+      <select class="sort-label" v-model="selectedSort" @change="updateSort()">
+        <option selected value="">По умолчанию</option>
+        <option v-for="option of data" :value="option.value">{{ option.name }}</option>
+      </select>
     </div>
   </div>
 </template>
 
 <style scoped>
-.block {
+.select {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
 }
 
-.sort-selector {
+select {
   display: flex;
   align-items: center;
   gap: 12px;

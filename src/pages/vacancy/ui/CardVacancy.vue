@@ -7,9 +7,10 @@ import IconAdress from '@/shared/svg/adress-tag.svg'
 import IconTime from "@/shared/svg/time-forward.svg";
 import { iconConfig } from '@/shared/config'
 
-defineProps({
+const props = defineProps({
   item: Object,
 })
+console.log(props.item)
 </script>
 
 <template>
@@ -18,9 +19,7 @@ defineProps({
       <Tag type="grey">{{ item.schedule[0] }}</Tag>
       <Tag type="grey" v-if="item.schedule[1]">{{ item.schedule[1] }}</Tag>
       <Tag type="grey">{{ item.work_format[0] }}</Tag>
-      <Tag type="grey"
-        >[+{{ item.schedule.length + item.employment.length + item.work_format.length - 3 }}]</Tag
-      >
+      <Tag type="grey" v-if="(item.schedule.length + item.employment.length + item.work_format.length - 3) >0 ">[+{{ item.schedule.length + item.employment.length + item.work_format.length - 3 }}]</Tag>
     </div>
     <div class="content">
       <div class="content">
@@ -53,6 +52,7 @@ defineProps({
 <style scoped>
 .card {
   max-width: 585px;
+  min-width: 550px;
   max-height: 437px;
   padding: 35px 20px;
   border: 1px solid var(--color-grey-light);

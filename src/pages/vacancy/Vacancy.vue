@@ -3,12 +3,12 @@ import { useQueryClient, useInfiniteQuery, useQuery, useMutation } from '@tansta
 import { getVacancy } from '@/pages/vacancy/api/get-vacancy'
 import VacancyListLayout from '@/app/layout/VacancyListLayout.vue'
 import Filters from '@/pages/vacancy/ui/Filters.vue'
-import { reactive } from 'vue'
-import { Button } from '@/shared/ui/button'
+import { reactive, ref } from 'vue'
 import VacancyList from './ui/VacancyList.vue'
-import { Typography } from '@/shared/ui/typography'
 
-const selectedFilters = reactive({
+
+
+const selectedParams = reactive({
   page: 1,
   per_page: 6,
   category: '',
@@ -17,47 +17,53 @@ const selectedFilters = reactive({
   work_format: [],
   salary_min: '',
   salary_max: '',
+  sort: '',
 })
 const getParams = () => {
   return {
-    page: selectedFilters.page,
-    per_page: selectedFilters.per_page,
-    category: selectedFilters.category,
-    schedule: selectedFilters.schedule.join(','),
-    employment: selectedFilters.employment.join(','),
-    work_format: selectedFilters.work_format.join(','),
-    salary_min: +selectedFilters.salary_min,
-    salary_max: +selectedFilters.salary_max,
+    page: selectedParams.page,
+    per_page: selectedParams.per_page,
+    category: selectedParams.category,
+    schedule: selectedParams.schedule.join(','),
+    employment: selectedParams.employment.join(','),
+    work_format: selectedParams.work_format.join(','),
+    salary_min: +selectedParams.salary_min,
+    salary_max: +selectedParams.salary_max,
+    sort: selectedParams.sort,
   }
 }
 let params = getParams()
 
 const updateParam = () => {
+  selectedParams.sort = ''
+  selectedParams.page = 1
+  params = getParams()
+  refetch()
+}
+
+const updateSort = () => {
   params = getParams()
   refetch()
 }
 
 const deleteParam = () => {
-  selectedFilters.page = 1
-  selectedFilters.per_page = 6
-  selectedFilters.category = ''
-  selectedFilters.schedule = []
-  selectedFilters.employment = []
-  selectedFilters.work_format = []
-  selectedFilters.salary_min = ''
-  selectedFilters.salary_max = ''
+  selectedParams.page = 1
+  selectedParams.per_page = 6
+  selectedParams.category = ''
+  selectedParams.schedule = []
+  selectedParams.employment = []
+  selectedParams.work_format = []
+  selectedParams.salary_min = ''
+  selectedParams.salary_max = ''
   params = getParams()
   refetch()
 }
 
-const pagePlus = () => {
-  selectedFilters.page += 1
-  updateParam()
+const pageChange = () => {
+  params = getParams()
+  refetch()
 }
-const pageMinus = () => {
-  selectedFilters.page -= 1
-  updateParam()
-}
+
 
 const queryClient = useQueryClient()
 
@@ -68,24 +74,22 @@ const { isPending, isError, data, error, refetch } = useQuery({
     return response.data
   },
 })
+console.log(data)
 </script>
 
 <template>
   <VacancyListLayout name="Вакансии">
     <div class="container">
-      <!--      <Button @click="console.log(selectedFilters)">244</Button>-->
-      <Filters v-model="selectedFilters" :updateParam="updateParam" :deleteParam="deleteParam" />
-      <!--    <Typogra.Header level={2}></Typogra.Header>-->
-      <!--    <Typo></Typo>-->
-      <!--    <Skeleton v-if="isPending" />-->
-      <!--    <Error v-if="isError" :error="error" />-->
+      <Filters v-model="selectedParams" :updateParam="updateParam" :deleteParam="deleteParam" />
       <VacancyList
         v-if="data"
+        v-model:sort="selectedParams.sort"
+        v-model:curent="selectedParams.page"
+        :updateSort="updateSort"
         :data="data.items"
         :len="data.len"
-        :pagePlus="pagePlus"
-        :pageMinus="pageMinus"
-        :page="selectedFilters.page"
+        :pageChange="pageChange"
+        :per_page="selectedParams.per_page"
       />
     </div>
   </VacancyListLayout>
@@ -95,5 +99,6 @@ const { isPending, isError, data, error, refetch } = useQuery({
 .container {
   display: flex;
   gap: 1.5rem;
+  padding-top: 2.75rem;
 }
 </style>

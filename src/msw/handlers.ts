@@ -23,6 +23,7 @@ export const handlers = [
         url.searchParams.get('employment'),
         url.searchParams.get('salary_min'),
         url.searchParams.get('salary_max'),
+        url.searchParams.get('sort'),
       ),
     )
   }),

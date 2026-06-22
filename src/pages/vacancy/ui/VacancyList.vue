@@ -3,15 +3,22 @@ import { Typography } from '@/shared/ui/typography'
 import CardVacancy from '@/pages/vacancy/ui/CardVacancy.vue'
 import ArrowLeft from '@/shared/svg/arrow-left.svg'
 import ArrowRight from '@/shared/svg/arrow-right.svg'
-import SearchVacancy from "@/pages/vacancy/ui/SearchVacancy.vue";
 import SortVacancy from "@/pages/vacancy/ui/SortVacancy.vue";
+
+
+const selectedSort = defineModel('sort',{
+  type: String,
+})
+const selectedPage = defineModel('curent',{
+  type: Number,
+})
 
 defineProps({
   data: Array,
   len: Number,
-  pagePlus: Function,
-  pageMinus: Function,
-  page: Number,
+  pageChange: Function,
+  updateSort: Function,
+  per_page: Number,
 })
 </script>
 
@@ -23,7 +30,7 @@ defineProps({
         <Typography type="medium-24-black">{{len}} вакансий</Typography>
       </div>
 
-      <SortVacancy class="sort"></SortVacancy>
+      <SortVacancy class="sort" v-model="selectedSort" :updateSort="updateSort"/>
 
     </div>
 
@@ -32,21 +39,77 @@ defineProps({
       <CardVacancy v-for="item in data" :key="item.id" :item="item"/>
     </div>
 
-    <div class="controls-between">
-      <button class="arrow-btn" :disabled="page<=1" @click="pageMinus()">
-        <ArrowRight />
-      </button>
+    <a-pagination
+      v-model:current="selectedPage"
+      :total="len"
+      :page-size="per_page"
+      @change="pageChange()"
+      show-less-items
+      :show-quick-jumper="false"
+    />
 
-      <Typography type="regular-20-black">{{page}} /{{Math.ceil(len/6)}}</Typography>
 
-      <button class="arrow-btn" @click="pagePlus()" :disabled="page>=Math.ceil(len/6)">
-        <ArrowLeft />
-      </button>
-    </div>
   </div>
 </template>
 
 <style scoped>
+
+
+
+
+/* Контейнер пагинации */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  margin: 0 auto;
+  border-top: 1px solid var(--color-grey-light);
+}
+
+/* Кнопки пагинации (цифры) */
+.ant-pagination-item {
+  min-width: 32px;
+  height: 32px;
+  line-height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--color-grey-light);
+  background: var(--color-background-grey);
+  font-size: 14px;
+  color: var(--color-black);
+  transition: all 0.3s ease;
+}
+
+/* Активная страница */
+:deep(.ant-pagination-item-active) {
+  background: var(--color-primary-red);
+  border-color: var(--color-primary-red);
+}
+:deep(.ant-pagination-item-active a) {
+  color: white;
+  font-weight: 600;
+}
+
+/* Ховер на кнопках */
+:deep(.ant-pagination-item:hover) {
+  border-color: var(--color-primary-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Кнопки "Назад" и "Вперед" */
+:deep(.ant-pagination-prev),
+:deep(.ant-pagination-next) {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-grey-light);
+  background: var(--color-background-grey);
+  transition: all 0.3s ease;
+}
+
+
+
+
 .block{
   display: flex;
   flex-direction: column;
@@ -55,7 +118,7 @@ defineProps({
 .card_list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .controls-between {
@@ -105,6 +168,7 @@ defineProps({
 .header-info{
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 }
 .sort{

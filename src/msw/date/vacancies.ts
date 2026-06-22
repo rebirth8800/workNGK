@@ -3,13 +3,14 @@ import _ from 'lodash'
 import { filters } from './paramsRefines.ts'
 
 const zapoln = ()=>{
-  return _.times(50, function(n){
+  return _.times(67, function(n){
+    const category = _.sample(filters().category)
     return {
       id: n+1,
       title: fakerRU.person.jobTitle(),
       company_name: fakerRU.company.name(),
       city: fakerRU.location.city(),
-      salary: fakerRU.number.int({ min: 50000, max: 300000 }),
+      salary: fakerRU.number.int({ min: 15000, max: 300000 }),
       responsibilities: _.times(_.random(1,4), function(){
         return fakerRU.lorem.sentence()
       }),
@@ -22,18 +23,21 @@ const zapoln = ()=>{
       contact_email: fakerRU.internet.email(),
       contact_phone: '+7'+fakerRU.phone.number('(###) ###-##-##'),
       contact_person: fakerRU.person.fullName(),
-      category: _.sample(filters().category).name,
+      category: category.name,
       work_format: _.map(_.sampleSize(filters().work_format, _.random(1,4)), (elem)=> elem.name),
       employment: _.map(_.sampleSize(filters().employment, _.random(1,4)), (elem)=> elem.name),
       schedule: _.map(_.sampleSize(filters().schedule, _.random(1,4)), (elem)=> elem.name),
+      svg: category.svg,
+      date: fakerRU.date.past({ years: 1 }).toISOString().split('T')[0],
     }
   })
 }
 
 const vacancies = zapoln()
 
-export default function(page, per_page, category, schedule, work_format, employment, salary_min, salary_max) {
+export default function(page, per_page, category, schedule, work_format, employment, salary_min, salary_max, sort) {
   let response = []
+  console.log(sort)
   schedule = schedule.split(',')
   const schedule_list = schedule.map(elem => filters().schedule.find(item => item.value === elem)?.name)
 
@@ -59,7 +63,6 @@ export default function(page, per_page, category, schedule, work_format, employm
 
       continue
     }
-    console.log(salary_min)
     if (+salary_min !=0 && item.salary < +salary_min) {
       continue
     }
@@ -69,6 +72,18 @@ export default function(page, per_page, category, schedule, work_format, employm
 
     response.push(item)
 
+
+  }
+  if (sort !== ''){
+    if (sort === 'salary_asc'){
+      response.sort((a, b) => a.salary - b.salary)
+    } else if (sort === 'salary_desc'){
+      response.sort((a, b) => b.salary - a.salary)
+    } else if (sort === 'date_asc'){
+      response.sort((a, b) => new Date(a.date) - new Date(b.date))
+    } else if (sort === 'date_desc'){
+      response.sort((a, b) => new Date(b.date) - new Date(a.date))
+    }
 
   }
   return {

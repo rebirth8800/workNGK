@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
 import { ref } from 'vue'
+import Icon from 'it.svg'
 
 defineProps({
   item: Object,
@@ -19,7 +20,10 @@ const flag = ref(false)
     <Typography type="semibold-24-black">Категория</Typography>
 
     <div class="dropdown-wrapper">
-      <button @click="flag = !flag" class="toggle-btn">Все категории</button>
+      <button @click="flag = !flag" class="toggle-btn">
+        <p>Все категории</p>
+        <p> > </p>
+      </button>
 
       <div v-if="flag" class="dropdown-list">
         <Typography
@@ -59,8 +63,11 @@ const flag = ref(false)
   font-weight: 500;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 10px 16px;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5rem;
   border-radius: 6px;
   width: 100%;
   height: 60px;

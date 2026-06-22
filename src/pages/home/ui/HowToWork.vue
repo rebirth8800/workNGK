@@ -16,7 +16,6 @@ const data = [
     <Typography type="regular-32-almost-black">Три простых шага - и студент уже на работе</Typography>
     <div class="card_list">
       <HowCard v-for="item in data" :number="item.number" :svg="item.svg" :h1="item.h1" :h2="item.h2" :key="item.number" />
-
     </div>
   </div>
 </template>
