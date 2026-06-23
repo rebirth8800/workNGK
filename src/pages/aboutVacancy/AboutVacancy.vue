@@ -7,6 +7,7 @@ import { getVacancy } from '@/pages/aboutVacancy/api/get-vacancy.ts'
 import MainInfo from "@/pages/aboutVacancy/ui/MainInfo.vue";
 import Responsibilities from "@/pages/aboutVacancy/ui/Responsibilities.vue";
 import Contact from "@/pages/aboutVacancy/ui/Contact.vue";
+import InputForm from "@/shared/ui/input/InputForm.vue";
 const route = useRoute()
 
 const queryClient = useQueryClient()
@@ -23,8 +24,15 @@ const { isPending, isError, data, error } = useQuery({
   <VacancyLayout>
     <div class="container">
 <!--      {{data}}-->
+      <InputForm
 
+          label="Имя контактного лица"
+          :required="true"
+          placeholder="Введите имя контактного лица"
+
+      />
       <MainInfo v-if="data" :item="data" />
+
 
       <div v-if="isPending" class="loading">Загрузка...</div>
 
