@@ -28,6 +28,7 @@ console.log(props.item)
             <Typography class="title-text" type="semibold-32-black">{{ item.title }}</Typography>
             <Typography class="company-text" type="regular-20-black">{{ item.company_name }}</Typography>
           </div>
+
           <div class="title-squre">
             <IconBox type="grey" :svg="iconConfig[item.svg]" />
 
@@ -38,13 +39,14 @@ console.log(props.item)
       <Tag :svg="IconAdress"> {{ item.city }}</Tag>
       <Tag :svg="IconTime"> {{ item.employment[0] }}</Tag>
 
+      <Typography type="regular-16-almost-black">Опубликована: {{item.date}}</Typography>
 
 
     </div>
     <span class="line"></span>
     <div class="footer-content">
       <Typography type="semibold-32-black">от {{ item.salary }} ₽</Typography>
-      <Button type="text-red" class="more-infa">Подробнее</Button>
+      <RouterLink :to="`/vacancies/${item.id}`"><Button type="text-red" class="more-infa" >Подробнее</Button></RouterLink>
     </div>
   </div>
 </template>

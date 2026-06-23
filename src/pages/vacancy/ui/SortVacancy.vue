@@ -46,7 +46,7 @@ select {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 20px;
+  padding: 12px 40px 12px 20px;
   background-color: var(--color-background-grey);
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
@@ -58,6 +58,7 @@ select {
   font-size: 1.25rem;
   font-weight: 400;
   color: var(--color-black);
+
 }
 
 .sort-arrow {
