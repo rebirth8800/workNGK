@@ -24,13 +24,7 @@ const { isPending, isError, data, error } = useQuery({
   <VacancyLayout>
     <div class="container">
 <!--      {{data}}-->
-      <InputForm
 
-          label="Имя контактного лица"
-          :required="true"
-          placeholder="Введите имя контактного лица"
-
-      />
       <MainInfo v-if="data" :item="data" />
 
 
@@ -39,7 +33,13 @@ const { isPending, isError, data, error } = useQuery({
       <div v-if="isError" class="error">Ошибка: {{ error.message }}</div>
 
       <Brief v-if="data" :item="data" />
+<!--      <InputForm-->
 
+<!--          label="Имя контактного лица"-->
+<!--          :required="true"-->
+<!--          placeholder="Введите имя контактного лица"-->
+
+<!--      />-->
       <Responsibilities v-if="data" :item="data" />
       <div class="main-info">
         <Contact v-if="data" :item="data"  />
