@@ -7,7 +7,6 @@ import { getVacancy } from '@/pages/aboutVacancy/api/get-vacancy.ts'
 import MainInfo from '@/pages/aboutVacancy/ui/MainInfo.vue'
 import Responsibilities from '@/pages/aboutVacancy/ui/Responsibilities.vue'
 import Contact from '@/pages/aboutVacancy/ui/Contact.vue'
-import { Input } from '@/shared/ui/input'
 const route = useRoute()
 
 const queryClient = useQueryClient()
@@ -22,36 +21,37 @@ const { isPending, isError, data, error } = useQuery({
 </script>
 <template>
   <VacancyLayout>
-    <div class="container">
-      <!--      {{data}}-->
-      <Input
-        label="Имя контактного лица"
-        :required="true"
-        placeholder="Введите имя контактного лица"
-      />
+    <div class="section">
       <MainInfo v-if="data" :item="data" />
-
-      <div v-if="isPending" class="loading">Загрузка...</div>
-
-      <div v-if="isError" class="error">Ошибка: {{ error.message }}</div>
-
-      <Brief v-if="data" :item="data" />
-
-      <Responsibilities v-if="data" :item="data" />
-      <div class="main-info">
-        <Contact v-if="data" :item="data" />
-
-        <Button class="bth">Откликнуться</Button>
+      <div class="container" v-if="isPending"><div  class="loading">Загрузка...</div></div>
+      <div class="container" v-if="isError"><div  class="error">Ошибка: {{ error.message }}</div></div>
+      <div class="background" v-if="data" >
+        <Responsibilities  :item="data" />
       </div>
+      <div class="container">
+        <div class="main-info" v-if="data">
+          <Contact  :item="data" />
+          <Button class="bth">Откликнуться</Button>
+        </div>
+      </div>
+
+
     </div>
   </VacancyLayout>
 </template>
 
 <style scoped>
+
+.background {
+  width: 100%;
+  background-color: var(--color-background-grey);
+  padding: 23px 0;
+}
 .main-info {
   width: 83.25rem;
 }
-.container {
+.section {
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

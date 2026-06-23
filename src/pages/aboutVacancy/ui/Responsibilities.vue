@@ -15,8 +15,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="background">
-    <div class="block">
+    <div class="container">
       <div class="comp">
         <IconAdress />
         <Typography type="regular-20-almost-black">{{ item.city }}</Typography>
@@ -40,17 +39,13 @@ defineProps({
         </Typography>
       </div>
     </div>
-  </div>
+
 </template>
 
 <style scoped>
-.background {
-  width: 100%;
-  background: var(--color-background-grey);
-  padding: 23px 0;
-}
 
-.block {
+
+.container {
   display: flex;
   flex-wrap: wrap;
   gap: 35px;

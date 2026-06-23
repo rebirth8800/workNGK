@@ -10,8 +10,12 @@ import { iconConfig } from '@/shared/config'
 defineProps({
   item: Object,
 })
-</script>
 
+
+const date = (date)=>{
+  return date.split('-').reverse().join('.')
+}
+</script>
 <template>
   <div class="card">
     <div class="tags">
@@ -38,7 +42,7 @@ defineProps({
       <Tag :svg="IconAdress"> {{ item.city }}</Tag>
       <Tag :svg="IconTime"> {{ item.employment[0] }}</Tag>
 
-      <Typography type="regular-16-almost-black">Опубликована: {{item.date}}</Typography>
+      <Typography type="regular-16-almost-black">Опубликована: {{date(item.date)}}</Typography>
 
 
     </div>

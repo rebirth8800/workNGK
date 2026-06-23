@@ -16,6 +16,7 @@ const app = createApp(App)
 
 app.use(router).use(VueQueryPlugin).use(Antd)
 
+
 prepareApp().then(() => {
   app.mount('#app')
 })

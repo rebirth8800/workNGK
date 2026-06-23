@@ -6,7 +6,7 @@ import Student from '@/pages/auth/ui/Student.vue'
 import EmployerLogin from '@/pages/auth/ui/EmployerLogin.vue'
 import EmployerRegist from '@/pages/auth/ui/EmployerRegist.vue'
 
-const isStudent = ref(true)
+const isStudent = ref(false)
 
 const isLogin = ref(true)
 
@@ -17,7 +17,7 @@ const isLogin = ref(true)
     <div class="container">
         <Switcher v-model:student="isStudent" v-model:login="isLogin" />
         <Student v-if="isStudent" />
-        <EmployerLogin v-if="!isStudent && isLogin" />
+        <EmployerLogin v-if="!isStudent && isLogin" v-model="isLogin" />
         <EmployerRegist v-else/>
     </div>
   </VacancyLayout>
@@ -28,6 +28,7 @@ const isLogin = ref(true)
   width: 800px;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
+  padding: 8.5rem 0;
 }
 </style>

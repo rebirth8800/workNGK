@@ -37,15 +37,15 @@ defineProps({
       <div class="data">
         <div class="data-item">
           <IconUser/>
-          <Typography class="medium-24-black">{{ item.contact_person }}</Typography>
+          <Typography type="medium-24-black">{{ item.contact_person }}</Typography>
         </div>
         <div class="data-item">
           <IconMail/>
-          <Typography class="medium-24-black">{{ item.contact_email }}</Typography>
+          <Typography type="medium-24-black">{{ item.contact_email }}</Typography>
         </div>
         <div class="data-item">
           <IconPhone/>
-          <Typography class="medium-24-black">{{ item.contact_phone }}</Typography>
+          <Typography type="medium-24-black">{{ item.contact_phone }}</Typography>
         </div>
       </div>
     </div>

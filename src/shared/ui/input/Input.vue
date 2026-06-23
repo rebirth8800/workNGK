@@ -24,29 +24,26 @@ defineProps({
     type: String,
     default: ''
   },
-  modelValue: {
-    type: [String, Number],
-    default: ''
-  },
+})
+const model = defineModel({
+  type: String,
 })
 
-defineEmits(['update:modelValue'])
 </script>
 
 <template>
   <div class="input-wrapper">
     <div class="label-wrapper">
-      <Typography v-if="label" type="medium-20-black" class="label-text">{{ label }}</Typography>
+      <Typography v-if="label"  class="label-text">{{ label }}</Typography>
       <Typography v-if="required" type="medium-16-primary-red" class="required-star">*</Typography>
     </div>
 
     <input
         :type="type"
-        :value="modelValue"
+        v-model="model"
         :placeholder="placeholder"
         class="input"
         :class="{ 'input-error': error }"
-        @input="$emit('update:modelValue', $event.target.value)"
     />
 
     <Typography
