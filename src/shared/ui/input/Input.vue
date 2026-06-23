@@ -1,24 +1,32 @@
 <script setup lang="ts">
+import { Typography } from "@/shared/ui/typography";
+
 defineProps({
+  type: {
+    type: String,
+    default: 'text',
+    validator: (value) =>
+        ['text', 'password', 'tel', 'email', 'date', 'number'].includes(value),
+  },
   label: {
     type: String,
-    required: true,
+    default: ''
   },
   required: {
     type: Boolean,
-    default: false,
+    default: false
   },
   placeholder: {
     type: String,
-    default: '',
+    default: ''
   },
   error: {
     type: String,
-    default: '',
+    default: ''
   },
   modelValue: {
-    type: String,
-    default: '',
+    type: [String, Number],
+    default: ''
   },
 })
 
@@ -28,19 +36,26 @@ defineEmits(['update:modelValue'])
 <template>
   <div class="input-wrapper">
     <div class="label-wrapper">
-      <label class="label">{{ label }}</label>
-      <span v-if="required" class="required-star">*</span>
+      <Typography v-if="label" type="medium-20-black" class="label-text">{{ label }}</Typography>
+      <Typography v-if="required" type="medium-16-primary-red" class="required-star">*</Typography>
     </div>
 
     <input
+        :type="type"
         :value="modelValue"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         :placeholder="placeholder"
         class="input"
         :class="{ 'input-error': error }"
+        @input="$emit('update:modelValue', $event.target.value)"
     />
 
-    <span v-if="error" class="error-text">{{ error }}</span>
+    <Typography
+        v-if="error"
+        type="medium-16-primary-red"
+        class="error-text"
+    >
+      {{ error }}
+    </Typography>
   </div>
 </template>
 
@@ -53,24 +68,21 @@ defineEmits(['update:modelValue'])
 }
 
 .label-wrapper {
-  margin-left: 0;
   display: flex;
   align-items: center;
   gap: 4px;
+  justify-content: flex-start;
+  width: 100%;
 }
 
-.label {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--color-black);
-  line-height: 1.5;
+.label-text {
+  text-align: left !important;
+  width: auto;
 }
 
 .required-star {
-  color: var(--color-primary-red);
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.5;
+  text-align: left !important;
+  flex-shrink: 0;
 }
 
 .input {
@@ -78,25 +90,35 @@ defineEmits(['update:modelValue'])
   padding: 12px 16px;
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--color-black);
   background: var(--color-white);
   transition: border-color 0.2s ease;
   box-sizing: border-box;
   outline: none;
+  font-size: 1rem;
+  color: var(--color-black);
 }
 
 .input::placeholder {
-  color: var(--color-almost-black);
+  color: var(--color-grey);
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: 1;
 }
 
 .input:focus {
   border-color: var(--color-primary-red);
 }
 
+.input:focus::placeholder {
+  opacity: 0.5;
+}
+
 .input-error {
   border-color: var(--color-primary-red);
+}
+
+.input-error::placeholder {
+  color: var(--color-primary-red);
 }
 
 .input-error:focus {
@@ -104,9 +126,7 @@ defineEmits(['update:modelValue'])
 }
 
 .error-text {
-  color: var(--color-primary-red);
-  font-size: 1rem;
-  font-weight: 500;
   margin-top: 4px;
+  text-align: left !important;
 }
 </style>
