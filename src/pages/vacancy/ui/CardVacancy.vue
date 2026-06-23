@@ -7,10 +7,9 @@ import IconAdress from '@/shared/svg/adress-tag.svg'
 import IconTime from "@/shared/svg/time-forward.svg";
 import { iconConfig } from '@/shared/config'
 
-const props = defineProps({
+defineProps({
   item: Object,
 })
-console.log(props.item)
 </script>
 
 <template>
@@ -52,6 +51,9 @@ console.log(props.item)
 </template>
 
 <style scoped>
+a{
+  margin-right: 0;
+}
 .card {
   max-width: 585px;
   min-width: 550px;

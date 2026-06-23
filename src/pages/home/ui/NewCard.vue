@@ -26,12 +26,12 @@ defineProps({
     </div>
     <div class="tags_wrapper">
       <Tag type="grey" :svg="IconAdress">{{ item.city }}</Tag>
-      <Tag type="grey" :svg="IconTime">{{ item.employment }}</Tag>
+      <Tag type="grey" :svg="IconTime">{{ item.employment[0] }}</Tag>
     </div>
     <div class="line"></div>
     <div class="flex_bottom">
-      <Typography type="semibold-32-black">от {{ item.salary_min }} ₽</Typography>
-      <Button type="text-red" class="b">Подробнее</Button>
+      <Typography type="semibold-32-black">от {{ item.salary }} ₽</Typography>
+      <RouterLink :to="`/vacancies/${item.id}`"><Button type="text-red" class="b">Подробнее</Button></RouterLink>
     </div>
   </div>
 </template>
@@ -50,6 +50,9 @@ defineProps({
   border: 2px solid var(--color-grey-light);
   border-radius: 10px;
   box-sizing: border-box;
+}
+a{
+  margin-right: 0;
 }
 .card-title {
   display: -webkit-box;

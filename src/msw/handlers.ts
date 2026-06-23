@@ -1,9 +1,8 @@
 import { http, HttpResponse } from 'msw'
-import {getVacancy, getVacancies} from '@/msw/date/vacancies.ts'
+import {getVacancy, getVacancies, getNewVacancies} from '@/msw/date/vacancies.ts'
 import {filters, sorts} from '@/msw/date/paramsRefines'
 import profileStudent from '@/msw/date/profileStudent.ts'
 import profileEmployer from '@/msw/date/profileEmployer.ts'
-import newVacancies from '@/msw/date/newVacancies.ts'
 
 const getUrl = (url: string) => {
   //TODO Проверки слеша в начале
@@ -52,7 +51,7 @@ export const handlers = [
     return HttpResponse.json(profileEmployer(10, false))
   }),
   http.get('https://api.ngk-rabota.ru/v1/vacancies/new', () => {
-    return HttpResponse.json(newVacancies())
+    return HttpResponse.json(getNewVacancies())
   }),
   http.get('https://api.ngk-rabota.ru/v1/vacancies/:id', ({ params }) => {
     const { id } = params

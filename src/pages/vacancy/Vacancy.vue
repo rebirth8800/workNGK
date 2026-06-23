@@ -74,7 +74,6 @@ const { isPending, isError, data, error, refetch } = useQuery({
     return response.data
   },
 })
-console.log(data)
 </script>
 
 <template>

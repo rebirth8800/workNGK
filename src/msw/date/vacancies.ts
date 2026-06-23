@@ -34,6 +34,7 @@ const zapoln = ()=>{
 }
 
 const vacancies = zapoln()
+
 export const getVacancy = (id) => {
   for (let item of vacancies) {
     if(item.id == id) return item
@@ -42,7 +43,6 @@ export const getVacancy = (id) => {
 
 export const getVacancies = (page, per_page, category, schedule, work_format, employment, salary_min, salary_max, sort) => {
   let response = []
-  console.log(sort)
   schedule = schedule.split(',')
   const schedule_list = schedule.map(elem => filters().schedule.find(item => item.value === elem)?.name)
 
@@ -96,5 +96,11 @@ export const getVacancies = (page, per_page, category, schedule, work_format, em
     items: response.slice(+page*+per_page-+per_page, +per_page*+page),
   }
 
+
+}
+
+export const getNewVacancies = ()=>{
+  const response = vacancies.toSorted((a, b) => new Date(b.date) - new Date(a.date))
+  return response.slice(0, 3)
 
 }

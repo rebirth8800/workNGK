@@ -4,7 +4,7 @@ import { Button } from '@/shared/ui/button'
 
 <template>
   <div class="main">
-    <Button >Войти</Button>
+    <RouterLink to="/auth"><Button >Войти</Button></RouterLink>
   </div>
 
 </template>

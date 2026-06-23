@@ -4,10 +4,10 @@ import { Button } from '@/shared/ui/button'
 import { useRoute } from 'vue-router'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { getVacancy } from '@/pages/aboutVacancy/api/get-vacancy.ts'
-import MainInfo from "@/pages/aboutVacancy/ui/MainInfo.vue";
-import Responsibilities from "@/pages/aboutVacancy/ui/Responsibilities.vue";
-import Contact from "@/pages/aboutVacancy/ui/Contact.vue";
-import InputForm from "@/shared/ui/input/InputForm.vue";
+import MainInfo from '@/pages/aboutVacancy/ui/MainInfo.vue'
+import Responsibilities from '@/pages/aboutVacancy/ui/Responsibilities.vue'
+import Contact from '@/pages/aboutVacancy/ui/Contact.vue'
+import { Input } from '@/shared/ui/input'
 const route = useRoute()
 
 const queryClient = useQueryClient()
@@ -23,26 +23,23 @@ const { isPending, isError, data, error } = useQuery({
 <template>
   <VacancyLayout>
     <div class="container">
-<!--      {{data}}-->
-
+      <!--      {{data}}-->
+      <Input
+        label="Имя контактного лица"
+        :required="true"
+        placeholder="Введите имя контактного лица"
+      />
       <MainInfo v-if="data" :item="data" />
-
 
       <div v-if="isPending" class="loading">Загрузка...</div>
 
       <div v-if="isError" class="error">Ошибка: {{ error.message }}</div>
 
       <Brief v-if="data" :item="data" />
-<!--      <InputForm-->
 
-<!--          label="Имя контактного лица"-->
-<!--          :required="true"-->
-<!--          placeholder="Введите имя контактного лица"-->
-
-<!--      />-->
       <Responsibilities v-if="data" :item="data" />
       <div class="main-info">
-        <Contact v-if="data" :item="data"  />
+        <Contact v-if="data" :item="data" />
 
         <Button class="bth">Откликнуться</Button>
       </div>
@@ -60,7 +57,7 @@ const { isPending, isError, data, error } = useQuery({
   gap: 1.5rem;
   padding-top: 2.75rem;
 }
-.bth{
+.bth {
   margin-left: 0;
 }
 </style>
