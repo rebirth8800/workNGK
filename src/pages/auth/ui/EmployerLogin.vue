@@ -3,6 +3,10 @@ import { Typography } from '@/shared/ui/typography'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { reactive } from 'vue'
+import BlockInfa from "@/shared/ui/blockInfa/BlockInfa.vue";
+import IconInfo from '@/shared/svg/info.svg'
+import IconTime from '@/shared/svg/time-forward.svg'
+
 
 const isLogin = defineModel({
   type: Boolean
@@ -23,8 +27,9 @@ const form = reactive({
     <div class="title">
       <Typography type="semibold-32-black">Вход для работодателя</Typography>
       <Typography type="regular-20-almost-black">123</Typography>
-    </div>
+      <BlockInfa :svg="IconInfo" type="red">Для входа используется единая система авторизации Moodle. Отдельный пароль создавать не нужно</BlockInfa>
 
+    </div>
     <a-form
         :model="form"
         name="login"
