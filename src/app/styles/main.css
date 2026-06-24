@@ -4,6 +4,16 @@
     font-family: 'Inter', sans-serif;
     margin: 0 auto;
 }
+.custom-message-large .anticon {
+    font-size: 20px /* Размер иконки */
+}
+.ant-message-notice-content {
+    padding: 20px 30px; /* Увеличивает отступы внутри сообщения */
+    font-size: 18px;
+    border-radius: 12px; /* Опционально: скругление */
+    display: flex;
+    align-items: center;
+}
 a{
     text-decoration: none;
     /*border: none;*/

@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './app/App.vue'
 import Antd from 'ant-design-vue';
 import { VueQueryPlugin } from '@tanstack/vue-query'
@@ -11,10 +12,10 @@ async function prepareApp(){
     return worker.start()
 
 }
-
+const pinia = createPinia()
 const app = createApp(App)
 
-app.use(router).use(VueQueryPlugin).use(Antd)
+app.use(router).use(VueQueryPlugin).use(Antd).use(pinia)
 
 
 prepareApp().then(() => {

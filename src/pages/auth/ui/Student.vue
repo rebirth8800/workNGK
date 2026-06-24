@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
+import BlockInfa from "@/shared/ui/blockInfa/BlockInfa.vue";
+import IconInfo from '@/shared/svg/info.svg'
+import IconTime from '@/shared/svg/time-forward.svg'
 </script>
 
 <template>
@@ -9,11 +12,9 @@ import { Button } from '@/shared/ui/button'
       <Typography type="semibold-32-black">Вход для студентов</Typography>
       <Typography type="regular-20-almost-black">Используйте учётные данные от системы Moodle</Typography>
     </div>
-    <div class="info">
-
-    </div>
+    <BlockInfa :svg="IconInfo" type="red">Для входа используется единая система авторизации Moodle. Отдельный пароль создавать не нужно</BlockInfa>
     <div class="button_block">
-      <Button>Войти через Moodle</Button>
+      <Button >Войти через Moodle</Button>
       <Typography type="regular-20-almost-black">Будет перенаправление на портал Moodle для авторизации</Typography>
     </div>
 
@@ -38,7 +39,7 @@ import { Button } from '@/shared/ui/button'
   gap: 0.5rem;
 }
 .button_block{
-  margin-left: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

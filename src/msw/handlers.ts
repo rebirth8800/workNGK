@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import {getVacancy, getVacancies, getNewVacancies} from '@/msw/date/vacancies.ts'
 import {filters, sorts} from '@/msw/date/paramsRefines'
-import { RegisterEmployer } from '@/msw/date/auth.ts'
+import { Login, RegisterEmployer } from '@/msw/date/auth.ts'
 
 
 const getUrl = (url: string) => {
@@ -39,9 +39,13 @@ export const handlers = [
     const { id } = params
     return HttpResponse.json(getVacancy(id))
   }),
-  http.post('https://api.ngk-rabota.ru/v1/profile', async ({ request }) => {
+  http.post('https://api.ngk-rabota.ru/v1/profile/registration', async ({ request }) => {
     const { data } = await request.json()
     return HttpResponse.json(RegisterEmployer(data))
+  }),
+  http.post('https://api.ngk-rabota.ru/v1/profile/login', async ({ request }) => {
+    const { data } = await request.json()
+    return Login(data)
   }),
 
   http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', () => {

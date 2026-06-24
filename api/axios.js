@@ -4,6 +4,7 @@ import axios from 'axios'
 const apiClient = axios.create({
     baseURL: 'https://api.ngk-rabota.ru/v1',
     timeout: 10000, // таймаут 10 секунд
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
