@@ -62,7 +62,7 @@ a{
   max-width: 585px;
   min-width: 550px;
   max-height: 437px;
-  padding: 35px 20px;
+  padding: 30px 20px;
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
   display: flex;

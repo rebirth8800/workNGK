@@ -26,7 +26,6 @@ const form = reactive({
   <div class="block">
     <div class="title">
       <Typography type="semibold-32-black">Вход для работодателя</Typography>
-      <Typography type="regular-20-almost-black">123</Typography>
       <BlockInfa :svg="IconInfo" type="red">Для входа используется единая система авторизации Moodle. Отдельный пароль создавать не нужно</BlockInfa>
 
     </div>
@@ -157,6 +156,7 @@ const form = reactive({
   display: block !important;
 }
 
+/* ===== ОБЫЧНЫЙ ИНПУТ ===== */
 :deep(.ant-input) {
   width: 100% !important;
   min-width: 100% !important;
@@ -165,12 +165,13 @@ const form = reactive({
   border-radius: 10px !important;
   background: var(--color-white) !important;
   color: var(--color-black) !important;
-  font-size: 1rem !important;
+  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
   height: auto !important;
   box-sizing: border-box !important;
   display: block !important;
 }
 
+/* ===== ИНПУТ С ПАРОЛЕМ (ОБЁРТКА) ===== */
 :deep(.custom-input-password) {
   width: 100% !important;
   min-width: 100% !important;
@@ -183,13 +184,14 @@ const form = reactive({
   align-items: center !important;
 }
 
+/* ===== ВНУТРЕННИЙ ИНПУТ В ПАРОЛЕ ===== */
 :deep(.custom-input-password .ant-input) {
   width: 100% !important;
   padding: 0 !important;
   border: none !important;
   background: transparent !important;
   color: var(--color-black) !important;
-  font-size: 1rem !important;
+  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
   height: auto !important;
   box-sizing: border-box !important;
   outline: none !important;
@@ -209,23 +211,24 @@ const form = reactive({
   color: var(--color-black) !important;
 }
 
-
+/* ===== ПЛЕЙСХОЛДЕР ===== */
 :deep(.ant-input::placeholder) {
   color: var(--color-grey-light) !important;
-  font-size: 1rem !important;
+  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
 }
 
 :deep(.custom-input-password .ant-input::placeholder) {
   color: var(--color-grey-light) !important;
-  font-size: 1rem !important;
+  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
 }
 
-
+/* ===== ХОВЕР ===== */
 :deep(.ant-input:hover),
 :deep(.custom-input-password:hover) {
   border-color: var(--color-almost-black) !important;
 }
 
+/* ===== ФОКУС ===== */
 :deep(.ant-input:focus),
 :deep(.custom-input-password:focus-within) {
   border-color: var(--color-almost-black) !important;

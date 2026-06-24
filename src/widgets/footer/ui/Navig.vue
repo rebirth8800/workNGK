@@ -6,8 +6,8 @@ import { Typography } from '@/shared/ui/typography'
   <div class="block">
     <Typography type="semibold-32-black">Навигация</Typography>
     <RouterLink to=""><Typography type="regular-20-almost-black">Вакансии</Typography></RouterLink>
-    <RouterLink to=""><Typography type="regular-20-almost-black">Студентам</Typography></RouterLink>
-    <RouterLink to=""><Typography type="regular-20-almost-black">Работодателям</Typography></RouterLink>
+    <RouterLink to=""><Typography type="regular-20-almost-black">Создать вакансию</Typography></RouterLink>
+    <RouterLink to=""><Typography type="regular-20-almost-black">Контакты</Typography></RouterLink>
   </div>
 </template>
 
