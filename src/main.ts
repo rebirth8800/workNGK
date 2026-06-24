@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './app/App.vue'
 import Antd from 'ant-design-vue';
 import { VueQueryPlugin } from '@tanstack/vue-query'
-import router from './router'
+import router from './app/router'
 import 'ant-design-vue/es/pagination/style/index';
 
 

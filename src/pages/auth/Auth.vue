@@ -6,9 +6,12 @@ import Student from '@/pages/auth/ui/Student.vue'
 import EmployerLogin from '@/pages/auth/ui/EmployerLogin.vue'
 import EmployerRegist from '@/pages/auth/ui/EmployerRegist.vue'
 
+
 const isStudent = ref(false)
 
-const isLogin = ref(true)
+const isLogin = ref(false)
+
+
 
 </script>
 
