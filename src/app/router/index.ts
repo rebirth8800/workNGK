@@ -3,6 +3,8 @@ import HomeView from '../../pages/home/HomeView.vue'
 import VacancyList from '@/pages/vacancy/Vacancy.vue'
 import AboutVacancy from '@/pages/aboutVacancy/AboutVacancy.vue'
 import Auth from '@/pages/auth/Auth.vue'
+import CreateVacancy from '@/pages/createVacancy/CreateVacancy.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +27,11 @@ const router = createRouter({
     {
       path: `/auth`,
       name: 'auth',
+      component: Auth,
+    },
+    {
+      path: `/createVacancy`,
+      name: 'createVacancy',
       component: Auth,
     },
   ],
