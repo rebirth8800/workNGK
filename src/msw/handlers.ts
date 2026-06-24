@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw'
 import {getVacancy, getVacancies, getNewVacancies} from '@/msw/date/vacancies.ts'
 import {filters, sorts} from '@/msw/date/paramsRefines'
-import profileStudent from '@/msw/date/profileStudent.ts'
-import profileEmployer from '@/msw/date/profileEmployer.ts'
+import { RegisterEmployer } from '@/msw/date/auth.ts'
+
 
 const getUrl = (url: string) => {
   //TODO Проверки слеша в начале
@@ -32,29 +32,35 @@ export const handlers = [
   http.get('https://api.ngk-rabota.ru/v1/sorts', () => {
     return HttpResponse.json(sorts())
   }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/student/vacancies', () => {
-    return HttpResponse.json(getVacancies(10))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', () => {
-    return HttpResponse.json(getVacancies(10, false))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/student', () => {
-    return HttpResponse.json(profileStudent(1))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/employer', () => {
-    return HttpResponse.json(profileEmployer(1))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/admin/vacancies', () => {
-    return HttpResponse.json(getVacancies(10, false))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/admin/profiles', () => {
-    return HttpResponse.json(profileEmployer(10, false))
-  }),
   http.get('https://api.ngk-rabota.ru/v1/vacancies/new', () => {
     return HttpResponse.json(getNewVacancies())
   }),
   http.get('https://api.ngk-rabota.ru/v1/vacancies/:id', ({ params }) => {
     const { id } = params
     return HttpResponse.json(getVacancy(id))
+  }),
+  http.post('https://api.ngk-rabota.ru/v1/profile', async ({ request }) => {
+    const { data } = await request.json()
+    return HttpResponse.json(RegisterEmployer(data))
+  }),
+
+  http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', () => {
+    return HttpResponse.json(getVacancies(10, false))
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/profile/student', () => {
+    return HttpResponse.json(RegisterEmployer())
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/profile/employer', () => {
+    return HttpResponse.json(RegisterEmployer())
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/admin/vacancies', () => {
+    return HttpResponse.json(getVacancies(10, false))
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/admin/profiles', () => {
+    return HttpResponse.json(RegisterEmployer())
+  }),
+
+  http.get('https://api.ngk-rabota.ru/v1/profile/student/vacancies', () => {
+    return HttpResponse.json(getVacancies(10))
   }),
 ]
