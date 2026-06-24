@@ -10,6 +10,6 @@ export const RegisterEmployer = (data)=>{
   data.status = 'На модерации'
   users.push(data)
   return {
-    massage: "Заявка на регистрацию успешно отправлена, ожидайте её рассмотрения"
+    message: "Заявка на регистрацию успешно отправлена, ожидайте её рассмотрения"
   }
 }

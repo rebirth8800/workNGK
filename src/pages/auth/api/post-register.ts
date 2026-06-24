@@ -1,6 +1,6 @@
 import apiClient from '../../../../api/axios'
 
-type RegistorType = {
+type EmployerType = {
   company: String,
   firstName: String,
   lastName: String,
@@ -10,6 +10,10 @@ type RegistorType = {
   password: String,
 }
 
-export const postRegister = (data: RegistorType) => {
+export const postRegisterEmployer = (data: EmployerType) => {
+  return apiClient.post('/profile', { data })
+}
+
+export const postRegisterStudent = (data: EmployerType) => {
   return apiClient.post('/profile', { data })
 }

@@ -20,7 +20,7 @@ export const generateStudent = (i)=> {
     })
 }
 
-export const generateEmployer = (i, status = true)=> {
+export const generateEmployer = (i)=> {
   return _.times(i, function(){
     return {
       email: 'email'+id,
