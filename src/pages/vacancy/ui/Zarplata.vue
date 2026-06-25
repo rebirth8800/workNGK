@@ -38,7 +38,7 @@ const onInput = (event: Event, model: any) => {
 .salary {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 10px;
 }
 
 .salary-input {

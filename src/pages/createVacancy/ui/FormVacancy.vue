@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 import { Typography } from "@/shared/ui/typography"
 import InputWithTags from "@/shared/ui/inputWithTag/InputWithTags.vue";
 import {Button} from "@/shared/ui/button";
-import Profile from "@/shared/ui/profile/Profile.vue";
+
 
 const form = reactive({
   company: '',
