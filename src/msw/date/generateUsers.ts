@@ -6,7 +6,7 @@ let id = 1
 export const generateStudent = (i)=> {
     return _.times(i, function(){
         return {
-            email: 'email'+id,
+            email: 'email'+id+'@gmail.com',
             password: 'password'+id,
             id: id++,
             first_name: fakerRU.person.firstName(),
@@ -23,7 +23,7 @@ export const generateStudent = (i)=> {
 export const generateEmployer = (i)=> {
   return _.times(i, function(){
     return {
-      email: 'email'+id,
+      email: 'email'+id+'@gmail.com',
       password: 'password'+id,
       id: id++,
       company_name: fakerRU.company.name(),

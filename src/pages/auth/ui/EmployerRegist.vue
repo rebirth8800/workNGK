@@ -3,16 +3,16 @@ import { Typography } from '@/shared/ui/typography'
 import { reactive, watch } from 'vue'
 import { mask } from 'vue-the-mask'
 import { Button } from '@/shared/ui/button'
-import { useRouter } from 'vue-router'
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { postRegisterEmployer } from '@/pages/auth/api/post-register.ts'
-import { message } from 'ant-design-vue';
-import IconInfo from '@/shared/svg/info.svg'
 import IconTime from '@/shared/svg/time-forward.svg'
 import BlockInfa from "@/shared/ui/blockInfa/BlockInfa.vue";
-const router = useRouter()
+import { useAuthStore } from '@/entities/user'
+
+const authStore = useAuthStore()
+
+const register = authStore.useRegisterRequest()
 
 const vMask = mask
+
 const form = reactive({
   company: 'dgfdfs',
   firstName: 'fsds',
@@ -25,28 +25,9 @@ const form = reactive({
   agreement: true,
 })
 
-const queryClient = useQueryClient()
-
-const { isPending, isError, data, error, mutate, isSuccess } = useMutation({
-  mutationFn: async (data) => {
-    const response = await postRegisterEmployer(data)
-    return response.data
-  },
-})
-
-watch(data, (newData)=>{
-  if (isSuccess) {
-    success(newData.message)
-  }
-})
-
-const success = (mes) => {
-  message.success(mes, 5)
-  router.push({ name: 'home' });
-};
 
 const onFinish = () => {
-  mutate({
+  register.mutate({
     company: form.company,
     firstName: form.firstName,
     lastName: form.lastName,
@@ -57,6 +38,8 @@ const onFinish = () => {
     status: 'На модерации',
     role: 'employer',
   })
+
+
 }
 
 const validateAgreement = (_rule: any, value: boolean) => {

@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
-import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
-import { reactive } from 'vue'
-import BlockInfa from "@/shared/ui/blockInfa/BlockInfa.vue";
-import IconInfo from '@/shared/svg/info.svg'
-import IconTime from '@/shared/svg/time-forward.svg'
+import { computed, reactive } from 'vue'
+import { useAuthStore } from '@/entities/user'
 
+const authStore = useAuthStore()
+
+const login = authStore.useLogin()
 
 const isLogin = defineModel({
-  type: Boolean
+  type: Boolean,
 })
 
 const onFinish = () => {
-  console.log(1)
+  login.mutate(form)
 }
 
 const form = reactive({
-  email: '',
-  password: ''
+  email: 'email1@gmail.com',
+  password: 'password1',
 })
 </script>
 
@@ -26,43 +26,31 @@ const form = reactive({
   <div class="block">
     <div class="title">
       <Typography type="semibold-32-black">Вход для работодателя</Typography>
-      <BlockInfa :svg="IconInfo" type="red">Для входа используется единая система авторизации Moodle. Отдельный пароль создавать не нужно</BlockInfa>
-
     </div>
-    <a-form
-        :model="form"
-        name="login"
-        layout="vertical"
-        @finish="onFinish()"
-        class="login-form"
-    >
+    <a-form :model="form" name="login" layout="vertical" @finish="onFinish()" class="login-form">
       <a-form-item
-          label="Email"
-          name="email"
-          :rules="[
+        label="Email"
+        name="email"
+        :rules="[
           { required: true, message: 'Введите email' },
-          { type: 'email', message: 'Введите корректный email' }
+          { type: 'email', message: 'Введите корректный email' },
         ]"
       >
-        <a-input
-            v-model:value="form.email"
-            placeholder="user@example.ru"
-            class="custom-input"
-        />
+        <a-input v-model:value="form.email" placeholder="user@example.ru" class="custom-input" />
       </a-form-item>
 
       <a-form-item
-          label="Пароль"
-          name="password"
-          :rules="[
+        label="Пароль"
+        name="password"
+        :rules="[
           { required: true, message: 'Введите пароль' },
-          { min: 6, message: 'Пароль должен содержать минимум 6 символов' }
+          { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
         ]"
       >
         <a-input-password
-            v-model:value="form.password"
-            placeholder="Введите пароль"
-            class="custom-input-password"
+          v-model:value="form.password"
+          placeholder="Введите пароль"
+          class="custom-input-password"
         />
       </a-form-item>
 
@@ -165,7 +153,7 @@ const form = reactive({
   border-radius: 10px !important;
   background: var(--color-white) !important;
   color: var(--color-black) !important;
-  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
   height: auto !important;
   box-sizing: border-box !important;
   display: block !important;
@@ -191,7 +179,7 @@ const form = reactive({
   border: none !important;
   background: transparent !important;
   color: var(--color-black) !important;
-  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
   height: auto !important;
   box-sizing: border-box !important;
   outline: none !important;
@@ -214,12 +202,12 @@ const form = reactive({
 /* ===== ПЛЕЙСХОЛДЕР ===== */
 :deep(.ant-input::placeholder) {
   color: var(--color-grey-light) !important;
-  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
 }
 
 :deep(.custom-input-password .ant-input::placeholder) {
   color: var(--color-grey-light) !important;
-  font-size: 1.125rem !important;  /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
 }
 
 /* ===== ХОВЕР ===== */
