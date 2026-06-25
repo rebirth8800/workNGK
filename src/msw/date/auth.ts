@@ -42,12 +42,17 @@ export const Login = (data)=>{
 
   const token = generateToken({email: user.email, password: user.password, role: user.role})
   const cookie = setCookie('token', token)
-  console.log(cookie)
-
   const response = new HttpResponse(
     JSON.stringify({
       success: true,
-      message: 'Успешная авторизация'
+      message: 'Успешная авторизация',
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.first_name,
+        lastname: user.last_name,
+        role: user.role,
+      }
     }),
     {
       status: 200,

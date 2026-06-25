@@ -3,6 +3,7 @@ import HomeView from '../../pages/home/HomeView.vue'
 import VacancyList from '@/pages/vacancy/Vacancy.vue'
 import AboutVacancy from '@/pages/aboutVacancy/AboutVacancy.vue'
 import Auth from '@/pages/auth/Auth.vue'
+import Profile from '@/pages/profile/Profile.vue'
 import CreateVacancy from '@/pages/createVacancy/CreateVacancy.vue'
 
 
@@ -33,6 +34,11 @@ const router = createRouter({
       path: `/vacancies/creaty`,
       name: 'createVacancy',
       component: CreateVacancy,
+    },
+    {
+      path: `/profile`,
+      name: 'profile',
+      component: Profile,
     },
   ],
 })
