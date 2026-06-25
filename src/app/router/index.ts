@@ -30,9 +30,9 @@ const router = createRouter({
       component: Auth,
     },
     {
-      path: `/createVacancy`,
+      path: `/vacancies/creaty`,
       name: 'createVacancy',
-      component: Auth,
+      component: CreateVacancy,
     },
   ],
 })
