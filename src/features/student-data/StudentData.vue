@@ -9,11 +9,7 @@ const props = defineProps({
   id: Number,
 })
 
-for(let i = 0; i < 20; i++) {
-  if (i>10){
-    co
-  }
-}
+
 
 const { isPending, isError, data, error } = useQuery({
   queryKey: ['get-student'],
