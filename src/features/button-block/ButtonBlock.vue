@@ -8,8 +8,6 @@ const authStore = useAuthStore()
 
 const user = authStore.user
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-console.log(user)
-
 </script>
 
 <template>

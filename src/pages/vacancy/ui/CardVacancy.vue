@@ -60,7 +60,7 @@ a{
 }
 .card {
   max-width: 585px;
-  min-width: 550px;
+  min-width: 520px;
   max-height: 437px;
   padding: 30px 20px;
   border: 1px solid var(--color-grey-light);

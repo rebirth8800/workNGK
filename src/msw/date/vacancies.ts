@@ -35,6 +35,8 @@ const zapoln = ()=>{
 
 const vacancies = zapoln()
 
+const otclicki = _.sampleSize(vacancies, 5)
+
 export const getVacancy = (id) => {
   for (let item of vacancies) {
     if(item.id == id) return item
@@ -103,4 +105,11 @@ export const getNewVacancies = ()=>{
   const response = vacancies.toSorted((a, b) => new Date(b.date) - new Date(a.date))
   return response.slice(0, 3)
 
+}
+
+export const getOtcliki = (page, per_page)=>{
+  return {
+    len: otclicki.length,
+    items: otclicki.slice(+page*+per_page-+per_page, +per_page*+page)
+  }
 }

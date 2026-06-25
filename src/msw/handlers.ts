@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
-import {getVacancy, getVacancies, getNewVacancies} from '@/msw/date/vacancies.ts'
+import { getVacancy, getVacancies, getNewVacancies, getOtcliki } from '@/msw/date/vacancies.ts'
 import {filters, sorts} from '@/msw/date/paramsRefines'
-import { Login, RegisterEmployer } from '@/msw/date/auth.ts'
+import { GetData, getUser, Login, RegisterEmployer } from '@/msw/date/auth.ts'
 
 
 const getUrl = (url: string) => {
@@ -47,12 +47,21 @@ export const handlers = [
     const { data } = await request.json()
     return Login(data)
   }),
+  http.get('https://api.ngk-rabota.ru/v1/profile/me', async ({ request }) => {
+    const cookie = request.headers.get('Cookie')
+    return GetData(cookie)
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/profile/student/vacancies', ({request}) => {
+    const url = new URL(request.url)
+    return HttpResponse.json(getOtcliki(url.searchParams.get('page'), url.searchParams.get('per_page')))
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/profile/student/data', ({request}) => {
+    const url = new URL(request.url)
+    return HttpResponse.json(getUser(url.searchParams.get('id')))
+  }),
 
   http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', () => {
     return HttpResponse.json(getVacancies(10, false))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/student', () => {
-    return HttpResponse.json(RegisterEmployer())
   }),
   http.get('https://api.ngk-rabota.ru/v1/profile/employer', () => {
     return HttpResponse.json(RegisterEmployer())
@@ -64,7 +73,4 @@ export const handlers = [
     return HttpResponse.json(RegisterEmployer())
   }),
 
-  http.get('https://api.ngk-rabota.ru/v1/profile/student/vacancies', () => {
-    return HttpResponse.json(getVacancies(10))
-  }),
 ]
