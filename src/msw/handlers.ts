@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { getVacancy, getVacancies, getNewVacancies, getOtcliki } from '@/msw/date/vacancies.ts'
-import {filters, sorts} from '@/msw/date/paramsRefines'
-import { GetData, getUser, Login, RegisterEmployer } from '@/msw/date/auth.ts'
+import { filters, sorts } from '@/msw/date/paramsRefines'
+import { GetData, Login, PutUser, RegisterEmployer } from '@/msw/date/auth.ts'
 
 
 const getUrl = (url: string) => {
@@ -56,10 +56,9 @@ export const handlers = [
     const url = new URL(request.url)
     return HttpResponse.json(getOtcliki(url.searchParams.get('page'), url.searchParams.get('per_page')))
   }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/user', ({request}) => {
-    console.log(request)
-    const url = new URL(request.url)
-    return HttpResponse.json(getUser(url.searchParams.get('id')))
+  http.put('https://api.ngk-rabota.ru/v1/profile/user', async ({request}) => {
+    const body = await request.json()
+    return PutUser(body)
   }),
 
   http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', () => {

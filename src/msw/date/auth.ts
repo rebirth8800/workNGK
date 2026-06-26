@@ -2,6 +2,7 @@ import {generateEmployer, generateStudent} from '@/msw/date/generateUsers.ts'
 import { generateJWT } from '@/msw/date/auth/token.ts'
 import { setHttpOnlyCookie } from '@/msw/date/auth/cookies.ts'
 import { HttpResponse } from 'msw'
+import { filters } from '@/msw/date/paramsRefines.ts'
 
 let users = []
 users.push(...generateStudent((3)))
@@ -128,8 +129,37 @@ export const GetData = (cookie)=>{
   }
 }
 
-export const getUser = (id)=>{
-  const user = users.find(x=>x.id === id);
-  console.log(id,user)
-  return user
+export const PutUser = (body)=>{
+  let data = {}
+  users.forEach((user, index)=>{
+    if (user.id === body.id){
+      for (const key in body){
+        if (key === 'phone'){
+          const phone = body[key].replaceAll(' ', '');
+          if (user[key] !== phone){
+            console.log(user[key], phone)
+            users[index][key] = phone;
+            data[key] = phone;
+          }
+        }else if(key === 'category'){
+          const category = filters().category.find(item => item.value === body[key])?.name;
+          if (user[key] !== category){
+            users[index][key] = category;
+            data[key] = category;
+          }
+        }
+        else if (user[key] != body[key]){
+          users[index][key] = body[key];
+          data[key] = body[key];
+        }
+      }
+
+    }
+
+  })
+  return HttpResponse.json({
+    success: true,
+    data: data,
+    message: 'Данные успешно обновлены'
+  }, { status: 200 });
 }

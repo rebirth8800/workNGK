@@ -6,7 +6,7 @@ import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import { login } from '@/entities/user/api/post-login.ts'
 import { getCheck } from '@/entities/user/api/get-check.ts'
-import { getUser } from '@/entities/user/api/get-user.ts'
+import { putUserData } from '@/entities/user/api/put-user-data.ts'
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -90,18 +90,32 @@ export const useAuthStore = defineStore('auth', () => {
       }
     })
   }
-  const userId = computed(()=>user.value?.id || null)
 
-  const getUserData = ()=>{
-    return useQuery({
-      queryKey: ['get-student', userId],
-      queryFn: async () => {
-        const response = await getUser(user.value?.id)
-        console.log(response)
+  const useUpdateData = () => {
+    return useMutation({
+      mutationFn: async (data: any) => {
+        const response = await putUserData(data)
         return response.data
       },
-      retry: false,
-      staleTime:5 * 60 * 1000,
+      onSuccess: (data) => {
+        if (data.success) {
+          message.success({
+            content: data.message,
+            class: 'custom-message-large',
+          })
+          for (const key in data.data) {
+            console.log(user.value[key])
+            user.value[key] = data.data[key]
+            console.log(user.value[key])
+
+          }
+          router.push({name: 'home'})
+        }
+      },
+      onError: (error) => {
+        console.log(error)
+        message.error(error.message)
+      }
     })
   }
 
@@ -130,7 +144,7 @@ export const useAuthStore = defineStore('auth', () => {
     // Только хуки!
     useRegisterRequest,
     useLogin,
-    getUserData,
+    useUpdateData,
     useCheckAuth,
     useLogout
   }
