@@ -1,15 +1,16 @@
 <script setup lang="ts">
-defineProps({
-  svg: {
-    type: Object,
-    required: true,
-  },
-  type: {
-    type: String,
-    default: 'red',
-    validator: (value) => ['red', 'grey'].includes(value),
-  },
+import type { Component } from 'vue'
+
+
+interface Props {
+  svg: Component // <-- Тип Component из Vue
+  type?: 'red' | 'grey'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'red',
 })
+
 </script>
 
 <template>

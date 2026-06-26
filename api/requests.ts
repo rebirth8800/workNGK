@@ -1,4 +1,4 @@
-import apiClient from "./axios.js";
+import apiClient from "./axios.ts";
 
 const request = {
     getVacancies: () => {
