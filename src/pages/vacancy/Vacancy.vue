@@ -3,10 +3,8 @@ import { useQueryClient, useInfiniteQuery, useQuery, useMutation } from '@tansta
 import { getVacancy } from '@/pages/vacancy/api/get-vacancy'
 import VacancyListLayout from '@/app/layout/VacancyListLayout.vue'
 import Filters from '@/pages/vacancy/ui/Filters.vue'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import VacancyList from './ui/VacancyList.vue'
-
-
 
 const selectedParams = reactive({
   page: 1,
@@ -18,8 +16,10 @@ const selectedParams = reactive({
   salary_min: '',
   salary_max: '',
   sort: '',
+  search: '',
 })
-const getParams = () => {
+
+const params = computed(() => {
   return {
     page: selectedParams.page,
     per_page: selectedParams.per_page,
@@ -30,19 +30,17 @@ const getParams = () => {
     salary_min: +selectedParams.salary_min,
     salary_max: +selectedParams.salary_max,
     sort: selectedParams.sort,
+    search: selectedParams.search,
   }
-}
-let params = getParams()
+})
 
 const updateParam = () => {
   selectedParams.sort = ''
   selectedParams.page = 1
-  params = getParams()
   refetch()
 }
 
 const updateSort = () => {
-  params = getParams()
   refetch()
 }
 
@@ -55,22 +53,19 @@ const deleteParam = () => {
   selectedParams.work_format = []
   selectedParams.salary_min = ''
   selectedParams.salary_max = ''
-  params = getParams()
   refetch()
 }
 
 const pageChange = () => {
-  params = getParams()
   refetch()
 }
-
 
 const queryClient = useQueryClient()
 
 const { isPending, isError, data, error, refetch } = useQuery({
-  queryKey: ['vacancies'],
+  queryKey: ['vacancies', params],
   queryFn: async () => {
-    const response = await getVacancy(params)
+    const response = await getVacancy(params.value)
     return response.data
   },
 })

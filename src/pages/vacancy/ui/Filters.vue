@@ -40,7 +40,7 @@ const { isPending, isError, data, error } = useQuery({
 
 <template>
   <div class="block" v-if="data">
-    <SearchVacancy />
+    <SearchVacancy v-model="selectedFilters.search"/>
     <Category :item="data.category" v-model="selectedFilters.category" />
     <CheckBox name="График работы" :item="data.schedule" v-model="selectedFilters.schedule" />
     <CheckBox name="Занятость" :item="data.employment" v-model="selectedFilters.employment" />

@@ -1,14 +1,19 @@
 <script setup>
 import SearchIcon from '@/shared/svg/search-black.svg'
 import {Typography} from "@/shared/ui/typography";
+
+const search = defineModel({
+  type: String,
+})
+
 </script>
 
 <template>
 <div class="block">
   <Typography type="semibold-24-black">Поиск</Typography>
   <div class="search">
-    <SearchIcon class="icon-search"></SearchIcon>
-    <input type="text" class="search-input" placeholder="Название вакансии...">
+    <SearchIcon class="icon-search"/>
+    <input type="text" class="search-input" v-model="search" placeholder="Название вакансии...">
   </div>
 </div>
 </template>

@@ -14,8 +14,4 @@ const authStore = useAuthStore()
 
 <style>
 @import './styles/main.css';
-.container{
-  width: 1600px;
-  margin: 0 auto;
-}
 </style>
