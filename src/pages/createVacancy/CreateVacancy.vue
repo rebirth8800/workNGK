@@ -25,7 +25,7 @@ import {ProfileObertka} from "@/shared/ui/profileObertka";
   display: flex;
   flex-direction: column;
   gap: 30px;
-  //margin-top: 40px;
+  /* margin-top: 40px; */
 
 }
 .background {

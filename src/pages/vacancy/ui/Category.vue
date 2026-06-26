@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Typography } from '@/shared/ui/typography'
 import { ref } from 'vue'
-import Icon from '@/shared/svg/it.svg'
 
 defineProps({
   item: Object,

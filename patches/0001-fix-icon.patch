@@ -1,0 +1,843 @@
+From 6be22f1a90cce09f17b079dab2e7871a92389cd4 Mon Sep 17 00:00:00 2001
+From: Dmitry Kulikov <dkulikov@studio-tg.ru>
+Date: Fri, 26 Jun 2026 08:36:41 +0300
+Subject: [PATCH] fix icon
+
+---
+ package-lock.json                         | 134 +++++++++++++---------
+ src/pages/createVacancy/CreateVacancy.vue |   4 +-
+ src/pages/home/ui/HowCard.vue             |   3 +-
+ src/pages/home/ui/NewCard.vue             |   7 +-
+ src/pages/home/ui/NewVacancy.vue          |   4 +-
+ src/pages/vacancy/ui/CardVacancy.vue      |   5 +-
+ src/pages/vacancy/ui/Category.vue         |   3 +-
+ src/pages/vacancy/ui/CheckBox.vue         |   6 +-
+ src/shared/config/icon-config.ts          |  32 ++++--
+ src/shared/ui/icon/Icon.vue               |  39 +++++++
+ src/shared/ui/icon/index.ts               |   3 +
+ src/shared/ui/iconBox/IconBox.vue         |  37 +++---
+ src/shared/ui/tag/Tag.vue                 |  16 +--
+ 13 files changed, 173 insertions(+), 120 deletions(-)
+ create mode 100644 src/shared/ui/icon/Icon.vue
+ create mode 100644 src/shared/ui/icon/index.ts
+
+diff --git a/package-lock.json b/package-lock.json
+index dc8f02a..db29a06 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -122,6 +122,7 @@
+       "integrity": "sha512-RgHBCvtjbOK2gXSNBNIkNoEc9qoVEtau3hj8gEqKQuL3HZAibKarWFEI3Lfm6EYKkLalOh8eSrj9b+ch9H/VBA==",
+       "dev": true,
+       "license": "MIT",
++      "peer": true,
+       "dependencies": {
+         "@babel/code-frame": "^7.29.7",
+         "@babel/generator": "^7.29.7",
+@@ -564,31 +565,11 @@
+         "node": ">=10"
+       }
+     },
+-    "node_modules/@emnapi/core": {
+-      "version": "1.10.0",
+-      "resolved": "https://registry.npmjs.org/@emnapi/core/-/core-1.10.0.tgz",
+-      "integrity": "sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==",
+-      "license": "MIT",
+-      "optional": true,
+-      "dependencies": {
+-        "@emnapi/wasi-threads": "1.2.1",
+-        "tslib": "^2.4.0"
+-      }
+-    },
+-    "node_modules/@emnapi/runtime": {
+-      "version": "1.10.0",
+-      "resolved": "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.10.0.tgz",
+-      "integrity": "sha512-ewvYlk86xUoGI0zQRNq/mC+16R1QeDlKQy21Ki3oSYXNgLb45GV1P6A0M+/s6nyCuNDqe5VpaY84BzXGwVbwFA==",
+-      "license": "MIT",
+-      "optional": true,
+-      "dependencies": {
+-        "tslib": "^2.4.0"
+-      }
+-    },
+     "node_modules/@emnapi/wasi-threads": {
+-      "version": "1.2.1",
+-      "resolved": "https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.2.1.tgz",
+-      "integrity": "sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==",
++      "version": "1.2.2",
++      "resolved": "https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.2.2.tgz",
++      "integrity": "sha512-c95qOXkHdydNKhscBTebqEC1CVAZpyqOfVfBzQ1qgzyl3gfeldUjIggDbIZgDKsHLgnsM+igH7TJ/eAasaVuMA==",
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "dependencies": {
+@@ -821,6 +802,7 @@
+       "version": "1.1.5",
+       "resolved": "https://registry.npmjs.org/@napi-rs/wasm-runtime/-/wasm-runtime-1.1.5.tgz",
+       "integrity": "sha512-AWPoBRJ9tsnVhor4sjO7rkni+7p+2IAEFj6cx06UgP10jkQHqay/36uRV/bFkgrh18D9vb4cr8Q0Pthskgzy+Q==",
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "dependencies": {
+@@ -884,6 +866,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -900,6 +883,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -916,6 +900,7 @@
+       "cpu": [
+         "x64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -932,6 +917,7 @@
+       "cpu": [
+         "x64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -948,6 +934,7 @@
+       "cpu": [
+         "arm"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -964,9 +951,7 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -983,9 +968,7 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1002,9 +985,7 @@
+       "cpu": [
+         "ppc64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1021,9 +1002,7 @@
+       "cpu": [
+         "s390x"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1040,9 +1019,7 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1059,9 +1036,7 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1078,6 +1053,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1094,6 +1070,7 @@
+       "cpu": [
+         "wasm32"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "dependencies": {
+@@ -1105,6 +1082,40 @@
+         "node": "^20.19.0 || >=22.12.0"
+       }
+     },
++    "node_modules/@rolldown/binding-wasm32-wasi/node_modules/@emnapi/core": {
++      "version": "1.10.0",
++      "resolved": "https://registry.npmjs.org/@emnapi/core/-/core-1.10.0.tgz",
++      "integrity": "sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==",
++      "dev": true,
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "@emnapi/wasi-threads": "1.2.1",
++        "tslib": "^2.4.0"
++      }
++    },
++    "node_modules/@rolldown/binding-wasm32-wasi/node_modules/@emnapi/runtime": {
++      "version": "1.10.0",
++      "resolved": "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.10.0.tgz",
++      "integrity": "sha512-ewvYlk86xUoGI0zQRNq/mC+16R1QeDlKQy21Ki3oSYXNgLb45GV1P6A0M+/s6nyCuNDqe5VpaY84BzXGwVbwFA==",
++      "dev": true,
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "tslib": "^2.4.0"
++      }
++    },
++    "node_modules/@rolldown/binding-wasm32-wasi/node_modules/@emnapi/wasi-threads": {
++      "version": "1.2.1",
++      "resolved": "https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.2.1.tgz",
++      "integrity": "sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==",
++      "dev": true,
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "tslib": "^2.4.0"
++      }
++    },
+     "node_modules/@rolldown/binding-win32-arm64-msvc": {
+       "version": "1.0.3",
+       "resolved": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.0.3.tgz",
+@@ -1112,6 +1123,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1128,6 +1140,7 @@
+       "cpu": [
+         "x64"
+       ],
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "os": [
+@@ -1368,6 +1381,7 @@
+       "integrity": "sha512-8QqtOQT5ACVlmsvKOJNEaWmRPmcojMOzCz4Hs2BGG/toAp/K38LcsMRyLp349glq5AzJbCEeimEoxaX6v/fLrA==",
+       "dev": true,
+       "license": "MIT",
++      "peer": true,
+       "dependencies": {
+         "@babel/core": "^7.21.3",
+         "@svgr/babel-preset": "8.1.0",
+@@ -1499,6 +1513,7 @@
+       "version": "0.10.2",
+       "resolved": "https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.10.2.tgz",
+       "integrity": "sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==",
++      "dev": true,
+       "license": "MIT",
+       "optional": true,
+       "dependencies": {
+@@ -1522,8 +1537,9 @@
+       "version": "24.13.2",
+       "resolved": "https://registry.npmjs.org/@types/node/-/node-24.13.2.tgz",
+       "integrity": "sha512-fRa09kZTgu8o71KFcDjUFuc7F+dEbZYZmkI0mg5YBTRs0yMKjYHsq/c0urDKeDb+D5qVgXOdFcuu+DZPKOITwA==",
+-      "devOptional": true,
++      "dev": true,
+       "license": "MIT",
++      "peer": true,
+       "dependencies": {
+         "undici-types": "~7.18.0"
+       }
+@@ -2206,6 +2222,7 @@
+         }
+       ],
+       "license": "MIT",
++      "peer": true,
+       "dependencies": {
+         "baseline-browser-mapping": "^2.10.38",
+         "caniuse-lite": "^1.0.30001799",
+@@ -3352,6 +3369,7 @@
+       "version": "2.3.3",
+       "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz",
+       "integrity": "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==",
++      "dev": true,
+       "hasInstallScript": true,
+       "license": "MIT",
+       "optional": true,
+@@ -3959,6 +3977,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -3979,6 +3998,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -3999,6 +4019,7 @@
+       "cpu": [
+         "x64"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4019,6 +4040,7 @@
+       "cpu": [
+         "x64"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4039,6 +4061,7 @@
+       "cpu": [
+         "arm"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4059,9 +4082,7 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4082,9 +4103,7 @@
+       "cpu": [
+         "arm64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4105,9 +4124,7 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "glibc"
+-      ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4128,9 +4145,7 @@
+       "cpu": [
+         "x64"
+       ],
+-      "libc": [
+-        "musl"
+-      ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4151,6 +4166,7 @@
+       "cpu": [
+         "arm64"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -4171,6 +4187,7 @@
+       "cpu": [
+         "x64"
+       ],
++      "dev": true,
+       "license": "MPL-2.0",
+       "optional": true,
+       "os": [
+@@ -5882,7 +5899,7 @@
+       "version": "2.8.1",
+       "resolved": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+       "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
+-      "devOptional": true,
++      "dev": true,
+       "license": "0BSD"
+     },
+     "node_modules/type-fest": {
+@@ -5921,6 +5938,7 @@
+       "integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+       "devOptional": true,
+       "license": "Apache-2.0",
++      "peer": true,
+       "bin": {
+         "tsc": "bin/tsc",
+         "tsserver": "bin/tsserver"
+@@ -5939,7 +5957,7 @@
+       "version": "7.18.2",
+       "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-7.18.2.tgz",
+       "integrity": "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==",
+-      "devOptional": true,
++      "dev": true,
+       "license": "MIT"
+     },
+     "node_modules/unpipe": {
+@@ -6049,6 +6067,7 @@
+       "integrity": "sha512-h9bXPmJichP5fLmVQo3PyaGSDE2n3aPuomeAlVRm0JLmt4rY6zmPKd59HYI4LNW8oTK7tlTsuC7l/m7awx9Jcw==",
+       "devOptional": true,
+       "license": "MIT",
++      "peer": true,
+       "dependencies": {
+         "lightningcss": "^1.32.0",
+         "picomatch": "^4.0.4",
+@@ -6329,6 +6348,7 @@
+       "resolved": "https://registry.npmjs.org/vue/-/vue-3.5.38.tgz",
+       "integrity": "sha512-vAMKHfImQlYSy0C+PBue4s3ERZ2xGKfgZg5GXAsLInq1dyh2H78ILVP5sK0KPFPVW4kv+OGCIvBEondcjpZp7A==",
+       "license": "MIT",
++      "peer": true,
+       "dependencies": {
+         "@vue/compiler-dom": "3.5.38",
+         "@vue/compiler-sfc": "3.5.38",
+diff --git a/src/pages/createVacancy/CreateVacancy.vue b/src/pages/createVacancy/CreateVacancy.vue
+index 7e4e950..7750938 100644
+--- a/src/pages/createVacancy/CreateVacancy.vue
++++ b/src/pages/createVacancy/CreateVacancy.vue
+@@ -24,7 +24,7 @@ import FormVacancy from "@/pages/createVacancy/ui/FormVacancy.vue";
+   display: flex;
+   flex-direction: column;
+   gap: 30px;
+-  //margin-top: 40px;
++  /* margin-top: 40px; */
+ 
+ }
+ .background {
+@@ -32,4 +32,4 @@ import FormVacancy from "@/pages/createVacancy/ui/FormVacancy.vue";
+   background-color: var(--color-background-grey);
+   padding: 60px 0;
+ }
+-</style>
+\ No newline at end of file
++</style>
+diff --git a/src/pages/home/ui/HowCard.vue b/src/pages/home/ui/HowCard.vue
+index ae7744c..7a92b23 100644
+--- a/src/pages/home/ui/HowCard.vue
++++ b/src/pages/home/ui/HowCard.vue
+@@ -1,7 +1,6 @@
+ <script setup lang="ts">
+ import { Typography } from '@/shared/ui/typography'
+ import { IconBox } from '@/shared/ui/iconBox'
+-import { iconConfig } from '@/shared/config'
+ 
+ defineProps({
+   number: String,
+@@ -15,7 +14,7 @@ defineProps({
+ <template>
+   <div class="card">
+     <div class="ui">
+-      <IconBox type="red" class="square" :svg="iconConfig[svg]"/>
++      <IconBox type="red" class="square" :name="svg" />
+       <Typography type="semibold-40-grey-light">{{ number }}</Typography>
+     </div>
+     <Typography type="semibold-32-black">{{ h1 }}</Typography>
+diff --git a/src/pages/home/ui/NewCard.vue b/src/pages/home/ui/NewCard.vue
+index 4bd7a5b..d8fd528 100644
+--- a/src/pages/home/ui/NewCard.vue
++++ b/src/pages/home/ui/NewCard.vue
+@@ -3,7 +3,6 @@ import { Typography } from '@/shared/ui/typography'
+ import { Button } from '@/shared/ui/button'
+ import Tag from '@/shared/ui/tag/Tag.vue'
+ import IconBox from '@/shared/ui/iconBox/IconBox.vue'
+-import { iconConfig } from '@/shared/config'
+ import IconAdress from "@/shared/svg/adress-tag.svg";
+ import IconTime from "@/shared/svg/time-forward.svg";
+ 
+@@ -20,9 +19,7 @@ defineProps({
+         <Typography type="semibold-32-black" class="card-title">{{ item.title }}</Typography>
+         <Typography type="regular-20-almost-black">{{ item.company_name }}</Typography>
+       </div>
+-      <!--      <component v-if="iconConfig" :is="iconConfig[props.item.svg]" />-->
+-      <!--      <component :is="iconConfig[item.svg]" :key="item.id"/>-->
+-      <IconBox type="grey" :svg="iconConfig[item.svg]" :key="item.id"/>
++      <IconBox type="grey" :name="item.svg" />
+     </div>
+     <div class="tags_wrapper">
+       <Tag type="grey" :svg="IconAdress">{{ item.city }}</Tag>
+@@ -111,4 +108,4 @@ a{
+ .tags_wrapper :deep(*) {
+   margin: 0;
+ }
+-</style>
+\ No newline at end of file
++</style>
+diff --git a/src/pages/home/ui/NewVacancy.vue b/src/pages/home/ui/NewVacancy.vue
+index bb58792..5fbfc8d 100644
+--- a/src/pages/home/ui/NewVacancy.vue
++++ b/src/pages/home/ui/NewVacancy.vue
+@@ -22,7 +22,7 @@ const { isPending, isError, data, error } = useQuery({
+     <Typography type="semibold-40-black">Свежие вакансии</Typography>
+     <Typography type="regular-16-almost-black" v-if="isPending">Загрузка...</Typography>
+     <div v-else-if="data && data.length > 0" class="card_list">
+-      <NewCard v-for="todo in data"  :item="todo" />
++      <NewCard v-for="todo in data" :key="todo.id" :item="todo" />
+     </div>
+     <Typography v-else type="regular-16-almost-black">Нет вакансий</Typography>
+   </div>
+@@ -47,4 +47,4 @@ const { isPending, isError, data, error } = useQuery({
+   width: 515px;
+   height: 375px;
+ }
+-</style>
+\ No newline at end of file
++</style>
+diff --git a/src/pages/vacancy/ui/CardVacancy.vue b/src/pages/vacancy/ui/CardVacancy.vue
+index e0ae878..cc4b5df 100644
+--- a/src/pages/vacancy/ui/CardVacancy.vue
++++ b/src/pages/vacancy/ui/CardVacancy.vue
+@@ -5,7 +5,6 @@ import { IconBox } from '@/shared/ui/iconBox'
+ import { Button } from '@/shared/ui/button'
+ import IconAdress from '@/shared/svg/adress-tag.svg'
+ import IconTime from "@/shared/svg/time-forward.svg";
+-import { iconConfig } from '@/shared/config'
+ 
+ defineProps({
+   item: Object,
+@@ -33,7 +32,7 @@ const date = (date)=>{
+           </div>
+ 
+           <div class="title-squre">
+-            <IconBox type="grey" :svg="iconConfig[item.svg]" />
++            <IconBox type="grey" :name="item.svg" />
+ 
+           </div>
+         </div>
+@@ -152,4 +151,4 @@ a{
+   text-overflow: ellipsis;
+   word-break: break-word;
+ }
+-</style>
+\ No newline at end of file
++</style>
+diff --git a/src/pages/vacancy/ui/Category.vue b/src/pages/vacancy/ui/Category.vue
+index 227a7c0..f9699b5 100644
+--- a/src/pages/vacancy/ui/Category.vue
++++ b/src/pages/vacancy/ui/Category.vue
+@@ -1,7 +1,6 @@
+ <script setup lang="ts">
+ import { Typography } from '@/shared/ui/typography'
+ import { ref } from 'vue'
+-import Icon from 'it.svg'
+ 
+ defineProps({
+   item: Object,
+@@ -120,4 +119,4 @@ const flag = ref(false)
+     height: 47px;
+   }
+ }
+-</style>
+\ No newline at end of file
++</style>
+diff --git a/src/pages/vacancy/ui/CheckBox.vue b/src/pages/vacancy/ui/CheckBox.vue
+index a7f2c22..a9ff4f1 100644
+--- a/src/pages/vacancy/ui/CheckBox.vue
++++ b/src/pages/vacancy/ui/CheckBox.vue
+@@ -38,9 +38,9 @@ const model = defineModel({
+ input {
+   width: 35px;
+   height: 35px;
+-  //background-color: var(--color-background-grey);
+-  //border: 1px solid var(--color-grey-light);
+-  //border-radius: 5px;
++  /* background-color: var(--color-background-grey); */
++  /* border: 1px solid var(--color-grey-light); */
++  /* border-radius: 5px; */
+ }
+ input[type="checkbox"] {
+   accent-color: var(--color-primary-red);
+diff --git a/src/shared/config/icon-config.ts b/src/shared/config/icon-config.ts
+index 4e187de..e850a3f 100644
+--- a/src/shared/config/icon-config.ts
++++ b/src/shared/config/icon-config.ts
+@@ -1,14 +1,12 @@
+-import Logist from '@/shared/svg/logist.svg'
+-import It from '@/shared/svg/it.svg'
+-import Teacher from '@/shared/svg/teacher.svg'
+-import Buchalter from '@/shared/svg/buchalter.svg'
+-import Lawyer from '@/shared/svg/lawyer.svg'
+-import Document from '@/shared/svg/document.svg'
+-import Send from '@/shared/svg/send.svg'
+-import Plus from '@/shared/svg/plus.svg'
+-import MailRed from '@/shared/svg/mail-red.svg'
+-
+-
++import Logist from '@/shared/svg/logist.svg?url'
++import It from '@/shared/svg/it.svg?url'
++import Teacher from '@/shared/svg/teacher.svg?url'
++import Buchalter from '@/shared/svg/buchalter.svg?url'
++import Lawyer from '@/shared/svg/lawyer.svg?url'
++import Document from '@/shared/svg/document.svg?url'
++import Send from '@/shared/svg/send.svg?url'
++import Plus from '@/shared/svg/plus.svg?url'
++import MailRed from '@/shared/svg/mail-red.svg?url'
+ 
+ export const iconConfig = {
+   logist: Logist,
+@@ -20,4 +18,14 @@ export const iconConfig = {
+   send: Send,
+   plus: Plus,
+   'mail-red': MailRed,
+-}
+\ No newline at end of file
++}
++
++const defaultIcon = Document
++
++export type IconName = keyof typeof iconConfig
++
++export const getIconSrc = (name?: string) => {
++  if (!name) return defaultIcon
++
++  return name in iconConfig ? iconConfig[name as IconName] : defaultIcon
++}
+diff --git a/src/shared/ui/icon/Icon.vue b/src/shared/ui/icon/Icon.vue
+new file mode 100644
+index 0000000..e3371f4
+--- /dev/null
++++ b/src/shared/ui/icon/Icon.vue
+@@ -0,0 +1,39 @@
++<script setup lang="ts">
++import { computed } from 'vue'
++import { getIconSrc } from '@/shared/config'
++
++const props = withDefaults(
++  defineProps<{
++    name?: string
++    src?: string
++    label?: string
++    decorative?: boolean
++  }>(),
++  {
++    decorative: true,
++  },
++)
++
++const iconSrc = computed(() => props.src || getIconSrc(props.name))
++const altText = computed(() => (props.decorative ? '' : props.label || ''))
++</script>
++
++<template>
++  <img
++    v-if="iconSrc"
++    :src="iconSrc"
++    :alt="altText"
++    :aria-hidden="decorative ? 'true' : undefined"
++    class="icon"
++  />
++</template>
++
++<style scoped>
++.icon {
++  width: 1em;
++  height: 1em;
++  display: block;
++  flex-shrink: 0;
++  object-fit: contain;
++}
++</style>
+diff --git a/src/shared/ui/icon/index.ts b/src/shared/ui/icon/index.ts
+new file mode 100644
+index 0000000..88a73f7
+--- /dev/null
++++ b/src/shared/ui/icon/index.ts
+@@ -0,0 +1,3 @@
++import Icon from '@/shared/ui/icon/Icon.vue'
++
++export { Icon }
+diff --git a/src/shared/ui/iconBox/IconBox.vue b/src/shared/ui/iconBox/IconBox.vue
+index 344eccb..c5e6d27 100644
+--- a/src/shared/ui/iconBox/IconBox.vue
++++ b/src/shared/ui/iconBox/IconBox.vue
+@@ -1,19 +1,20 @@
+-<script setup>
+-import { computed, defineAsyncComponent } from 'vue'
+-const props = defineProps({
+-  svg: Object,
+-  type: {
+-    type: String,
+-    default: 'grey',
+-    validator: (value) => ['grey', 'red'].includes(value),
+-  },
+-})
++<script setup lang="ts">
++import { Icon } from '@/shared/ui/icon'
+ 
++withDefaults(
++  defineProps<{
++    name?: string
++    type?: 'grey' | 'red'
++  }>(),
++  {
++    type: 'grey',
++  },
++)
+ </script>
+ 
+ <template>
+   <div :class="['icon-box', `icon-box-${type}`]">
+-    <component v-if="svg" :is="svg" class="icon-box-svg" />
++    <Icon :name="name" class="icon-box-svg" />
+   </div>
+ </template>
+ 
+@@ -37,14 +38,8 @@ const props = defineProps({
+ }
+ 
+ .icon-box-svg {
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-}
+-.icon-box-svg svg {
+   width: 42px;
+   height: 42px;
+-  display: block;
+ }
+ 
+ @media (max-width: 1440px) {
+@@ -52,7 +47,7 @@ const props = defineProps({
+     width: 50px;
+     height: 50px;
+   }
+-  .icon-box-svg svg {
++  .icon-box-svg {
+     width: 30px;
+     height: 30px;
+   }
+@@ -62,7 +57,7 @@ const props = defineProps({
+     width: 50px;
+     height: 50px;
+   }
+-  .icon-box-svg svg {
++  .icon-box-svg {
+     width: 30px;
+     height: 30px;
+   }
+@@ -74,9 +69,9 @@ const props = defineProps({
+     border-radius: 5px;
+   }
+ 
+-  .icon-box-svg svg {
++  .icon-box-svg {
+     width: 23px;
+     height: 23px;
+   }
+ }
+-</style>
+\ No newline at end of file
++</style>
+diff --git a/src/shared/ui/tag/Tag.vue b/src/shared/ui/tag/Tag.vue
+index f318282..9e9aa4d 100644
+--- a/src/shared/ui/tag/Tag.vue
++++ b/src/shared/ui/tag/Tag.vue
+@@ -1,6 +1,4 @@
+ <script setup>
+-import { defineComponent } from 'vue'
+-
+ defineProps({
+   svg: Object,
+   type: {
+@@ -30,14 +28,10 @@ span {
+ }
+ 
+ .tag-icon {
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-}
+-.tag-icon svg {
+   width: 28px;
+   height: 28px;
+   display: block;
++  flex-shrink: 0;
+ }
+ 
+ .grey {
+@@ -76,7 +70,7 @@ span {
+     font-size: 1rem;
+     gap: 2px;
+   }
+-  .tag-icon svg {
++  .tag-icon {
+     width: 24px;
+     height: 24px;
+   }
+@@ -96,7 +90,7 @@ span {
+     font-size: 0.875rem;
+     gap: 2px;
+   }
+-  .tag-icon svg {
++  .tag-icon {
+     width: 19px;
+     height: 19px;
+   }
+@@ -117,7 +111,7 @@ span {
+     font-size: 0.875rem;
+     gap: 2px;
+   }
+-  .tag-icon svg {
++  .tag-icon {
+     width: 19px;
+     height: 19px;
+   }
+@@ -131,4 +125,4 @@ span {
+     padding: 5px 20px;
+   }
+ }
+-</style>
+\ No newline at end of file
++</style>
+-- 
+2.50.1 (Apple Git-155)
+

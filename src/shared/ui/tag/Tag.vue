@@ -1,6 +1,4 @@
 <script setup>
-import { defineComponent } from 'vue'
-
 defineProps({
   svg: Object,
   type: {
@@ -30,14 +28,10 @@ span {
 }
 
 .tag-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.tag-icon svg {
   width: 28px;
   height: 28px;
   display: block;
+  flex-shrink: 0;
 }
 
 .grey {
@@ -76,7 +70,7 @@ span {
     font-size: 1rem;
     gap: 2px;
   }
-  .tag-icon svg {
+  .tag-icon {
     width: 24px;
     height: 24px;
   }
@@ -96,7 +90,7 @@ span {
     font-size: 0.875rem;
     gap: 2px;
   }
-  .tag-icon svg {
+  .tag-icon {
     width: 19px;
     height: 19px;
   }
@@ -117,7 +111,7 @@ span {
     font-size: 0.875rem;
     gap: 2px;
   }
-  .tag-icon svg {
+  .tag-icon {
     width: 19px;
     height: 19px;
   }

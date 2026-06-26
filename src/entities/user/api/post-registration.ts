@@ -1,4 +1,4 @@
-import apiClient from '../../../../api/axios'
+import apiClient from '../../../../api/axios.ts'
 
 type EmployerType = {
   company: String,
