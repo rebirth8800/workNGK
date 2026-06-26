@@ -1,46 +1,54 @@
-<script setup>
-defineProps({
-  type: {
-    type: String,
-    default: 'body',
-    validator: (value) =>
-        [
-          'light-24-black',
-          'regular-16-almost-black',
-          'regular-20-black',
-          'regular-20-grey-light',
-          'regular-20-almost-black',
-          'regular-20-primary-red',
-          'regular-24-white',
-          'regular-24-black',
-          'regular-24-grey-light',
-          'regular-24-almost-black',
-          'regular-32-almost-black',
-          'medium-16-primary-red',
-          'medium-24-almost-black',
-          'medium-24-black',
-          'medium-24-primary-red',
-          'medium-32-black',
-          'semibold-20-black',
-          'semibold-24-black',
-          'semibold-32-white',
-          'semibold-32-black',
-          'semibold-36-black',
-          'semibold-36-primary-red',
-          'semibold-40-grey-light',
-          'semibold-40-black',
-          'bold-40-black',
-          'bold-64-black',
-          'bold-64-red',
-        ].includes(value),
-  },
+<script setup lang="ts">
+interface Props {
+  type?:
+      | 'light-24-black'
+      | 'regular-16-almost-black'
+      | 'regular-20-black'
+      | 'regular-20-grey-light'
+      | 'regular-20-almost-black'
+      | 'regular-20-primary-red'
+      | 'regular-24-white'
+      | 'regular-24-black'
+      | 'regular-24-grey-light'
+      | 'regular-24-almost-black'
+      | 'regular-32-almost-black'
+      | 'medium-16-primary-red'
+      | 'medium-24-almost-black'
+      | 'medium-24-black'
+      | 'medium-24-primary-red'
+      | 'medium-32-black'
+      | 'semibold-20-black'
+      | 'semibold-24-black'
+      | 'semibold-32-white'
+      | 'semibold-32-black'
+      | 'semibold-36-black'
+      | 'semibold-36-primary-red'
+      | 'semibold-40-grey-light'
+      | 'semibold-40-black'
+      | 'bold-40-black'
+      | 'bold-64-black'
+      | 'bold-64-red'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'regular-16-almost-black',
 })
 </script>
 
 <template>
   <component
-      :is="type.includes('64') || type.includes('40') ? 'h1' : type.includes('36') ? 'h2' : type.includes('32') ? 'h3' : type.includes('24') ? 'h4' : 'p'"
-      :class="['typography', type]"
+      :is="
+      props.type.includes('64') || props.type.includes('40')
+        ? 'h1'
+        : props.type.includes('36')
+          ? 'h2'
+          : props.type.includes('32')
+            ? 'h3'
+            : props.type.includes('24')
+              ? 'h4'
+              : 'p'
+    "
+      :class="['typography', props.type]"
   >
     <slot />
   </component>

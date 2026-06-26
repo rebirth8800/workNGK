@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { Typography } from "@/shared/ui/typography";
 
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  items: {
-    type: Array,
-    required: true,
-  },
-})
+interface Props {
+  title: string
+  items: string[]
+}
+
+defineProps<Props>()
 </script>
 
 <template>

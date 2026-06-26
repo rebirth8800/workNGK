@@ -6,15 +6,30 @@ import { Button } from '@/shared/ui/button'
 import IconAdress from '@/shared/svg/adress-tag.svg'
 import IconTime from "@/shared/svg/time-forward.svg";
 
-defineProps({
-  item: Object,
-})
+interface Item {
+  schedule: string[]
+  work_format: string[]
+  employment: string[]
+  title: string
+  company_name: string
+  svg?: string
+  city: string
+  date: string
+  salary: number
+  id: number
+}
 
+interface Props {
+  item?: Item
+}
 
-const date = (date)=>{
+defineProps<Props>()
+
+const date = (date: string): string => {
   return date.split('-').reverse().join('.')
 }
 </script>
+
 <template>
   <div class="card">
     <div class="tags">

@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import {Typography} from "@/shared/ui/typography";
+import { Typography } from "@/shared/ui/typography"
 
-defineProps({
-  item: Object
-})
+interface Item {
+  title: string
+  company_name: string
+  salary: number
+  date: string
+}
+
+interface Props {
+  item: Item
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -27,7 +36,7 @@ defineProps({
   max-width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white);
-  border: 1px solid  #BBB9B9;
+  border: 1px solid #BBB9B9;
   border-radius: 10px;
   padding: 30px 35px;
   display: flex;

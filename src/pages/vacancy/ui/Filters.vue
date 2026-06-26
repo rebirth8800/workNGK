@@ -8,15 +8,23 @@ import { reactive } from 'vue'
 import SearchVacancy from '@/pages/vacancy/ui/SearchVacancy.vue'
 import Zarplata from '@/pages/vacancy/ui/Zarplata.vue'
 
-const selectedFilters = defineModel({
-  type: Object,
-  default: () => ({}),
-})
+interface Filters {
+  category?: any
+  schedule?: any
+  employment?: any
+  work_format?: any
+  salary_min?: number
+  salary_max?: number
+}
 
-defineProps({
-  updateParam: Function,
-  deleteParam: Function,
-})
+interface Props {
+  updateParam?: () => void
+  deleteParam?: () => void
+}
+
+const selectedFilters = defineModel<Filters>('selectedFilters', { default: () => ({}) })
+
+defineProps<Props>()
 
 const queryClient = useQueryClient()
 
@@ -39,8 +47,8 @@ const { isPending, isError, data, error } = useQuery({
     <CheckBox name="Формат работы" :item="data.work_format" v-model="selectedFilters.work_format" />
     <Zarplata v-model:min="selectedFilters.salary_min" v-model:max="selectedFilters.salary_max" />
     <div class="button_block">
-      <Button type="default" @click="() => updateParam()">Применить фильтры</Button>
-      <Button type="text-black" @click="() => deleteParam()">Сбросить фильтры</Button>
+      <Button type="default" @click="() => updateParam?.()">Применить фильтры</Button>
+      <Button type="text-black" @click="() => deleteParam?.()">Сбросить фильтры</Button>
     </div>
   </div>
 </template>

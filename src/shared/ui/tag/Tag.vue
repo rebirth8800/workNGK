@@ -1,18 +1,19 @@
-<script setup>
-defineProps({
-  svg: Object,
-  type: {
-    type: String,
-    default: 'grey',
-    validator: (value) =>
-        ['grey', 'red-light', 'status-red', 'status-green', 'status-yellow'].includes(value),
-  },
+<script setup lang="ts">
+import type { Component } from 'vue'
+
+interface Props {
+  svg?: Component
+  type?: 'grey' | 'red-light' | 'status-red' | 'status-green' | 'status-yellow'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'grey',
 })
 </script>
 
 <template>
-  <span :class="type">
-    <component :is="svg"  v-if="svg" class="tag-icon" />
+  <span :class="props.type">
+    <component :is="props.svg" v-if="props.svg" class="tag-icon" />
     <slot />
   </span>
 </template>

@@ -1,57 +1,46 @@
 <script setup lang="ts">
 import { Typography } from "@/shared/ui/typography";
 
-defineProps({
-  type: {
-    type: String,
-    default: 'text',
-    validator: (value) =>
-        ['text', 'password', 'tel', 'email', 'date', 'number'].includes(value),
-  },
-  label: {
-    type: String,
-    default: ''
-  },
-  required: {
-    type: Boolean,
-    default: false
-  },
-  placeholder: {
-    type: String,
-    default: ''
-  },
-  error: {
-    type: String,
-    default: ''
-  },
-})
-const model = defineModel({
-  type: String,
+interface Props {
+  type?: 'text' | 'password' | 'tel' | 'email' | 'date' | 'number'
+  label?: string
+  required?: boolean
+  placeholder?: string
+  error?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'text',
+  label: '',
+  required: false,
+  placeholder: '',
+  error: '',
 })
 
+const model = defineModel<string>()
 </script>
 
 <template>
   <div class="input-wrapper">
     <div class="label-wrapper">
-      <Typography v-if="label"  class="label-text">{{ label }}</Typography>
-      <Typography v-if="required" type="medium-16-primary-red" class="required-star">*</Typography>
+      <Typography v-if="props.label" class="label-text">{{ props.label }}</Typography>
+      <Typography v-if="props.required" type="medium-16-primary-red" class="required-star">*</Typography>
     </div>
 
     <input
-        :type="type"
+        :type="props.type"
         v-model="model"
-        :placeholder="placeholder"
+        :placeholder="props.placeholder"
         class="input"
-        :class="{ 'input-error': error }"
+        :class="{ 'input-error': props.error }"
     />
 
     <Typography
-        v-if="error"
+        v-if="props.error"
         type="medium-16-primary-red"
         class="error-text"
     >
-      {{ error }}
+      {{ props.error }}
     </Typography>
   </div>
 </template>

@@ -1,25 +1,29 @@
 <script setup lang="ts">
-const selectedPage = defineModel({
-  type: Number,
-})
-defineProps({
-  len: Number,
-  per_page: Number,
-  pageChange: Function,
+interface Props {
+  len?: number
+  per_page?: number
+  pageChange?: () => void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  len: 0,
+  per_page: 10,
+  pageChange: () => {},
 })
 
-
+const selectedPage = defineModel<number>({ default: 1 })
 </script>
+
 <template>
   <div class="pagination-wrapper">
     <a-pagination
-      v-model:current="selectedPage"
-      :total="len"
-      :page-size="per_page"
-      @change="pageChange()"
-      show-less-items
-      :show-quick-jumper="false"
-      :show-size-changer="false"
+        v-model:current="selectedPage"
+        :total="props.len"
+        :page-size="props.per_page"
+        @change="props.pageChange()"
+        show-less-items
+        :show-quick-jumper="false"
+        :show-size-changer="false"
     />
   </div>
 </template>
@@ -228,5 +232,4 @@ defineProps({
     font-size: 14px !important;
   }
 }
-
 </style>

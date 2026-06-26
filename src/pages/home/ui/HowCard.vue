@@ -2,13 +2,14 @@
 import { Typography } from '@/shared/ui/typography'
 import { IconBox } from '@/shared/ui/iconBox'
 
-defineProps({
-  number: String,
-  h1: String,
-  h2: String,
-  svg: String,
-})
+interface Props {
+  number?: string
+  h1?: string
+  h2?: string
+  svg?: string
+}
 
+defineProps<Props>()
 </script>
 
 <template>

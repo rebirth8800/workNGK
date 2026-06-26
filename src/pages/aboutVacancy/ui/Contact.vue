@@ -1,16 +1,24 @@
 <script setup lang="ts">
 import ContentContact from "@/pages/aboutVacancy/ui/ContentContact.vue";
-import {Typography} from "@/shared/ui/typography";
+import { Typography } from "@/shared/ui/typography";
 import IconUser from '@/shared/svg/people-black.svg'
 import IconMail from '@/shared/svg/email-black.svg'
 import IconPhone from '@/shared/svg/phone.svg'
 
-defineProps({
-  item: {
-    type: Object,
-    required: true,
-  },
-})
+interface Item {
+  responsibilities?: string[]
+  requirements?: string[]
+  conditions?: string[]
+  contact_person?: string
+  contact_email?: string
+  contact_phone?: string
+}
+
+interface Props {
+  item: Item
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -36,16 +44,16 @@ defineProps({
       <Typography type="semibold-32-black">Контакты работодателя</Typography>
       <div class="data">
         <div class="data-item">
-          <IconUser/>
-          <Typography type="medium-24-black">{{ item.contact_person }}</Typography>
+          <IconUser />
+          <Typography type="medium-24-black">{{ item.contact_person || 'Не указано' }}</Typography>
         </div>
         <div class="data-item">
-          <IconMail/>
-          <Typography type="medium-24-black">{{ item.contact_email }}</Typography>
+          <IconMail />
+          <Typography type="medium-24-black">{{ item.contact_email || 'Не указано' }}</Typography>
         </div>
         <div class="data-item">
-          <IconPhone/>
-          <Typography type="medium-24-black">{{ item.contact_phone }}</Typography>
+          <IconPhone />
+          <Typography type="medium-24-black">{{ item.contact_phone || 'Не указано' }}</Typography>
         </div>
       </div>
     </div>
@@ -98,7 +106,6 @@ defineProps({
   background-color: var(--color-grey-light);
 }
 
-
 .data {
   display: flex;
   flex-direction: column;
@@ -112,7 +119,6 @@ defineProps({
   align-items: center;
   width: 100%;
 }
-
 
 .data-item :deep(.typography) {
   margin: 0;

@@ -2,17 +2,16 @@
 import { computed } from 'vue'
 import { getIconSrc } from '@/shared/config'
 
-const props = withDefaults(
-  defineProps<{
-    name?: string
-    src?: string
-    label?: string
-    decorative?: boolean
-  }>(),
-  {
-    decorative: true,
-  },
-)
+interface Props {
+  name?: string
+  src?: string
+  label?: string
+  decorative?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  decorative: true,
+})
 
 const iconSrc = computed(() => props.src || getIconSrc(props.name))
 const altText = computed(() => (props.decorative ? '' : props.label || ''))
@@ -20,11 +19,11 @@ const altText = computed(() => (props.decorative ? '' : props.label || ''))
 
 <template>
   <img
-    v-if="iconSrc"
-    :src="iconSrc"
-    :alt="altText"
-    :aria-hidden="decorative ? 'true' : undefined"
-    class="icon"
+      v-if="iconSrc"
+      :src="iconSrc"
+      :alt="altText"
+      :aria-hidden="props.decorative ? 'true' : undefined"
+      class="icon"
   />
 </template>
 

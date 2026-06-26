@@ -6,10 +6,21 @@ import IconBox from '@/shared/ui/iconBox/IconBox.vue'
 import IconAdress from "@/shared/svg/adress-tag.svg";
 import IconTime from "@/shared/svg/time-forward.svg";
 
+interface Item {
+  title: string
+  company_name: string
+  svg?: string
+  city: string
+  employment: string[]
+  salary: number
+  id: number
+}
 
-defineProps({
-  item: Object,
-})
+interface Props {
+  item?: Item
+}
+
+defineProps<Props>()
 </script>
 
 <template>

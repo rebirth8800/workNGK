@@ -2,15 +2,18 @@
 import { Typography } from '@/shared/ui/typography'
 import { ref } from 'vue'
 
-defineProps({
-  item: Object,
-})
+interface Option {
+  value: string
+  name: string
+}
 
-const selected = defineModel({
-  type: String,
-  default: ''
-})
+interface Props {
+  item?: Option[]
+}
 
+defineProps<Props>()
+
+const selected = defineModel<string>({ default: '' })
 const flag = ref(false)
 </script>
 

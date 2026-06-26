@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { Icon } from '@/shared/ui/icon'
 
-withDefaults(
-  defineProps<{
-    name?: string
-    type?: 'grey' | 'red'
-  }>(),
-  {
-    type: 'grey',
-  },
-)
+interface Props {
+  name?: string
+  type?: 'grey' | 'red'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'grey',
+})
 </script>
 
 <template>

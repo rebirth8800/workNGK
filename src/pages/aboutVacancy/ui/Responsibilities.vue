@@ -4,47 +4,50 @@ import IconTime from '@/shared/svg/time-forward-red.svg'
 import IconHome from '@/shared/svg/home-1.svg'
 import IconCalendar from '@/shared/svg/calendar.svg'
 
-import {Typography} from "@/shared/ui/typography";
+import { Typography } from "@/shared/ui/typography";
 
-defineProps({
-  item: {
-    type: Object,
-    required: true,
-  },
-})
+interface Item {
+  city: string
+  employment: string[] | string
+  work_format: string[] | string
+  schedule: string[] | string
+}
+
+interface Props {
+  item: Item
+}
+
+defineProps<Props>()
 </script>
 
 <template>
-    <div class="container">
-      <div class="comp">
-        <IconAdress />
-        <Typography type="regular-20-almost-black">{{ item.city }}</Typography>
-      </div>
-      <div class="comp">
-        <IconTime />
-        <Typography type="regular-20-almost-black">
-          {{ Array.isArray(item.employment) ? item.employment.join(', ') : item.employment }}
-        </Typography>
-      </div>
-      <div class="comp">
-        <IconHome />
-        <Typography type="regular-20-almost-black">
-          {{ Array.isArray(item.work_format) ? item.work_format.join(', ') : item.work_format }}
-        </Typography>
-      </div>
-      <div class="comp">
-        <IconCalendar />
-        <Typography type="regular-20-almost-black">
-          {{ Array.isArray(item.schedule) ? item.schedule.join(', ') : item.schedule }}
-        </Typography>
-      </div>
+  <div class="container">
+    <div class="comp">
+      <IconAdress />
+      <Typography type="regular-20-almost-black">{{ item.city }}</Typography>
     </div>
-
+    <div class="comp">
+      <IconTime />
+      <Typography type="regular-20-almost-black">
+        {{ Array.isArray(item.employment) ? item.employment.join(', ') : item.employment }}
+      </Typography>
+    </div>
+    <div class="comp">
+      <IconHome />
+      <Typography type="regular-20-almost-black">
+        {{ Array.isArray(item.work_format) ? item.work_format.join(', ') : item.work_format }}
+      </Typography>
+    </div>
+    <div class="comp">
+      <IconCalendar />
+      <Typography type="regular-20-almost-black">
+        {{ Array.isArray(item.schedule) ? item.schedule.join(', ') : item.schedule }}
+      </Typography>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-
-
 .container {
   display: flex;
   flex-wrap: wrap;

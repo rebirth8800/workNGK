@@ -2,14 +2,19 @@
 import { Typography } from '@/shared/ui/typography'
 import { inject } from 'vue'
 
-defineProps({
-  item: Object,
-  name: String,
-})
-const model = defineModel({
-  type: Array,
-  default: ()=>[]
-})
+interface Option {
+  value: string
+  name: string
+}
+
+interface Props {
+  item?: Option[]
+  name?: string
+}
+
+defineProps<Props>()
+
+const model = defineModel<string[]>({ default: () => [] })
 </script>
 
 <template>

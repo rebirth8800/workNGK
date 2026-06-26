@@ -26,20 +26,18 @@ import ArrowRight from '@/shared/svg/arrow-right.svg'
 import SortVacancy from "@/pages/vacancy/ui/SortVacancy.vue"
 import { Pagination } from '@/shared/ui/pagination'
 
-const selectedSort = defineModel('sort', {
-  type: String,
-})
-const selectedPage = defineModel('curent', {
-  type: Number,
-})
+interface Props {
+  data?: any[]
+  len?: number
+  pageChange?: () => void
+  updateSort?: () => void
+  per_page?: number
+}
 
-defineProps({
-  data: Array,
-  len: Number,
-  pageChange: Function,
-  updateSort: Function,
-  per_page: Number,
-})
+const selectedSort = defineModel<string>('sort', { default: '' })
+const selectedPage = defineModel<number>('curent', { default: 1 })
+
+defineProps<Props>()
 </script>
 
 <style scoped>
