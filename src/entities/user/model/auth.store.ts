@@ -6,6 +6,7 @@ import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import { login } from '@/entities/user/api/post-login.ts'
 import { getCheck } from '@/entities/user/api/get-check.ts'
+import { getUser } from '@/entities/user/api/get-user.ts'
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -45,7 +46,6 @@ export const useAuthStore = defineStore('auth', () => {
     return useMutation({
       mutationFn: async (data: any) => {
         const response = await login(data)
-        console.log(response)
         return response.data
       },
       onSuccess: (data) => {
@@ -90,6 +90,22 @@ export const useAuthStore = defineStore('auth', () => {
       }
     })
   }
+  const userId = computed(()=>user.value?.id || null)
+
+  const getUserData = ()=>{
+    return useQuery({
+      queryKey: ['get-student', userId],
+      queryFn: async () => {
+        const response = await getUser(user.value?.id)
+        console.log(response)
+        return response.data
+      },
+      retry: false,
+      staleTime:5 * 60 * 1000,
+    })
+  }
+
+
 
   // ============ 🚪 ВЫХОД ============
   const useLogout = () => {
@@ -110,9 +126,11 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     isAuthenticated,
 
+
     // Только хуки!
     useRegisterRequest,
     useLogin,
+    getUserData,
     useCheckAuth,
     useLogout
   }
