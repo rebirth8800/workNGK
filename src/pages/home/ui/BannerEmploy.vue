@@ -10,7 +10,7 @@ const text = ['Бесплатное размещение', 'Быстрая мо�
   <div class="backgraund">
     <div class="container">
       <div class="info_flex">
-        <Tag type="red-light">Для работодателей</Tag>
+        <Tag type="red-light" class="tag-left">Для работодателей</Tag>
         <Typography type="semibold-32-white">Найдите сотрудников среди <br> студентов НГК</Typography>
         <Typography type="regular-24-white">Более 1000 студентов готовы к стажировке и подработке. Разместите вакансию бесплатно и получите отклики уже сегодня</Typography>
         <div class="flex">
@@ -42,23 +42,34 @@ const text = ['Бесплатное размещение', 'Быстрая мо�
   align-items: center;
   border-radius: 10px;
 }
+
 .info_flex{
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  width: 100%;
 }
+
+.tag-left {
+  align-self: flex-start !important;
+  margin-right: auto !important;
+}
+
 .flex{
   display: flex;
   gap: 1.85rem;
   margin-left: 0;
   align-items: center;
 }
+
 .flex-text{
   display: flex;
   gap: 1rem;
   align-items: center;
- }
+}
 
-
-
+.button_block {
+  margin-left: auto;
+  flex-shrink: 0;
+}
 </style>

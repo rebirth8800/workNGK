@@ -26,10 +26,12 @@ import FileIcon from '@/shared/svg/file-add.svg'
   text-align: center;
   gap: 1rem;
 }
-.button_block{
+
+.button_block {
   margin: 0;
   display: flex;
   padding-top: 1rem;
   justify-content: center;
+  gap: 60px; /* ← ДОБАВЛЯЕМ GAP 60px */
 }
 </style>

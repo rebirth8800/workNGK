@@ -25,6 +25,7 @@ span {
   gap: 5px;
   border-radius: 10px;
   font-size: 1.25rem;
+  margin: 0 auto;
   margin-left: 0;
 }
 
@@ -66,6 +67,13 @@ span {
   color: var(--color-orange-brown);
 }
 
+/* Добавляем отступы для тегов в строке */
+.status-red,
+.status-green,
+.status-yellow {
+  margin: 0 5px; /* ← ДОБАВЛЯЕМ горизонтальные отступы */
+}
+
 @media (max-width: 1440px) {
   span {
     font-size: 1rem;
@@ -83,6 +91,7 @@ span {
   .status-green,
   .status-yellow {
     padding: 5px 40px;
+    margin: 0 4px;
   }
 }
 
@@ -103,6 +112,7 @@ span {
   .status-green,
   .status-yellow {
     padding: 5px 15px;
+    margin: 0 3px;
   }
 }
 
@@ -124,6 +134,7 @@ span {
   .status-green,
   .status-yellow {
     padding: 5px 20px;
+    margin: 0 2px;
   }
 }
 </style>

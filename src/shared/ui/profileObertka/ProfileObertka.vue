@@ -1,9 +1,15 @@
 <script setup lang="ts">
+defineProps({
+  noMargin: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <template>
   <div class="block">
-    <div class="content">
+    <div class="content" :style="noMargin ? 'margin: 0 !important; padding: 0 !important;' : ''">
       <slot/>
     </div>
   </div>
@@ -23,5 +29,6 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 </style>

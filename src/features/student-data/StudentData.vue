@@ -4,121 +4,186 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import { useQuery } from '@tanstack/vue-query'
 import { getStudent } from '@/features/student-data/api/get-student.ts'
-import { ref, watch } from 'vue'
+import { reactive, watch } from 'vue'
 
-interface Props {
-  id?: number
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  id: 0,
+const props = defineProps({
+  id: Number,
 })
 
 const { isPending, isError, data, error } = useQuery({
-  queryKey: ['get-student', props.id],
+  queryKey: ['get-student'],
   queryFn: async () => {
     const response = await getStudent(props.id)
     console.log(response)
     return response.data
   },
-  enabled: () => !!props.id,
 })
 
-// Форма для редактирования
-const isEditing = ref(false)
-const formData = ref({
+// Форма с данными студента
+const form = reactive({
   name: '',
-  email: '',
+  surname: '',
+  patronymic: '',
   phone: '',
-  // Добавьте другие поля в зависимости от структуры data
+  email: '',
+  course: '',
+  birthDate: '',
+  category: '',
 })
 
-// При получении данных заполняем форму
+// Обновляем форму при получении данных
 watch(data, (newData) => {
   if (newData) {
-    formData.value = {
-      name: newData.name || '',
-      email: newData.email || '',
-      phone: newData.phone || '',
-      // ... другие поля
-    }
+    form.name = newData.name || ''
+    form.surname = newData.surname || ''
+    form.patronymic = newData.patronymic || ''
+    form.phone = newData.phone || ''
+    form.email = newData.email || ''
+    form.course = newData.course || ''
+    form.birthDate = newData.birthDate || ''
+    form.category = newData.category || ''
   }
 }, { immediate: true })
 
-const toggleEdit = () => {
-  isEditing.value = !isEditing.value
-  if (!isEditing.value && data.value) {
-    // При отмене редактирования возвращаем исходные данные
-    formData.value = {
-      name: data.value.name || '',
-      email: data.value.email || '',
-      phone: data.value.phone || '',
-    }
-  }
-}
-
-const saveData = () => {
-  // Здесь логика сохранения данных
-  console.log('Сохранение данных:', formData.value)
-  isEditing.value = false
+const handleEdit = () => {
+  console.log('Редактировать', form)
 }
 </script>
 
 <template>
   <ProfileObertka>
     <div class="block">
-      <div class="title">
+      <!-- Заголовок и кнопка -->
+      <div class="header">
         <Typography type="semibold-32-black">Личные данные</Typography>
-        <Button @click="toggleEdit">
-          {{ isEditing ? 'Отмена' : 'Редактировать' }}
-        </Button>
+        <Button @click="handleEdit" >Редактировать</Button>
       </div>
 
-      <!-- Состояние загрузки -->
-      <div v-if="isPending" class="loading">
-        <Typography type="regular-20-almost-black">Загрузка данных...</Typography>
-      </div>
+      <!-- Форма с двумя колонками -->
+      <div class="form-grid">
+        <!-- Левая колонка -->
+        <div class="col">
+          <!-- Имя -->
+          <a-form-item
+              label="Имя"
+              name="name"
+              :rules="[{ required: true, message: 'Введите имя' }]"
+          >
+            <a-input
+                v-model:value="form.name"
+                placeholder="Иван"
+                class="custom-input"
+            />
+          </a-form-item>
 
-      <!-- Состояние ошибки -->
-      <div v-else-if="isError" class="error">
-        <Typography type="regular-20-primary-red">Ошибка загрузки: {{ error?.message }}</Typography>
-      </div>
+          <!-- Отчество -->
+          <a-form-item
+              label="Отчество"
+              name="patronymic"
+          >
+            <a-input
+                v-model:value="form.patronymic"
+                placeholder="Иванович"
+                class="custom-input"
+            />
+          </a-form-item>
 
-      <!-- Форма -->
-      <div v-else-if="data" class="form-container">
-        <div v-if="isEditing" class="form">
-          <div class="form-group">
-            <Typography type="regular-16-almost-black">Имя</Typography>
-            <input v-model="formData.name" class="input" placeholder="Введите имя" />
-          </div>
-          <div class="form-group">
-            <Typography type="regular-16-almost-black">Email</Typography>
-            <input v-model="formData.email" class="input" placeholder="Введите email" />
-          </div>
-          <div class="form-group">
-            <Typography type="regular-16-almost-black">Телефон</Typography>
-            <input v-model="formData.phone" class="input" placeholder="Введите телефон" />
-          </div>
-          <!-- Добавьте другие поля -->
+          <!-- Телефон -->
+          <a-form-item
+              label="Телефон"
+              name="phone"
+              :rules="[
+              { required: true, message: 'Введите номер телефона' },
+              {
+                pattern: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
+                message: 'Введите номер в формате +7 (999) 000-00-00'
+              }
+            ]"
+          >
+            <a-input
+                v-model:value="form.phone"
+                placeholder="+7 (999) 000-00-00"
+                class="custom-input"
+            />
+          </a-form-item>
 
-          <Button @click="saveData" class="save-btn">Сохранить</Button>
+          <!-- Категория (заголовок и место для селекта) -->
+          <a-form-item
+              label="Категория"
+              name="category"
+          >
+            <a-select
+                v-model:value="form.category"
+                placeholder="Выберите категорию"
+                class="custom-select"
+                popupClassName="custom-select-dropdown"
+            >
+              <a-select-option value="it">IT и программирование</a-select-option>
+              <a-select-option value="education">Педагогика и образование</a-select-option>
+              <a-select-option value="economics">Экономика и бухгалтерия</a-select-option>
+              <a-select-option value="logistics">Логистика и торговля</a-select-option>
+              <a-select-option value="law">Юриспруденция</a-select-option>
+              <a-select-option value="document">Документооборот и архив</a-select-option>
+            </a-select>
+          </a-form-item>
         </div>
 
-        <!-- Отображение данных -->
-        <div v-else class="data-display">
-          <div class="data-item">
-            <Typography type="regular-16-almost-black" class="label">Имя</Typography>
-            <Typography type="semibold-20-black">{{ data.name || 'Не указано' }}</Typography>
-          </div>
-          <div class="data-item">
-            <Typography type="regular-16-almost-black" class="label">Email</Typography>
-            <Typography type="semibold-20-black">{{ data.email || 'Не указано' }}</Typography>
-          </div>
-          <div class="data-item">
-            <Typography type="regular-16-almost-black" class="label">Телефон</Typography>
-            <Typography type="semibold-20-black">{{ data.phone || 'Не указано' }}</Typography>
-          </div>
-          <!-- Добавьте другие поля -->
+        <!-- Правая колонка -->
+        <div class="col">
+          <!-- Фамилия -->
+          <a-form-item
+              label="Фамилия"
+              name="surname"
+              :rules="[{ required: true, message: 'Введите фамилию' }]"
+          >
+            <a-input
+                v-model:value="form.surname"
+                placeholder="Иванов"
+                class="custom-input"
+            />
+          </a-form-item>
+
+          <!-- Email -->
+          <a-form-item
+              label="Email"
+              name="email"
+              :rules="[
+              { required: true, message: 'Введите email' },
+              { type: 'email', message: 'Введите корректный email' }
+            ]"
+          >
+            <a-input
+                v-model:value="form.email"
+                placeholder="ivanov@mail.ru"
+                class="custom-input"
+            />
+          </a-form-item>
+
+          <!-- Курс -->
+          <a-form-item
+              label="Курс"
+              name="course"
+              :rules="[{ required: true, message: 'Введите курс' }]"
+          >
+            <a-input
+                v-model:value="form.course"
+                placeholder="3"
+                class="custom-input"
+            />
+          </a-form-item>
+
+          <!-- Дата рождения -->
+          <a-form-item
+              label="Дата рождения"
+              name="birthDate"
+              :rules="[{ required: true, message: 'Введите дату рождения' }]"
+          >
+            <a-input
+                v-model:value="form.birthDate"
+                placeholder="01.01.2000"
+                class="custom-input"
+            />
+          </a-form-item>
         </div>
       </div>
     </div>
@@ -127,97 +192,176 @@ const saveData = () => {
 
 <style scoped>
 .block {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
   width: 100%;
+  background-color: var(--color-white);
+  border-radius: 10px;
+  padding: 30px 35px;
+  box-sizing: border-box;
+  margin: 0 !important;
 }
 
-.title {
+/* Заголовок и кнопка в одной строке */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
+}
+
+/* Сетка с двумя колонками */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px 30px;
   width: 100%;
 }
 
-.loading,
-.error {
-  padding: 20px;
-  text-align: center;
-}
-
-.form-container {
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
   width: 100%;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
+/* ===== СТИЛИ ДЛЯ FORM ITEMS ===== */
+:deep(.ant-form-item) {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+:deep(.ant-form-item-label) {
+  padding-bottom: 8px !important;
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
 }
 
-.input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--color-grey-light);
-  border-radius: 10px;
-  background: var(--color-white);
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
-  outline: none;
-  font-size: 1rem;
-  color: var(--color-black);
+:deep(.ant-form-item-label > label) {
+  font-weight: 500 !important;
+  font-size: 1.25rem !important;
+  color: var(--color-black) !important;
+  text-align: left !important;
+  display: inline-flex !important;
+  justify-content: flex-start !important;
 }
 
-.input:focus {
-  border-color: var(--color-primary-red);
+:deep(.ant-form-item-label > label .ant-form-item-required) {
+  font-size: 1rem !important;
+  color: var(--color-primary-red) !important;
 }
 
-.save-btn {
-  align-self: flex-start;
-  margin-top: 10px;
+:deep(.ant-form-item-control) {
+  width: 100% !important;
 }
 
-.data-display {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 500px;
+:deep(.ant-form-item-control-input) {
+  width: 100% !important;
 }
 
-.data-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--color-grey-light);
+:deep(.ant-form-item-control-input-content) {
+  width: 100% !important;
 }
 
-.data-item:last-child {
-  border-bottom: none;
+/* ===== СТИЛИ ДЛЯ ИНПУТОВ ===== */
+:deep(.custom-input) {
+  width: 100% !important;
+  padding: 15px !important;
+  border: 1px solid var(--color-grey-light) !important;
+  border-radius: 10px !important;
+  background: var(--color-white) !important;
+  color: var(--color-black) !important;
+  font-size: 1.125rem !important;
+  height: auto !important;
+  box-sizing: border-box !important;
 }
 
-.label {
-  color: var(--color-grey);
+:deep(.custom-input::placeholder) {
+  color: var(--color-grey-light) !important;
+  font-size: 1.125rem !important;
 }
 
+:deep(.custom-input:hover) {
+  border-color: var(--color-almost-black) !important;
+}
+
+:deep(.custom-input:focus) {
+  border-color: var(--color-almost-black) !important;
+  box-shadow: none !important;
+}
+
+/* ===== СТИЛИ ДЛЯ СЕЛЕКТА ===== */
+:deep(.custom-select) {
+  width: 100% !important;
+}
+
+:deep(.custom-select .ant-select-selector) {
+  padding: 15px !important;
+  border: 1px solid var(--color-grey-light) !important;
+  border-radius: 10px !important;
+  background: var(--color-white) !important;
+  color: var(--color-black) !important;
+  font-size: 1.125rem !important;
+  height: auto !important;
+  min-height: 54px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: border-color 0.3s !important;
+}
+
+:deep(.custom-select .ant-select-selection-placeholder) {
+  color: var(--color-grey-light) !important;
+  font-size: 1.125rem !important;
+}
+
+:deep(.custom-select .ant-select-selection-item) {
+  font-size: 1.125rem !important;
+  color: var(--color-black) !important;
+}
+
+:deep(.custom-select .ant-select-arrow) {
+  color: var(--color-grey-light) !important;
+  font-size: 1.125rem !important;
+}
+
+:deep(.custom-select .ant-select-selector:hover) {
+  border-color: var(--color-almost-black) !important;
+}
+
+:deep(.custom-select.ant-select-focused .ant-select-selector) {
+  border-color: var(--color-almost-black) !important;
+  box-shadow: none !important;
+}
+
+/* ===== АДАПТИВ ===== */
 @media (max-width: 768px) {
-  .title {
+  .block {
+    padding: 20px 16px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .header {
     flex-direction: column;
-    align-items: flex-start;
     gap: 15px;
+    align-items: flex-start;
   }
+}
+</style>
 
-  .form,
-  .data-display {
-    max-width: 100%;
-  }
+<!-- ===== ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА ===== -->
+<style>
+.custom-select-dropdown .ant-select-item {
+  font-size: 20px !important;
+  padding: 14px 20px !important;
+  min-height: 56px !important;
+  line-height: 1.5 !important;
+}
+
+.custom-select-dropdown .ant-select-item-option-content {
+  font-size: 20px !important;
 }
 </style>

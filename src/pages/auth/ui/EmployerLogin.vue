@@ -29,9 +29,9 @@ const form = reactive({
     </div>
     <a-form :model="form" name="login" layout="vertical" @finish="onFinish()" class="login-form">
       <a-form-item
-        label="Email"
-        name="email"
-        :rules="[
+          label="Email"
+          name="email"
+          :rules="[
           { required: true, message: 'Введите email' },
           { type: 'email', message: 'Введите корректный email' },
         ]"
@@ -40,17 +40,17 @@ const form = reactive({
       </a-form-item>
 
       <a-form-item
-        label="Пароль"
-        name="password"
-        :rules="[
+          label="Пароль"
+          name="password"
+          :rules="[
           { required: true, message: 'Введите пароль' },
           { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
         ]"
       >
         <a-input-password
-          v-model:value="form.password"
-          placeholder="Введите пароль"
-          class="custom-input-password"
+            v-model:value="form.password"
+            placeholder="Введите пароль"
+            class="custom-input-password"
         />
       </a-form-item>
 
@@ -92,12 +92,22 @@ const form = reactive({
   gap: 0.5rem;
 }
 
+/* ===== КНОПКА ВОЙТИ - ЦЕНТРИРУЕМ ТЕКСТ ===== */
 .button {
   width: 100% !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   text-align: center !important;
+}
+
+/* Если внутри кнопки есть span или другие элементы - тоже центрируем */
+.button :deep(*) {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
 }
 
 .text {
@@ -153,7 +163,7 @@ const form = reactive({
   border-radius: 10px !important;
   background: var(--color-white) !important;
   color: var(--color-black) !important;
-  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important;
   height: auto !important;
   box-sizing: border-box !important;
   display: block !important;
@@ -179,7 +189,7 @@ const form = reactive({
   border: none !important;
   background: transparent !important;
   color: var(--color-black) !important;
-  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important;
   height: auto !important;
   box-sizing: border-box !important;
   outline: none !important;
@@ -202,12 +212,12 @@ const form = reactive({
 /* ===== ПЛЕЙСХОЛДЕР ===== */
 :deep(.ant-input::placeholder) {
   color: var(--color-grey-light) !important;
-  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important;
 }
 
 :deep(.custom-input-password .ant-input::placeholder) {
   color: var(--color-grey-light) !important;
-  font-size: 1.125rem !important; /* 👈 УВЕЛИЧИЛ ДО 18px */
+  font-size: 1.125rem !important;
 }
 
 /* ===== ХОВЕР ===== */
