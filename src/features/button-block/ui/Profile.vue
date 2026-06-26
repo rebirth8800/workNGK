@@ -22,6 +22,7 @@ defineProps({
   display: flex;
   gap: 20px;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .profile-content {

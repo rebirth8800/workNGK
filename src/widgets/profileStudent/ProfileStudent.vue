@@ -19,11 +19,38 @@ const activeKey = ref(1)
 
 <style scoped>
 
-.ant-tabs-nav{
-  margin-left: 0;
-}
-.ant-tabs-content-holder{
-  margin-left: 0 ;
+:deep(.ant-tabs-tab) {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-almost-black);
 }
 
+:deep(.ant-tabs-tab-active) {
+  color: var(--color-primary-red) !important;
+}
+
+:deep(.ant-tabs-tab-active .ant-tabs-tab-btn) {
+  color: var(--color-primary-red) !important;
+}
+
+:deep(.ant-tabs-nav) {
+  margin-left: 0;
+}
+
+:deep(.ant-tabs-content-holder) {
+  margin-left: 0;
+}
+
+:deep(.ant-tabs-tab:hover) {
+  color: var(--color-primary-red);
+}
+
+:deep(.ant-tabs-ink-bar) {
+  background-color: var(--color-primary-red) !important;
+}
+
+:deep(.ant-tabs-tab-btn) {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
 </style>

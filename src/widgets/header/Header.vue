@@ -17,7 +17,11 @@ import Tag from '@/shared/ui/tag/Tag.vue'
 .container {
   display: flex;
   align-items: center;
-  gap: 347px;
-  padding: 1rem 0;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 </style>

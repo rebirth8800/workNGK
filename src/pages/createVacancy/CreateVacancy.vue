@@ -4,6 +4,7 @@
 import VacancyLayout from "@/app/layout/VacancyLayout.vue";
 import TytleVacancy from "@/pages/createVacancy/ui/TytleVacancy.vue";
 import FormVacancy from "@/pages/createVacancy/ui/FormVacancy.vue";
+import {ProfileObertka} from "@/shared/ui/profileObertka";
 
 </script>
 

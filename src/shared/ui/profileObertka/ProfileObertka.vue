@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="block">
@@ -9,14 +10,18 @@
 </template>
 
 <style scoped>
-.block{
+.block {
   width: 100%;
   background-color: var(--color-white);
-  border: 1px solid var(--color-primary-red);
+  border: 1px solid #BBB9B9;
   border-radius: 10px;
+  box-sizing: border-box;
 }
-.content{
+
+.content {
   padding: 2rem;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 </style>

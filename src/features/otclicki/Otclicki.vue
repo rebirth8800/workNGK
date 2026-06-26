@@ -33,13 +33,32 @@ const pageChange = () => {
         <Card v-for="(item, index) in data.items" :key="item.id" :item="item" />
       </div>
       <Pagination
-        :len="data?.len"
-        :per_page="pagination.per_page"
-        :pageChange="pageChange"
-        v-model="pagination.page"
+          :len="data?.len"
+          :per_page="pagination.per_page"
+          :pageChange="pageChange"
+          v-model="pagination.page"
       />
     </div>
   </ProfileObertka>
 </template>
 
-<style scoped></style>
+<style scoped>
+.block {
+  width: 100%;
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin: 0 !important;
+  //border: 1px solid ;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.card_list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+</style>
