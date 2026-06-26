@@ -22,7 +22,7 @@ const { isPending, isError, data, error } = useQuery({
     <Typography type="semibold-40-black">Свежие вакансии</Typography>
     <Typography type="regular-16-almost-black" v-if="isPending">Загрузка...</Typography>
     <div v-else-if="data && data.length > 0" class="card_list">
-      <NewCard v-for="todo in data"  :item="todo" />
+      <NewCard v-for="todo in data" :key="todo.id" :item="todo" />
     </div>
     <Typography v-else type="regular-16-almost-black">Нет вакансий</Typography>
   </div>

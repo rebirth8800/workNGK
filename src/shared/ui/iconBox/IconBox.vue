@@ -1,19 +1,20 @@
-<script setup>
-import { computed, defineAsyncComponent } from 'vue'
-const props = defineProps({
-  svg: Object,
-  type: {
-    type: String,
-    default: 'grey',
-    validator: (value) => ['grey', 'red'].includes(value),
-  },
-})
+<script setup lang="ts">
+import { Icon } from '@/shared/ui/icon'
 
+withDefaults(
+  defineProps<{
+    name?: string
+    type?: 'grey' | 'red'
+  }>(),
+  {
+    type: 'grey',
+  },
+)
 </script>
 
 <template>
   <div :class="['icon-box', `icon-box-${type}`]">
-    <component v-if="svg" :is="svg" class="icon-box-svg" />
+    <Icon :name="name" class="icon-box-svg" />
   </div>
 </template>
 
@@ -37,14 +38,8 @@ const props = defineProps({
 }
 
 .icon-box-svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.icon-box-svg svg {
   width: 42px;
   height: 42px;
-  display: block;
 }
 
 @media (max-width: 1440px) {
@@ -52,7 +47,7 @@ const props = defineProps({
     width: 50px;
     height: 50px;
   }
-  .icon-box-svg svg {
+  .icon-box-svg {
     width: 30px;
     height: 30px;
   }
@@ -62,7 +57,7 @@ const props = defineProps({
     width: 50px;
     height: 50px;
   }
-  .icon-box-svg svg {
+  .icon-box-svg {
     width: 30px;
     height: 30px;
   }
@@ -74,7 +69,7 @@ const props = defineProps({
     border-radius: 5px;
   }
 
-  .icon-box-svg svg {
+  .icon-box-svg {
     width: 23px;
     height: 23px;
   }

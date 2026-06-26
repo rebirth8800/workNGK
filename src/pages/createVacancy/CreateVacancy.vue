@@ -24,7 +24,7 @@ import FormVacancy from "@/pages/createVacancy/ui/FormVacancy.vue";
   display: flex;
   flex-direction: column;
   gap: 30px;
-  //margin-top: 40px;
+  /* margin-top: 40px; */
 
 }
 .background {

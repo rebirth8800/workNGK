@@ -3,7 +3,6 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import Tag from '@/shared/ui/tag/Tag.vue'
 import IconBox from '@/shared/ui/iconBox/IconBox.vue'
-import { iconConfig } from '@/shared/config'
 import IconAdress from "@/shared/svg/adress-tag.svg";
 import IconTime from "@/shared/svg/time-forward.svg";
 
@@ -20,9 +19,7 @@ defineProps({
         <Typography type="semibold-32-black" class="card-title">{{ item.title }}</Typography>
         <Typography type="regular-20-almost-black">{{ item.company_name }}</Typography>
       </div>
-      <!--      <component v-if="iconConfig" :is="iconConfig[props.item.svg]" />-->
-      <!--      <component :is="iconConfig[item.svg]" :key="item.id"/>-->
-      <IconBox type="grey" :svg="iconConfig[item.svg]" :key="item.id"/>
+      <IconBox type="grey" :name="item.svg" />
     </div>
     <div class="tags_wrapper">
       <Tag type="grey" :svg="IconAdress">{{ item.city }}</Tag>

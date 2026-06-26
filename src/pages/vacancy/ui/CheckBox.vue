@@ -38,9 +38,9 @@ const model = defineModel({
 input {
   width: 35px;
   height: 35px;
-  //background-color: var(--color-background-grey);
-  //border: 1px solid var(--color-grey-light);
-  //border-radius: 5px;
+  /* background-color: var(--color-background-grey); */
+  /* border: 1px solid var(--color-grey-light); */
+  /* border-radius: 5px; */
 }
 input[type="checkbox"] {
   accent-color: var(--color-primary-red);

@@ -5,7 +5,6 @@ import { IconBox } from '@/shared/ui/iconBox'
 import { Button } from '@/shared/ui/button'
 import IconAdress from '@/shared/svg/adress-tag.svg'
 import IconTime from "@/shared/svg/time-forward.svg";
-import { iconConfig } from '@/shared/config'
 
 defineProps({
   item: Object,
@@ -33,7 +32,7 @@ const date = (date)=>{
           </div>
 
           <div class="title-squre">
-            <IconBox type="grey" :svg="iconConfig[item.svg]" />
+            <IconBox type="grey" :name="item.svg" />
 
           </div>
         </div>
