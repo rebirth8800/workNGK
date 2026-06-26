@@ -21,7 +21,7 @@ const text = ['Бесплатное размещение', 'Быстрая мо�
         </div>
       </div>
       <div class="button_block">
-        <Button>Разместить вакансию</Button>
+        <RouterLink to="/vacancies/create"><Button>Разместить вакансию</Button></RouterLink>
       </div>
     </div>
   </div>

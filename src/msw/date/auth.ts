@@ -1,6 +1,6 @@
 import {generateEmployer, generateStudent} from '@/msw/date/generateUsers.ts'
-import { generateToken } from '@/msw/date/auth/token.ts'
-import { setCookie } from '@/msw/date/auth/cookies.ts'
+import { generateJWT } from '@/msw/date/auth/token.ts'
+import { setHttpOnlyCookie } from '@/msw/date/auth/cookies.ts'
 import { HttpResponse } from 'msw'
 
 let users = []
@@ -40,22 +40,102 @@ export const Login = (data)=>{
     )
   }
 
-  const token = generateToken({email: user.email, password: user.password, role: user.role})
-  const cookie = setCookie('token', token)
-  console.log(cookie)
+  const accessToken = generateJWT({
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  });
 
   const response = new HttpResponse(
     JSON.stringify({
       success: true,
-      message: 'Успешная авторизация'
+      message: 'Вход выполнен успешно!',
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.first_name,
+        lastname: user.last_name,
+        role: user.role,
+      },
     }),
     {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Set-Cookie': cookie
-      }
-    }
+        'Set-Cookie': [setHttpOnlyCookie(accessToken, 'access_token')],
+      },
+    },
   )
   return response
+}
+
+export const GetData = (cookie)=>{
+  console.log(cookie)
+  if (!cookie) {
+    return HttpResponse.json({
+      success: false,
+      message: 'Не авторизован',
+    }, { status: 401 });
+  }
+
+  // Парсим cookie
+  const cookies = cookie.split('; ').reduce((acc: any, item) => {
+    const [key, value] = item.split('=');
+    acc[key] = value;
+    return acc;
+  }, {});
+
+  const token = cookies['access_token'];
+  if (!token) {
+    return HttpResponse.json({
+      success: false,
+      message: 'Не авторизован',
+    }, { status: 401 });
+  }
+
+  try {
+    // Проверяем токен
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      return HttpResponse.json({
+        success: false,
+        message: 'Невалидный токен',
+      }, { status: 401 });
+    }
+
+    const payload = JSON.parse(atob(parts[1]));
+    const user = users.find(u => u.id === payload.id);
+
+    if (!user) {
+      return HttpResponse.json({
+        success: false,
+        message: 'Пользователь не найден',
+      }, { status: 404 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        lastname: user.lastname,
+        role: user.role,
+        company: user.company || null,
+        university: user.university || null,
+      }
+    }, { status: 200 });
+
+  } catch (error) {
+    return HttpResponse.json({
+      success: false,
+      message: 'Невалидный токен',
+    }, { status: 401 });
+  }
+}
+
+export const getUser = (id)=>{
+  const user = users.find(x=>x.id === id);
+  console.log(id,user)
+  return user
 }

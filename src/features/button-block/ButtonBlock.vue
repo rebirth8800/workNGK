@@ -2,17 +2,19 @@
 import { Button } from '@/shared/ui/button'
 import { useAuthStore } from '@/entities/user'
 import { computed } from 'vue'
+import Profile from '@/features/button-block/ui/Profile.vue'
 
 const authStore = useAuthStore()
 
+const user = authStore.user
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-
-
 </script>
 
 <template>
   <div class="main">
-    <RouterLink to="/auth" v-if="!isAuthenticated"><Button >Войти</Button></RouterLink>
+    <Profile v-if="isAuthenticated" :lastname="user?.lastname" :name="user?.name"/>
+    <RouterLink v-else to="/auth" ><Button >Войти</Button></RouterLink>
+
   </div>
 
 </template>

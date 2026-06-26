@@ -5,6 +5,7 @@ import { postRegistrationEmployer, postRegistrationStudent } from '@/entities/us
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import { login } from '@/entities/user/api/post-login.ts'
+import { getCheck } from '@/entities/user/api/get-check.ts'
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -34,7 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
       },
       onError: (error) => {
-        message.error(error)
+        message.error('Неверная почта или пароль')
       }
     })
   }
@@ -70,11 +71,13 @@ export const useAuthStore = defineStore('auth', () => {
     return useQuery({
       queryKey: ['auth', 'me'],
       queryFn: async () => {
-        const response = await api.get('/api/me')
+        const response = await getCheck()
         return response.data
       },
       retry: false,
-      staleTime: 5 * 60 * 1000,
+      staleTime: 0,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
       onSuccess: (data) => {
         if (data.success) {
           user.value = data.user

@@ -9,7 +9,15 @@ import 'ant-design-vue/es/pagination/style/index';
 
 async function prepareApp(){
     const {worker} = await import('./msw/browser')
-    return worker.start()
+    return worker.start({
+      onUnhandledRequest: 'bypass',
+      // Включаем поддержку cookie
+      serviceWorker: {
+        options: {
+          credentials: 'include', // <--- КЛЮЧЕВОЙ МОМЕНТ!
+        },
+      },
+    })
 
 }
 const pinia = createPinia()

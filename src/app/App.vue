@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import request from '../../api/requests.js'
-import { onMounted } from 'vue'
-import Typography from '@/shared/ui/typography/Typography.vue'
-import Button from '@/shared/ui/button/Button.vue'
-import { Header } from '@/widgets/header'
-import { Footer } from '@/widgets/footer'
+import { useAuthStore } from '@/entities/user'
 
+const authStore = useAuthStore()
+
+// authStore.useCheckAuth()
 
 </script>
 
