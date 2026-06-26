@@ -2,21 +2,20 @@
 import { ProfileObertka } from '@/shared/ui/profileObertka'
 import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
-import { useQuery } from '@tanstack/vue-query'
-import { getStudent } from '@/features/student-data/api/get-student.ts'
-import { reactive, watch } from 'vue'
+import { useAuthStore } from '@/entities/user'
+import { reactive, watch, ref } from 'vue'
+import { mask } from 'vue-the-mask'
+
+const vMask = mask
+
+
+const authStore = useAuthStore()
+
+const data  = authStore.user
+const flag_form = ref(true)
 
 const props = defineProps({
   id: Number,
-})
-
-const { isPending, isError, data, error } = useQuery({
-  queryKey: ['get-student'],
-  queryFn: async () => {
-    const response = await getStudent(props.id)
-    console.log(response)
-    return response.data
-  },
 })
 
 // Форма с данными студента
@@ -32,31 +31,44 @@ const form = reactive({
 })
 
 // Обновляем форму при получении данных
-watch(data, (newData) => {
-  if (newData) {
-    form.name = newData.name || ''
-    form.surname = newData.surname || ''
-    form.patronymic = newData.patronymic || ''
-    form.phone = newData.phone || ''
-    form.email = newData.email || ''
-    form.course = newData.course || ''
-    form.birthDate = newData.birthDate || ''
-    form.category = newData.category || ''
-  }
-}, { immediate: true })
+watch(
+  ()=>data,
+  (newData) => {
+    if (newData) {
+      form.name = newData.first_name || ''
+      form.surname = newData.last_name|| ''
+      form.patronymic = newData.middle_name || ''
+      form.phone = newData.phone || ''
+      form.email = newData.email || ''
+      form.course = newData.course || ''
+      form.birthDate = newData.birthDate || ''
+      form.category = newData.category || ''
+    }
+  },
+  { immediate: true },
+)
 
-const handleEdit = () => {
+const onFinish = () => {
   console.log('Редактировать', form)
 }
 </script>
 
 <template>
   <ProfileObertka>
-    <div class="block">
+    <a-form
+      class="block"
+      :model="form"
+      name="basic"
+      :label-col="{ span: 8 }"
+      :wrapper-col="{ span: 16 }"
+      autocomplete="off"
+      @finish="onFinish"
+    >
       <!-- Заголовок и кнопка -->
       <div class="header">
         <Typography type="semibold-32-black">Личные данные</Typography>
-        <Button @click="handleEdit" >Редактировать</Button>
+        <Button @click="flag_form = false" v-if="flag_form">Редактировать</Button>
+        <Button @click="flag_form = false" html-type="sumbit" v-else>Сохранить изменения</Button>
       </div>
 
       <div class="form-grid">
@@ -64,58 +76,46 @@ const handleEdit = () => {
         <div class="col">
           <!-- Имя -->
           <a-form-item
-              label="Имя"
-              name="name"
-              :rules="[{ required: true, message: 'Введите имя' }]"
+            label="Имя"
+            name="name"
+            :rules="[{ required: true, message: 'Введите имя' }]"
           >
-            <a-input
-                v-model:value="form.name"
-                placeholder="Иван"
-                class="custom-input"
-            />
+            <a-input v-model:value="form.name" :disabled="flag_form" placeholder="Иван" class="custom-input" />
           </a-form-item>
 
           <!-- Отчество -->
-          <a-form-item
-              label="Отчество"
-              name="patronymic"
-          >
-            <a-input
-                v-model:value="form.patronymic"
-                placeholder="Иванович"
-                class="custom-input"
-            />
+          <a-form-item label="Отчество" name="patronymic">
+            <a-input v-model:value="form.patronymic" :disabled="flag_form" placeholder="Иванович" class="custom-input" />
           </a-form-item>
 
           <!-- Телефон -->
           <a-form-item
-              label="Телефон"
-              name="phone"
-              :rules="[
+            label="Телефон"
+            name="phone"
+            :rules="[
               { required: true, message: 'Введите номер телефона' },
               {
                 pattern: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
-                message: 'Введите номер в формате +7 (999) 000-00-00'
-              }
+                message: 'Введите номер в формате +7 (999) 000-00-00',
+              },
             ]"
           >
             <a-input
-                v-model:value="form.phone"
-                placeholder="+7 (999) 000-00-00"
-                class="custom-input"
+              :disabled="flag_form"
+              v-model:value="form.phone"
+              v-mask="'+7 (###) ###-##-##'"
+              class="custom-input"
             />
           </a-form-item>
 
           <!-- Категория (заголовок и место для селекта) -->
-          <a-form-item
-              label="Категория"
-              name="category"
-          >
+          <a-form-item label="Категория" name="category">
             <a-select
-                v-model:value="form.category"
-                placeholder="Выберите категорию"
-                class="custom-select"
-                popupClassName="custom-select-dropdown"
+              :disabled="flag_form"
+              v-model:value="form.category"
+              placeholder="Выберите категорию"
+              class="custom-select"
+              popupClassName="custom-select-dropdown"
             >
               <a-select-option value="it">IT и программирование</a-select-option>
               <a-select-option value="education">Педагогика и образование</a-select-option>
@@ -131,61 +131,45 @@ const handleEdit = () => {
         <div class="col">
           <!-- Фамилия -->
           <a-form-item
-              label="Фамилия"
-              name="surname"
-              :rules="[{ required: true, message: 'Введите фамилию' }]"
+            label="Фамилия"
+            name="surname"
+            :rules="[{ required: true, message: 'Введите фамилию' }]"
           >
-            <a-input
-                v-model:value="form.surname"
-                placeholder="Иванов"
-                class="custom-input"
-            />
+            <a-input v-model:value="form.surname" :disabled="flag_form" placeholder="Иванов" class="custom-input" />
           </a-form-item>
 
           <!-- Email -->
           <a-form-item
-              label="Email"
-              name="email"
-              :rules="[
+            label="Email"
+            name="email"
+            :rules="[
               { required: true, message: 'Введите email' },
-              { type: 'email', message: 'Введите корректный email' }
+              { type: 'email', message: 'Введите корректный email' },
             ]"
           >
-            <a-input
-                v-model:value="form.email"
-                placeholder="ivanov@mail.ru"
-                class="custom-input"
-            />
+            <a-input v-model:value="form.email" :disabled="flag_form" placeholder="ivanov@mail.ru" class="custom-input" />
           </a-form-item>
 
           <!-- Курс -->
           <a-form-item
-              label="Курс"
-              name="course"
-              :rules="[{ required: true, message: 'Введите курс' }]"
+            label="Курс"
+            name="course"
+            :rules="[{ required: true, message: 'Введите курс' }]"
           >
-            <a-input
-                v-model:value="form.course"
-                placeholder="3"
-                class="custom-input"
-            />
+            <a-input v-model:value="form.course" :disabled="flag_form" placeholder="3" class="custom-input" />
           </a-form-item>
 
           <!-- Дата рождения -->
           <a-form-item
-              label="Дата рождения"
-              name="birthDate"
-              :rules="[{ required: true, message: 'Введите дату рождения' }]"
+            label="Дата рождения"
+            name="birthDate"
+            :rules="[{ required: true, message: 'Введите дату рождения' }]"
           >
-            <a-input
-                v-model:value="form.birthDate"
-                placeholder="01.01.2000"
-                class="custom-input"
-            />
+            <a-input v-model:value="form.birthDate" :disabled="flag_form" placeholder="01.01.2000" class="custom-input" />
           </a-form-item>
         </div>
       </div>
-    </div>
+    </a-form>
   </ProfileObertka>
 </template>
 
@@ -194,7 +178,6 @@ const handleEdit = () => {
   width: 100%;
   background-color: var(--color-white);
   border-radius: 10px;
-  padding: 30px 35px;
   box-sizing: border-box;
   margin: 0 !important;
 }

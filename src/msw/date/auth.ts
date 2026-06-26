@@ -45,18 +45,12 @@ export const Login = (data)=>{
     email: user.email,
     role: user.role,
   });
-
+  const { password, ...userWithoutPassword } = user
   const response = new HttpResponse(
     JSON.stringify({
       success: true,
       message: 'Вход выполнен успешно!',
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.first_name,
-        lastname: user.last_name,
-        role: user.role,
-      },
+      user: {...userWithoutPassword},
     }),
     {
       status: 200,

@@ -56,7 +56,8 @@ export const handlers = [
     const url = new URL(request.url)
     return HttpResponse.json(getOtcliki(url.searchParams.get('page'), url.searchParams.get('per_page')))
   }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/student/data', ({request}) => {
+  http.get('https://api.ngk-rabota.ru/v1/profile/user', ({request}) => {
+    console.log(request)
     const url = new URL(request.url)
     return HttpResponse.json(getUser(url.searchParams.get('id')))
   }),
