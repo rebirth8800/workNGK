@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQueryClient, useQuery } from '@tanstack/vue-query'
-import { getFilters } from '@/pages/vacancy/api/get-filters.ts'
+import { getFilters } from '@/shared/api/get-filters.ts'
 import CheckBox from '@/pages/vacancy/ui/CheckBox.vue'
 import Category from '@/pages/vacancy/ui/Category.vue'
 import { Button } from '@/shared/ui/button'
@@ -9,12 +9,13 @@ import SearchVacancy from '@/pages/vacancy/ui/SearchVacancy.vue'
 import Zarplata from '@/pages/vacancy/ui/Zarplata.vue'
 
 interface Filters {
-  category?: any
-  schedule?: any
-  employment?: any
-  work_format?: any
+  category?: string,
+  schedule?: any,
+  employment?: any,
+  work_format?: any,
   salary_min?: number
   salary_max?: number
+  search?: string
 }
 
 interface Props {
@@ -22,8 +23,7 @@ interface Props {
   deleteParam?: () => void
 }
 
-const selectedFilters = defineModel<Filters>('selectedFilters', { default: () => ({}) })
-
+const selectedFilters = defineModel<Filters>( { default: () => ({}) })
 defineProps<Props>()
 
 const queryClient = useQueryClient()

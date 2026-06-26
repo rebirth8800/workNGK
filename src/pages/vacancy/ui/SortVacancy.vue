@@ -8,7 +8,7 @@ interface Props {
   updateSort?: () => void
 }
 
-const selectedSort = defineModel<string>('selectedSort', { default: '' })
+const selectedSort = defineModel<string>( { default: '' })
 
 defineProps<Props>()
 
