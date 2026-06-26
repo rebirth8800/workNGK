@@ -59,9 +59,8 @@ const handleEdit = () => {
         <Button @click="handleEdit" >Редактировать</Button>
       </div>
 
-      <!-- Форма с двумя колонками -->
       <div class="form-grid">
-        <!-- Левая колонка -->
+
         <div class="col">
           <!-- Имя -->
           <a-form-item

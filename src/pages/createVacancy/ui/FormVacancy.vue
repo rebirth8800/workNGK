@@ -253,7 +253,7 @@ const handleTagsUpdate = (tags: string[]) => {
         :initialTags="['Vue.js', 'TypeScript']"
         @update:tags="handleTagsUpdate"
     />
-
+    <InputWithTags placeholder="Укажите обязанности сотрудника" ></InputWithTags>
     <!-- ===== МЫ ЖДЁМ ОТ ВАС ===== -->
     <Typography type="semibold-32-black">Мы ждём от вас</Typography>
     <InputWithTags
@@ -262,6 +262,7 @@ const handleTagsUpdate = (tags: string[]) => {
         :initialTags="['Vue.js', 'TypeScript']"
         @update:tags="handleTagsUpdate"
     />
+    <InputWithTags placeholder="Укажите ожидания от сотрудника (образование, навыки и тд)" ></InputWithTags>
 
     <!-- ===== УСЛОВИЯ РАБОТЫ ===== -->
     <Typography type="semibold-32-black">Условия работы</Typography>
@@ -271,6 +272,7 @@ const handleTagsUpdate = (tags: string[]) => {
         :initialTags="['Vue.js', 'TypeScript']"
         @update:tags="handleTagsUpdate"
     />
+    <InputWithTags placeholder="Укажите условия работы (занятость, бонусы, зарплата и тд)" ></InputWithTags>
 
     <!-- ===== КОНТАКТЫ ===== -->
     <Typography type="semibold-32-black">Контакты</Typography>

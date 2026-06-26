@@ -3,6 +3,7 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import SearchIcon from '@/shared/svg/search-white.svg'
 import FileIcon from '@/shared/svg/file-add.svg'
+import InputWithTags from "@/shared/ui/inputWithTag/InputWithTags.vue";
 </script>
 
 <template>
