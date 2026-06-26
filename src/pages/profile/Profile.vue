@@ -3,6 +3,7 @@ import DefaultLayout from '@/app/layout/DefaultLayout.vue'
 import { useAuthStore } from '@/entities/user'
 import { ProfileEmployer } from '@/widgets/profileEmployer'
 import { ProfileStudent } from '@/widgets/profileStudent'
+import { Button } from '@/shared/ui/button'
 
 const name = {
   student: 'студента',
@@ -12,14 +13,17 @@ const name = {
 const authStore = useAuthStore()
 
 const user = authStore.user
+
+const logout = authStore.useLogout()
 </script>
 
 <template>
   <DefaultLayout :name="`Личный кабинет ${name[user?.role]}`">
     <div class="background">
       <div class="container">
-        <ProfileEmployer v-if="user.role == 'employer'" :id="user.id"/>
-        <ProfileStudent v-if="user.role == 'student'" :id="user.id"/>
+        <ProfileEmployer v-if="user.role == 'employer'" />
+        <ProfileStudent v-if="user.role == 'student'"/>
+        <Button @click="logout.mutate()">Выход из аккаунта</Button>
       </div>
     </div>
 
@@ -34,5 +38,8 @@ const user = authStore.user
 .container {
   background-color: var(--color-background-grey);
   padding-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 </style>

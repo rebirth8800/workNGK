@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router'
 import { login } from '@/entities/user/api/post-login.ts'
 import { getCheck } from '@/entities/user/api/get-check.ts'
 import { putUserData } from '@/entities/user/api/put-user-data.ts'
+import { logout } from '@/entities/user/api/post-logout.ts'
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -125,12 +126,20 @@ export const useAuthStore = defineStore('auth', () => {
   const useLogout = () => {
     return useMutation({
       mutationFn: async () => {
-        const response = await api.post('/api/logout')
+        const response = await logout()
         return response.data
       },
-      onSuccess: () => {
-        user.value = null
-        isAuthenticated.value = false
+      onSuccess: (data) => {
+        if (data.success) {
+          user.value = null
+          isAuthenticated.value = false
+          message.success({
+            content: data.message,
+            class: 'custom-message-large',
+          })
+          router.push({name: 'home'})
+        }
+
       }
     })
   }

@@ -163,3 +163,10 @@ export const PutUser = (body)=>{
     message: 'Данные успешно обновлены'
   }, { status: 200 });
 }
+
+export const Logout = ()=>{
+  return HttpResponse.json({
+    success: true,
+    message: 'Успешный выход'
+  }, { status: 200 });
+}

@@ -26,17 +26,10 @@ const form = reactive({
   middle_name: '',
   phone: '',
   email: '',
-  course: '',
-  category: '',
+  company_name: '',
+  position: '',
 })
 
-const { isPending, isError, data, error } = useQuery({
-  queryKey: ['filter'],
-  queryFn: async () => {
-    const response = await getFilters()
-    return response.data
-  },
-})
 
 
 // Обновляем форму при получении данных
@@ -49,8 +42,8 @@ watch(
       form.middle_name = newUser.middle_name || ''
       form.phone = newUser.phone || ''
       form.email = newUser.email || ''
-      form.course = newUser.course || ''
-      form.category = newUser.category || ''
+      form.company_name = newUser.company_name || ''
+      form.position = newUser.position || ''
     }
   },
   { immediate: true },
