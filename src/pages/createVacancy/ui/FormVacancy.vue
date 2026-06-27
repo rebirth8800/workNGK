@@ -4,60 +4,47 @@ import { Typography } from "@/shared/ui/typography"
 import InputWithTags from "@/shared/ui/inputWithTag/InputWithTags.vue";
 import {Button} from "@/shared/ui/button";
 import Profile from "@/features/button-block/ui/Profile.vue";
+import { useQuery } from '@tanstack/vue-query'
+import { getFilters } from '@/shared/api/get-filters.ts'
 
 const form = reactive({
   company: '',
   title: '',
   salary: '',
   city: '',
-  workFormat: undefined,
-  category: undefined,
-  employment: undefined,
-  schedule: undefined,
+  work_format: '',
+  category: '',
+  employment: '',
+  schedule: '',
   address: '',
   email: '',
   phone: ''
 })
 
-const workFormatOptions = [
-  { value: 'remote', label: 'Удалённо' },
-  { value: 'office', label: 'Из офиса' },
-  { value: 'hybrid', label: 'Гибрид' },
-  { value: 'travel', label: 'Разъездной' }
-]
+const { isPending, isError, data, error } = useQuery({
+  queryKey: ['filter'],
+  queryFn: async () => {
+    const response = await getFilters()
+    return response.data
+  },
+})
 
-const categoryOptions = [
-  { value: 'it', label: 'IT и программирование' },
-  { value: 'education', label: 'Педагогика и образование' },
-  { value: 'economics', label: 'Экономика и бухгалтерия' },
-  { value: 'logistics', label: 'Логистика и торговля' },
-  { value: 'law', label: 'Юриспруденция' },
-  { value: 'document', label: 'Документооборот и архив' }
-]
 
-const employmentOptions = [
-  { value: 'full', label: 'Полная занятость' },
-  { value: 'part', label: 'Частичная занятость' },
-  { value: 'internship', label: 'Стажировка' },
-  { value: 'project', label: 'Проектная работа / разовая' }
-]
 
-const scheduleOptions = [
-  { value: '5-2', label: '5/2' },
-  { value: '2-2', label: '2/2' },
-  { value: 'free', label: 'Свободный' },
-  { value: '6-1', label: '6/1' },
-  { value: '1-1', label: '1/1' }
-]
-
-const handleTagsUpdate = (tags: string[]) => {
-  console.log('Обновлённые теги:', tags)
+const onFinish = () => {
+  console.log('Обновлённые теги:', form)
 }
 </script>
 
 <template>
-  <div class="container" style="width: 100% !important; max-width: 100% !important; padding: 35px 35px; box-sizing: border-box !important; ">
-
+  <a-form
+    :model="form"
+    class="container"
+    name="createVacancy"
+    @finish="onFinish"
+    style="width: 100% !important; max-width: 100% !important; padding: 35px 35px; box-sizing: border-box !important; "
+  >
+    {{data}}
     <!-- ===== ОСНОВНАЯ ИНФОРМАЦИЯ ===== -->
     <Typography type="semibold-32-black">Основная информация</Typography>
 
@@ -137,18 +124,19 @@ const handleTagsUpdate = (tags: string[]) => {
             style="width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important;"
         >
           <a-select
-              v-model:value="form.workFormat"
+              v-model:value="form.work_format"
               placeholder="Выберите формат работы"
               class="custom-select"
               popupClassName="custom-select-dropdown"
               style="width: 100% !important; max-width: 100% !important;"
           >
+            <a-select-option value="" selected disabled>Выберите формат работы</a-select-option>
             <a-select-option
-                v-for="option in workFormatOptions"
+                v-for="option in data?.work_format"
                 :key="option.value"
                 :value="option.value"
             >
-              {{ option.label }}
+              {{ option.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -168,11 +156,11 @@ const handleTagsUpdate = (tags: string[]) => {
               style="width: 100% !important; max-width: 100% !important;"
           >
             <a-select-option
-                v-for="option in categoryOptions"
+                v-for="option in data?.category"
                 :key="option.value"
                 :value="option.value"
             >
-              {{ option.label }}
+              {{ option.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -195,11 +183,11 @@ const handleTagsUpdate = (tags: string[]) => {
               style="width: 100% !important; max-width: 100% !important;"
           >
             <a-select-option
-                v-for="option in employmentOptions"
+                v-for="option in data?.employment"
                 :key="option.value"
                 :value="option.value"
             >
-              {{ option.label }}
+              {{ option.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -219,11 +207,11 @@ const handleTagsUpdate = (tags: string[]) => {
               style="width: 100% !important; max-width: 100% !important;"
           >
             <a-select-option
-                v-for="option in scheduleOptions"
+                v-for="option in data?.schedule"
                 :key="option.value"
                 :value="option.value"
             >
-              {{ option.label }}
+              {{ option.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -303,8 +291,8 @@ const handleTagsUpdate = (tags: string[]) => {
       </a-form-item>
     </div>
 
-    <Button type="default" class="submit-button">Отправить на модерацию</Button>
-  </div>
+    <Button html-type="submit" class="submit-button">Отправить на модерацию</Button>
+  </a-form>
 </template>
 
 <style scoped>
