@@ -25,35 +25,32 @@ const form = reactive({
   last_name: '',
   middle_name: '',
   phone: '',
-  course: '',
-  category: '',
+  email: '',
+  company_name: '',
+  position: '',
 })
 
-const { isPending, isError, data, error } = useQuery({
-  queryKey: ['filter'],
-  queryFn: async () => {
-    const response = await getFilters()
-    return response.data
-  },
-})
+
 
 // Обновляем форму при получении данных
 watch(
-    () => user,
-    (newUser) => {
-      if (newUser) {
-        form.first_name = newUser.first_name || ''
-        form.last_name = newUser.last_name || ''
-        form.middle_name = newUser.middle_name || ''
-        form.phone = newUser.phone || ''
-        form.course = newUser.course || ''
-        form.category = newUser.category || ''
-      }
-    },
-    { immediate: true },
+  () => user,
+  (newUser) => {
+    if (newUser) {
+      form.first_name = newUser.first_name || ''
+      form.last_name = newUser.last_name || ''
+      form.middle_name = newUser.middle_name || ''
+      form.phone = newUser.phone || ''
+      form.email = newUser.email || ''
+      form.company_name = newUser.company_name || ''
+      form.position = newUser.position || ''
+    }
+  },
+  { immediate: true },
 )
 
 const onFinish = () => {
+  form.id = data.id
   flag_form.value = true
   updateData.mutate(form)
 }
@@ -62,11 +59,12 @@ const onFinish = () => {
 <template>
   <ProfileObertka>
     <a-form
-        class="block"
-        :model="form"
-        name="basic"
-        layout="vertical"
-        @finish="onFinish"
+      class="block"
+      :model="form"
+      name="basic"
+      :label-col="{ span: 8 }"
+      :wrapper-col="{ span: 16 }"
+      @finish="onFinish"
     >
       <!-- Заголовок и кнопка -->
       <div class="header">
@@ -76,33 +74,36 @@ const onFinish = () => {
       </div>
 
       <div class="form-grid">
-        <!-- Левая колонка -->
+
         <div class="col">
           <!-- Имя -->
-          <a-form-item label="Имя" name="name">
+          <a-form-item
+            label="Имя"
+            name="name"
+
+          >
             <a-input
-                v-model:value="form.first_name"
-                :disabled="flag_form"
-                placeholder="Иван"
-                class="custom-input"
+              v-model:value="form.first_name"
+              :disabled="flag_form"
+              placeholder="Иван"
+              class="custom-input"
             />
           </a-form-item>
 
           <!-- Отчество -->
           <a-form-item label="Отчество" name="patronymic">
             <a-input
-                v-model:value="form.middle_name"
-                :disabled="flag_form"
-                placeholder="Иванович"
-                class="custom-input"
+              v-model:value="form.middle_name"
+              :disabled="flag_form"
+              class="custom-input"
             />
           </a-form-item>
 
           <!-- Телефон -->
           <a-form-item
-              label="Телефон"
-              name="phone"
-              :rules="[
+            label="Телефон"
+            name="phone"
+            :rules="[
               { required: true, message: 'Введите номер телефона' },
               {
                 pattern: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
@@ -111,52 +112,68 @@ const onFinish = () => {
             ]"
           >
             <a-input
-                :disabled="flag_form"
-                v-model:value="form.phone"
-                v-mask="'+7 (###) ###-##-##'"
-                placeholder="+7 (999) 000-00-00"
-                class="custom-input"
+              :disabled="flag_form"
+              v-model:value="form.phone"
+              v-mask="'+7 (###) ###-##-##'"
+              class="custom-input"
             />
+          </a-form-item>
+
+          <!-- Категория (заголовок и место для селекта) -->
+          <a-form-item label="Категория" name="category">
+            <a-select
+              :disabled="flag_form"
+              v-model:value="form.category"
+              class="custom-select"
+              popupClassName="custom-select-dropdown"
+            >
+              <a-select-option v-for="item of data?.category" :key="item.value" :value="item.key">{{item.name}}</a-select-option>
+            </a-select>
           </a-form-item>
         </div>
 
         <!-- Правая колонка -->
         <div class="col">
           <!-- Фамилия -->
-          <a-form-item label="Фамилия" name="surname">
+          <a-form-item
+            label="Фамилия"
+            name="surname"
+
+          >
             <a-input
-                v-model:value="form.last_name"
-                :disabled="flag_form"
-                placeholder="Иванов"
-                class="custom-input"
+              v-model:value="form.last_name"
+              :disabled="flag_form"
+              class="custom-input"
+            />
+          </a-form-item>
+
+          <!-- Email -->
+          <a-form-item
+            label="Email"
+            name="email"
+            :rules="[
+              { required: true, message: 'Введите email' },
+              { type: 'email', message: 'Введите корректный email' },
+            ]"
+          >
+            <a-input
+              v-model:value="form.email"
+              :disabled="flag_form"
+              class="custom-input"
             />
           </a-form-item>
 
           <!-- Курс -->
           <a-form-item
-              label="Курс"
-              name="course"
-              :rules="[{ required: true, message: 'Введите курс' }]"
+            label="Курс"
+            name="course"
+            :rules="[{ required: true, message: 'Введите курс' }]"
           >
             <a-input
-                v-model:value="form.course"
-                :disabled="flag_form"
-                placeholder="3"
-                class="custom-input"
+              v-model:value="form.course"
+              :disabled="flag_form"
+              class="custom-input"
             />
-          </a-form-item>
-
-          <!-- Категория -->
-          <a-form-item label="Категория" name="category">
-            <a-select
-                :disabled="flag_form"
-                v-model:value="form.category"
-                placeholder="Выберите категорию"
-                class="custom-select"
-                popupClassName="custom-select-dropdown"
-            >
-              <a-select-option v-for="item of data?.category" :key="item.value" :value="item.key">{{item.name}}</a-select-option>
-            </a-select>
           </a-form-item>
         </div>
       </div>
@@ -169,7 +186,6 @@ const onFinish = () => {
   width: 100%;
   background-color: var(--color-white);
   border-radius: 10px;
-  padding: 10px 15px;
   box-sizing: border-box;
   margin: 0 !important;
 }
@@ -186,14 +202,14 @@ const onFinish = () => {
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px 40px;
+  gap: 25px 30px;
   width: 100%;
 }
 
 .col {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
   width: 100%;
 }
 
@@ -219,7 +235,6 @@ const onFinish = () => {
   text-align: left !important;
   display: inline-flex !important;
   justify-content: flex-start !important;
-  height: auto !important;
 }
 
 :deep(.ant-form-item-label > label .ant-form-item-required) {
@@ -250,7 +265,6 @@ const onFinish = () => {
   font-size: 1.125rem !important;
   height: auto !important;
   box-sizing: border-box !important;
-  transition: border-color 0.3s ease !important;
 }
 
 :deep(.custom-input::placeholder) {
@@ -265,14 +279,6 @@ const onFinish = () => {
 :deep(.custom-input:focus) {
   border-color: var(--color-almost-black) !important;
   box-shadow: none !important;
-}
-
-/* Убираем серый фон у disabled */
-:deep(.custom-input:disabled) {
-  background: var(--color-white) !important;
-  color: var(--color-black) !important;
-  cursor: default;
-  opacity: 1;
 }
 
 /* ===== СТИЛИ ДЛЯ СЕЛЕКТА ===== */
@@ -319,15 +325,20 @@ const onFinish = () => {
   box-shadow: none !important;
 }
 
-/* Убираем серый фон у disabled селекта */
-:deep(.custom-select.ant-select-disabled .ant-select-selector) {
-  background: var(--color-white) !important;
-  color: var(--color-black) !important;
-  cursor: default;
-}
-
-:deep(.custom-select.ant-select-disabled .ant-select-selection-item) {
-  color: var(--color-black) !important;
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+  .block {
+    padding: 20px 16px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
 }
 </style>
 

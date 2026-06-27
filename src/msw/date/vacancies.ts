@@ -1,9 +1,11 @@
 import { fakerRU } from '@faker-js/faker'
 import _ from 'lodash'
 import { filters } from './paramsRefines.ts'
+const statuses = ['Опубликована', 'На модерации', 'Отклонена']
+
 
 const zapoln = ()=>{
-  return _.times(67, function(n){
+  return _.times(57, function(n){
     const category = _.sample(filters().category)
     return {
       id: n+1,
@@ -35,7 +37,7 @@ const zapoln = ()=>{
 
 const vacancies = zapoln()
 
-const otclicki = _.sampleSize(vacancies, 5)
+const profileVacancy = _.sampleSize(vacancies, 5)
 
 export const getVacancy = (id) => {
   for (let item of vacancies) {
@@ -114,7 +116,17 @@ export const getNewVacancies = ()=>{
 
 export const getOtcliki = (page, per_page)=>{
   return {
-    len: otclicki.length,
-    items: otclicki.slice(+page*+per_page-+per_page, +per_page*+page)
+    len: profileVacancy.length,
+    items: profileVacancy.slice(+page*+per_page-+per_page, +per_page*+page)
+  }
+}
+
+export const getVacancyEmployer = (page, per_page)=>{
+  profileVacancy.forEach(elem => {
+    elem.status = _.sample(statuses)
+  })
+  return {
+    len: profileVacancy.length,
+    items: profileVacancy.slice(+page*+per_page-+per_page, +per_page*+page)
   }
 }

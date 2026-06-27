@@ -3,13 +3,7 @@ import { ref } from 'vue'
 import { Otclicki } from '@/features/otclicki'
 import StudentData from '@/features/student-data/StudentData.vue'
 
-interface Props {
-  id?: number
-}
 
-const props = withDefaults(defineProps<Props>(), {
-  id: 0,
-})
 
 const activeKey = ref(1)
 </script>
@@ -17,7 +11,7 @@ const activeKey = ref(1)
 <template>
   <a-tabs v-model:activeKey="activeKey">
     <a-tab-pane :key="1" tab="Мои отклики"><Otclicki /></a-tab-pane>
-    <a-tab-pane :key="2" tab="Личные данные" force-render><StudentData :id="props.id" /></a-tab-pane>
+    <a-tab-pane :key="2" tab="Личные данные" force-render><StudentData /></a-tab-pane>
     <a-tab-pane :key="3" tab="Моё резюме">резюме</a-tab-pane>
   </a-tabs>
 </template>
