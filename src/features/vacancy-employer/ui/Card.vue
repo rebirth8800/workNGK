@@ -8,7 +8,7 @@ interface Item {
   company_name: string
   salary: number
   date: string
-  status: string // "Отклонена" | "Одобрена" | "На модерации"
+  status: string // "Отклонена" | "Опубликована" | "На модерации"
 }
 
 interface Props {
@@ -22,7 +22,7 @@ const getTagType = (status: string) => {
   switch (status) {
     case 'Отклонена':
       return 'status-red'
-    case 'Одобрена':
+    case 'Опубликована':
       return 'status-green'
     case 'На модерации':
       return 'status-yellow'

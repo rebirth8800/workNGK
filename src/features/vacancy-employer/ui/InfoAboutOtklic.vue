@@ -13,9 +13,14 @@ import {Typography} from "@/shared/ui/typography";
 
 <style scoped>
 .container{
+  display: flex;
+  gap: 16px;
+  align-items: center;
   width: 100%;
   padding: 35px 35px;
   border-radius: 10px;
   border: 1px solid #BBB9B9;
+  margin-top: 35px;
+  min-width: 1600px;
 }
 </style>
