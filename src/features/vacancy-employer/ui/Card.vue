@@ -1,15 +1,14 @@
 <script setup lang="ts">
-
-import {Typography} from "@/shared/ui/typography";
-import {Tag} from "@/shared/ui/tag";
-import {Button} from "@/shared/ui/button";
+import { Typography } from "@/shared/ui/typography";
+import { Tag } from "@/shared/ui/tag";
+import { Button } from "@/shared/ui/button";
 
 interface Item {
   title: string
   company_name: string
   salary: number
   date: string
-  status: string
+  status: string // "Отклонена" | "Одобрена" | "На модерации"
 }
 
 interface Props {
@@ -18,7 +17,19 @@ interface Props {
 
 defineProps<Props>()
 
-
+// Функция для определения типа тега по статусу
+const getTagType = (status: string) => {
+  switch (status) {
+    case 'Отклонена':
+      return 'status-red'
+    case 'Одобрена':
+      return 'status-green'
+    case 'На модерации':
+      return 'status-yellow'
+    default:
+      return 'status-yellow' // или 'red-light' по умолчанию
+  }
+}
 </script>
 
 <template>
@@ -34,10 +45,11 @@ defineProps<Props>()
       </div>
     </div>
     <div class="content-right">
-      <Tag type="red-light">{{item.status}}</Tag>
+      <Tag :type="getTagType(item.status)" class="card-tag">
+        {{ item.status }}
+      </Tag>
       <Button type="none-back-black">Редактировать</Button>
       <Button type="none-back-red">Удалить</Button>
-
     </div>
   </div>
 </template>
@@ -62,10 +74,12 @@ defineProps<Props>()
   flex-direction: column;
   gap: 5px;
 }
-.content-footer{
+
+.content-footer {
   display: flex;
   gap: 30px;
 }
+
 .content-left {
   display: flex;
   flex-direction: column;
@@ -78,5 +92,14 @@ defineProps<Props>()
   margin-left: auto;
   display: flex;
   gap: 20px;
+  align-items: center;
+}
+
+.card-tag {
+  padding: 5px 40px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  min-height: 25px !important;
 }
 </style>

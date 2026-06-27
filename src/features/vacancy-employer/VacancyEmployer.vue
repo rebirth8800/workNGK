@@ -7,6 +7,7 @@ import { reactive } from 'vue'
 import { getVacancyEmployer } from '@/features/vacancy-employer/api/get-vacancy-employer.ts'
 import { Pagination } from '@/shared/ui/pagination'
 import Card from '@/features/vacancy-employer/ui/Card.vue'
+import InfoAboutOtklic from "@/features/vacancy-employer/ui/InfoAboutOtklic.vue";
 
 const pagination = reactive({
   page: 1,
@@ -43,6 +44,7 @@ const pageChange = () => {
           v-model="pagination.page"
       />
     </div>
+    <InfoAboutOtklic></InfoAboutOtklic>
   </ProfileObertka>
 </template>
 
