@@ -24,7 +24,6 @@ const { isPending, isError, data, error, refetch } = useQuery({
 const pageChange = () => {
   refetch()
 }
-
 </script>
 
 <template>
@@ -32,19 +31,43 @@ const pageChange = () => {
     <div class="block">
       <div class="title">
         <Typography type="semibold-32-black">Мои вакансии</Typography>
-        <RouterLink to="/vacancies/create"><Button>Создать вакансию</Button></RouterLink>
+        <RouterLink to="/vacancies/create"><Button class="bth">+ Создать вакансию</Button></RouterLink>
       </div>
       <div class="card_list">
         <Card v-for="item in data?.items" :key="item.id" :item="item"/>
       </div>
       <Pagination
-        :len="data?.len"
-        :per_page="pagination.per_page"
-        :pageChange="pageChange"
-        v-model="pagination.page"
+          :len="data?.len"
+          :per_page="pagination.per_page"
+          :pageChange="pageChange"
+          v-model="pagination.page"
       />
     </div>
   </ProfileObertka>
 </template>
 
-<style scoped></style>
+<style scoped>
+.block{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.bth{
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.card_list{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+</style>

@@ -24,7 +24,7 @@ span {
   align-items: center;
   gap: 5px;
   border-radius: 10px;
-  font-size: 1.25rem;
+  font-size: 1rem;
   margin: 0 auto;
   margin-left: 0;
 }
@@ -43,9 +43,9 @@ span {
   color: var(--color-almost-black);
 }
 .red-light {
-  padding: 5px 10px;
+  padding: 2px 16px;
   background-color: var(--color-red-light);
-  font-weight: 400;
+  font-weight: 600;
   color: var(--color-primary-red);
 }
 .status-red {

@@ -21,9 +21,9 @@ const props = withDefaults(defineProps<Props>(), {
 <style scoped>
 button {
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   border-radius: 10px;
-  padding: 15px 35px;
+  padding: 12px 30px;
   display: flex;
   gap: 10px;
   white-space: nowrap;

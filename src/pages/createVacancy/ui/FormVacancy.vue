@@ -247,31 +247,16 @@ const handleTagsUpdate = (tags: string[]) => {
 
     <!-- ===== ЧТО ВЫ БУДЕТЕ ДЕЛАТЬ ===== -->
     <Typography type="semibold-32-black">Что вы будете делать</Typography>
-    <InputWithTags
-        placeholder="Введите навык..."
-        buttonText="Добавить"
-        :initialTags="['Vue.js', 'TypeScript']"
-        @update:tags="handleTagsUpdate"
-    />
+
     <InputWithTags placeholder="Укажите обязанности сотрудника" ></InputWithTags>
     <!-- ===== МЫ ЖДЁМ ОТ ВАС ===== -->
     <Typography type="semibold-32-black">Мы ждём от вас</Typography>
-    <InputWithTags
-        placeholder="Введите навык..."
-        buttonText="Добавить"
-        :initialTags="['Vue.js', 'TypeScript']"
-        @update:tags="handleTagsUpdate"
-    />
+
     <InputWithTags placeholder="Укажите ожидания от сотрудника (образование, навыки и тд)" ></InputWithTags>
 
     <!-- ===== УСЛОВИЯ РАБОТЫ ===== -->
     <Typography type="semibold-32-black">Условия работы</Typography>
-    <InputWithTags
-        placeholder="Введите навык..."
-        buttonText="Добавить"
-        :initialTags="['Vue.js', 'TypeScript']"
-        @update:tags="handleTagsUpdate"
-    />
+
     <InputWithTags placeholder="Укажите условия работы (занятость, бонусы, зарплата и тд)" ></InputWithTags>
 
     <!-- ===== КОНТАКТЫ ===== -->
@@ -318,7 +303,7 @@ const handleTagsUpdate = (tags: string[]) => {
       </a-form-item>
     </div>
 
-    <Button type="default">Отправить на модерацию</Button>
+    <Button type="default" class="submit-button">Отправить на модерацию</Button>
   </div>
 </template>
 
@@ -335,6 +320,23 @@ const handleTagsUpdate = (tags: string[]) => {
   max-width: 100% !important;
   margin: 0 !important;
   box-sizing: border-box !important;
+}
+
+/* ===== КНОПКА ОТПРАВКИ - ЦЕНТРИРУЕМ ===== */
+.submit-button {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.submit-button :deep(*) {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
 }
 
 /* ===== БЛОК ХАРАКТЕРИСТИКИ — GAP 30px ===== */
