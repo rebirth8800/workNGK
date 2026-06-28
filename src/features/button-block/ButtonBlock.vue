@@ -12,9 +12,9 @@ const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 <template>
   <div class="main">
-    <Profile v-if="isAuthenticated" :lastname="user?.last_name" :name="user?.first_name"/>
-    <RouterLink v-else to="/auth" ><Button >Войти</Button></RouterLink>
-
+    <RouterLink v-if="!isAuthenticated" to="/auth" ><Button >Войти</Button></RouterLink>
+    <RouterLink v-else-if="user?.role == 'admin'"  to="/admin" ><Button >Админ панель</Button></RouterLink>
+    <Profile v-else :lastname="user?.last_name" :name="user?.first_name"/>
   </div>
 
 </template>

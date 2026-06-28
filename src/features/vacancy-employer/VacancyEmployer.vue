@@ -8,6 +8,11 @@ import { getVacancyEmployer } from '@/features/vacancy-employer/api/get-vacancy-
 import { Pagination } from '@/shared/ui/pagination'
 import Card from '@/features/vacancy-employer/ui/Card.vue'
 import InfoAboutOtklic from "@/features/vacancy-employer/ui/InfoAboutOtklic.vue"
+import { useAuthStore } from '@/entities/user'
+
+const authStore = useAuthStore()
+
+const user = authStore.user
 
 const pagination = reactive({
   page: 1,
@@ -17,7 +22,7 @@ const pagination = reactive({
 const { isPending, isError, data, error, refetch } = useQuery({
   queryKey: ['vacancies'],
   queryFn: async () => {
-    const response = await getVacancyEmployer({ page: pagination.page, per_page: pagination.per_page })
+    const response = await getVacancyEmployer(user?.id, { page: pagination.page, per_page: pagination.per_page })
     return response.data
   },
 })

@@ -1,12 +1,15 @@
-import {generateEmployer, generateStudent} from '@/msw/date/generateUsers.ts'
+import { generateAdmin, generateEmployer, generateStudent} from '@/msw/date/generateUsers.ts'
 import { generateJWT } from '@/msw/date/auth/token.ts'
 import { setHttpOnlyCookie } from '@/msw/date/auth/cookies.ts'
 import { HttpResponse } from 'msw'
 import { filters } from '@/msw/date/paramsRefines.ts'
 
+export const Employers = generateEmployer(5)
+
 let users = []
 users.push(...generateStudent((3)))
-users.push(...generateEmployer(3))
+users.push(...Employers)
+users.push(generateAdmin())
 
 export const RegisterEmployer = (data)=>{
 
@@ -129,10 +132,10 @@ export const GetData = (cookie)=>{
   }
 }
 
-export const PutUser = (body)=>{
+export const PutUser = (id, body)=>{
   let data = {}
   users.forEach((user, index)=>{
-    if (user.id === body.id){
+    if (user.id == id){
       for (const key in body){
         if (key === 'phone'){
           const phone = body[key].replaceAll(' ', '');
@@ -169,4 +172,13 @@ export const Logout = ()=>{
     success: true,
     message: 'Успешный выход'
   }, { status: 200 });
+}
+
+export const getAdminEmployers = (page, per_page)=>{
+  const responce = users.filter(elem => elem.role == 'employer' && elem.status == 'На модерации')
+  return {
+    len: responce.length,
+    items: responce.slice(+page*+per_page-+per_page, +per_page*+page)
+
+  }
 }

@@ -17,8 +17,8 @@ const onFinish = () => {
 }
 
 const form = reactive({
-  email: 'email4@gmail.com',
-  password: 'password4',
+  email: 'admin@gmail.com',
+  password: 'admin1',
 })
 </script>
 

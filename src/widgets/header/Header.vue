@@ -2,7 +2,6 @@
 import { MainMenu } from '@/features/main-menu'
 import ButtonBlock from '@/features/button-block/ButtonBlock.vue'
 import { Logo } from '@/shared/ui/logo'
-import Tag from '@/shared/ui/tag/Tag.vue'
 </script>
 
 <template>

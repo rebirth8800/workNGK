@@ -5,9 +5,18 @@ import {
   getNewVacancies,
   getOtcliki,
   getVacancyEmployer,
+  postVacancy,
+  getAdminVacancy,
 } from '@/msw/date/vacancies.ts'
 import { filters, sorts } from '@/msw/date/paramsRefines'
-import { GetData, Login, Logout, PutUser, RegisterEmployer } from '@/msw/date/auth.ts'
+import {
+  getAdminEmployers,
+  GetData,
+  Login,
+  Logout,
+  PutUser,
+  RegisterEmployer,
+} from '@/msw/date/auth.ts'
 
 
 const getUrl = (url: string) => {
@@ -58,31 +67,40 @@ export const handlers = [
     const cookie = request.headers.get('Cookie')
     return GetData(cookie)
   }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/student/vacancies', ({request}) => {
+  http.get('https://api.ngk-rabota.ru/v1/profile/student/:id/vacancies', ({request, params}) => {
+    const { id } = params
     const url = new URL(request.url)
     return HttpResponse.json(getOtcliki(url.searchParams.get('page'), url.searchParams.get('per_page')))
   }),
-  http.put('https://api.ngk-rabota.ru/v1/profile/user', async ({request}) => {
+  http.put('https://api.ngk-rabota.ru/v1/profile/user/:id', async ({request, params}) => {
+    const { id } = params
     const body = await request.json()
-    return PutUser(body)
+    return PutUser(id, body)
   }),
   http.post('https://api.ngk-rabota.ru/v1/profile/logout',  async () => {
     return Logout()
   }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', ({request}) => {
+  http.get('https://api.ngk-rabota.ru/v1/profile/employer/:id/vacancies', ({request, params}) => {
+    const { id } = params
     const url = new URL(request.url)
-    return HttpResponse.json(getVacancyEmployer(url.searchParams.get('page'), url.searchParams.get('per_page')))
+    return HttpResponse.json(getVacancyEmployer(id, url.searchParams.get('page'), url.searchParams.get('per_page')))
+  }),
+  http.post('https://api.ngk-rabota.ru/v1/vacancies', async ({ request }) => {
+    const { data } = await request.json()
+    console.log(data)
+    return HttpResponse.json(postVacancy(data))
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/admin/vacancies', ({request}) => {
+    const url = new URL(request.url)
+    return HttpResponse.json(getAdminVacancy(url.searchParams.get('page'), url.searchParams.get('per_page')))
+  }),
+  http.get('https://api.ngk-rabota.ru/v1/admin/employers', ({request}) => {
+    const url = new URL(request.url)
+    return HttpResponse.json(getAdminEmployers(url.searchParams.get('page'), url.searchParams.get('per_page')))
   }),
 
-  http.get('https://api.ngk-rabota.ru/v1/profile/employer/vacancies', () => {
-    return HttpResponse.json(getVacancies(10, false))
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/profile/employer', () => {
-    return HttpResponse.json(RegisterEmployer())
-  }),
-  http.get('https://api.ngk-rabota.ru/v1/admin/vacancies', () => {
-    return HttpResponse.json(getVacancies(10, false))
-  }),
+
+
   http.get('https://api.ngk-rabota.ru/v1/admin/profiles', () => {
     return HttpResponse.json(RegisterEmployer())
   }),

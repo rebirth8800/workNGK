@@ -95,7 +95,7 @@ export const useAuthStore = defineStore('auth', () => {
   const useUpdateData = () => {
     return useMutation({
       mutationFn: async (data: any) => {
-        const response = await putUserData(data)
+        const response = await putUserData(user.value.id, data)
         return response.data
       },
       onSuccess: (data) => {
@@ -105,10 +105,7 @@ export const useAuthStore = defineStore('auth', () => {
             class: 'custom-message-large',
           })
           for (const key in data.data) {
-            console.log(user.value[key])
             user.value[key] = data.data[key]
-            console.log(user.value[key])
-
           }
           router.push({name: 'home'})
         }

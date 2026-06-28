@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { Typography } from "@/shared/ui/typography"
-import InputWithTags from "@/shared/ui/inputWithTag/InputWithTags.vue";
-import {Button} from "@/shared/ui/button";
-import Profile from "@/features/button-block/ui/Profile.vue";
-import { useQuery } from '@tanstack/vue-query'
+import { reactive, watch } from 'vue'
+import { Typography } from '@/shared/ui/typography'
+import InputWithTags from '@/shared/ui/inputWithTag/InputWithTags.vue'
+import { Button } from '@/shared/ui/button'
+import { useQuery, useMutation } from '@tanstack/vue-query'
 import { getFilters } from '@/shared/api/get-filters.ts'
+import { mask } from 'vue-the-mask'
+import { useAuthStore } from '@/entities/user'
+import { postVacancy } from '@/pages/createVacancy/api/post-vacancy.ts'
+import { message } from 'ant-design-vue'
+import router from '@/app/router'
+
+const vMask = mask
+
+const authStore = useAuthStore()
+
+const user = authStore.user
 
 const form = reactive({
   company: '',
@@ -18,8 +28,24 @@ const form = reactive({
   schedule: '',
   address: '',
   email: '',
-  phone: ''
+  phone: '',
+  responsibilities: [],
+  requirements: [],
+  conditions: [],
+  status: user?.role == 'admin' ? 'Опубликована' : 'На модерации',
 })
+
+watch(
+  () => user,
+  (newUser) => {
+    if (newUser) {
+      form.company = newUser?.company_name || ''
+      form.email = newUser.email || ''
+      form.phone = newUser.phone || ''
+    }
+  },
+  { immediate: true },
+)
 
 const { isPending, isError, data, error } = useQuery({
   queryKey: ['filter'],
@@ -29,60 +55,67 @@ const { isPending, isError, data, error } = useQuery({
   },
 })
 
+const { mutate } = useMutation({
+  mutationFn: async (form) => {
+    const response = await postVacancy(form)
+    return response.data
+  },
+  onSuccess: (data) => {
+    message.success({
+      content: data.message,
+      class: 'custom-message-large',
+    })
+    router.push({name: 'home'})
+  }
+})
+
+
+
+
 const onFinish = () => {
-  console.log('Форма отправлена:', form)
+  mutate(form)
 }
 </script>
 
 <template>
-  <a-form
-      :model="form"
-      class="container"
-      name="createVacancy"
-      layout="vertical"
-      @finish="onFinish"
-  >
+  <a-form :model="form" class="container" name="createVacancy" layout="vertical" @finish="onFinish">
     <!-- ===== ОСНОВНАЯ ИНФОРМАЦИЯ ===== -->
     <Typography type="semibold-32-black">Основная информация</Typography>
 
     <div class="form-group">
       <!-- Название компании -->
       <a-form-item
-          label="Название компании"
-          name="company"
-          :rules="[{ required: true, message: 'Введите название компании' }]"
+        label="Название компании"
+        name="company"
+        :rules="[{ required: true, message: 'Введите название компании' }]"
       >
         <a-input
-            v-model:value="form.company"
-            placeholder="ООО Рога и Копыта"
-            class="custom-input"
+          v-model:value="form.company"
+          placeholder="ООО Рога и Копыта"
+          class="custom-input"
         />
       </a-form-item>
 
       <!-- Название вакансии -->
       <a-form-item
-          label="Название вакансии"
-          name="title"
-          :rules="[{ required: true, message: 'Введите название вакансии' }]"
+        label="Название вакансии"
+        name="title"
+        :rules="[{ required: true, message: 'Введите название вакансии' }]"
       >
         <a-input
-            v-model:value="form.title"
-            placeholder="Frontend-разработчик"
-            class="custom-input"
+          v-model:value="form.title"
+          placeholder="Frontend-разработчик"
+          class="custom-input"
         />
       </a-form-item>
 
       <!-- Зарплата -->
       <a-form-item
-          label="Зарплата"
-          name="salary"
-          :rules="[{ required: true, message: 'Введите зарплату' }]"
+        label="Зарплата"
+        name="salary"
+        :rules="[{ required: true, message: 'Введите зарплату' }]"
       >
-        <a-input
-            v-model:value="form.salary"
-            placeholder="от 100 000 ₽"
-            class="custom-input"
-        />
+        <a-input v-model:value="form.salary" placeholder="от 100 000 ₽" class="custom-input" />
       </a-form-item>
     </div>
 
@@ -94,33 +127,29 @@ const onFinish = () => {
       <div class="col">
         <!-- Город -->
         <a-form-item
-            label="Город"
-            name="city"
-            :rules="[{ required: true, message: 'Введите город' }]"
+          label="Город"
+          name="city"
+          :rules="[{ required: true, message: 'Введите город' }]"
         >
-          <a-input
-              v-model:value="form.city"
-              placeholder="Москва"
-              class="custom-input"
-          />
+          <a-input v-model:value="form.city" placeholder="Москва" class="custom-input" />
         </a-form-item>
 
         <!-- Формат работы -->
         <a-form-item
-            label="Формат работы"
-            name="workFormat"
-            :rules="[{ required: true, message: 'Выберите формат работы' }]"
+          label="Формат работы"
+          name="workFormat"
+          :rules="[{ required: false, message: 'Выберите формат работы' }]"
         >
           <a-select
-              v-model:value="form.work_format"
-              placeholder="Выберите формат работы"
-              class="custom-select"
-              popupClassName="custom-select-dropdown"
+            v-model:value="form.work_format"
+            placeholder="Выберите формат работы"
+            class="custom-select"
+            popupClassName="custom-select-dropdown"
           >
             <a-select-option
-                v-for="option in data?.work_format"
-                :key="option.value"
-                :value="option.value"
+              v-for="option in data?.work_format"
+              :key="option.value"
+              :value="option?.value"
             >
               {{ option.name }}
             </a-select-option>
@@ -129,20 +158,20 @@ const onFinish = () => {
 
         <!-- Категория -->
         <a-form-item
-            label="Категория"
-            name="category"
-            :rules="[{ required: true, message: 'Выберите категорию' }]"
+          label="Категория"
+          name="category"
+          :rules="[{ required: true, message: 'Выберите категорию' }]"
         >
           <a-select
-              v-model:value="form.category"
-              placeholder="Выберите категорию"
-              class="custom-select"
-              popupClassName="custom-select-dropdown"
+            v-model:value="form.category"
+            placeholder="Выберите категорию"
+            class="custom-select"
+            popupClassName="custom-select-dropdown"
           >
             <a-select-option
-                v-for="option in data?.category"
-                :key="option.value"
-                :value="option.value"
+              v-for="option in data?.category"
+              :key="option.value"
+              :value="option.value"
             >
               {{ option.name }}
             </a-select-option>
@@ -154,20 +183,20 @@ const onFinish = () => {
       <div class="col">
         <!-- Занятость -->
         <a-form-item
-            label="Занятость"
-            name="employment"
-            :rules="[{ required: true, message: 'Выберите занятость' }]"
+          label="Занятость"
+          name="employment"
+          :rules="[{ required: true, message: 'Выберите занятость' }]"
         >
           <a-select
-              v-model:value="form.employment"
-              placeholder="Выберите занятость"
-              class="custom-select"
-              popupClassName="custom-select-dropdown"
+            v-model:value="form.employment"
+            placeholder="Выберите занятость"
+            class="custom-select"
+            popupClassName="custom-select-dropdown"
           >
             <a-select-option
-                v-for="option in data?.employment"
-                :key="option.value"
-                :value="option.value"
+              v-for="option in data?.employment"
+              :key="option.value"
+              :value="option.value"
             >
               {{ option.name }}
             </a-select-option>
@@ -176,20 +205,20 @@ const onFinish = () => {
 
         <!-- График -->
         <a-form-item
-            label="График"
-            name="schedule"
-            :rules="[{ required: true, message: 'Выберите график' }]"
+          label="График"
+          name="schedule"
+          :rules="[{ required: true, message: 'Выберите график' }]"
         >
           <a-select
-              v-model:value="form.schedule"
-              placeholder="Выберите график"
-              class="custom-select"
-              popupClassName="custom-select-dropdown"
+            v-model:value="form.schedule"
+            placeholder="Выберите график"
+            class="custom-select"
+            popupClassName="custom-select-dropdown"
           >
             <a-select-option
-                v-for="option in data?.schedule"
-                :key="option.value"
-                :value="option.value"
+              v-for="option in data?.schedule"
+              :key="option.value"
+              :value="option.value"
             >
               {{ option.name }}
             </a-select-option>
@@ -198,14 +227,14 @@ const onFinish = () => {
 
         <!-- Фактический адрес -->
         <a-form-item
-            label="Фактический адрес"
-            name="address"
-            :rules="[{ required: true, message: 'Введите адрес' }]"
+          label="Фактический адрес"
+          name="address"
+          :rules="[{ required: true, message: 'Введите адрес' }]"
         >
           <a-input
-              v-model:value="form.address"
-              placeholder="г. Москва, ул. Тверская, д. 1"
-              class="custom-input"
+            v-model:value="form.address"
+            placeholder="г. Москва, ул. Тверская, д. 1"
+            class="custom-input"
           />
         </a-form-item>
       </div>
@@ -213,15 +242,15 @@ const onFinish = () => {
 
     <!-- ===== ЧТО ВЫ БУДЕТЕ ДЕЛАТЬ ===== -->
     <Typography type="semibold-32-black">Что вы будете делать</Typography>
-    <InputWithTags placeholder="Укажите обязанности сотрудника" />
+    <InputWithTags v-model="form.responsibilities" placeholder="Укажите обязанности сотрудника" />
 
     <!-- ===== МЫ ЖДЁМ ОТ ВАС ===== -->
     <Typography type="semibold-32-black">Мы ждём от вас</Typography>
-    <InputWithTags placeholder="Укажите ожидания от сотрудника (образование, навыки и тд)" />
+    <InputWithTags v-model="form.requirements" placeholder="Укажите ожидания от сотрудника (образование, навыки и тд)" />
 
     <!-- ===== УСЛОВИЯ РАБОТЫ ===== -->
     <Typography type="semibold-32-black">Условия работы</Typography>
-    <InputWithTags placeholder="Укажите условия работы (занятость, бонусы, зарплата и тд)" />
+    <InputWithTags v-model="form.conditions" placeholder="Укажите условия работы (занятость, бонусы, зарплата и тд)" />
 
     <!-- ===== КОНТАКТЫ ===== -->
     <Typography type="semibold-32-black">Контакты</Typography>
@@ -229,36 +258,33 @@ const onFinish = () => {
     <div class="form-group">
       <!-- Email -->
       <a-form-item
-          label="Email"
-          name="email"
-          :rules="[
-            { required: true, message: 'Введите email' },
-            { type: 'email', message: 'Введите корректный email' }
-          ]"
+        label="Email"
+        name="email"
+        :rules="[
+          { required: true, message: 'Введите email' },
+          { type: 'email', message: 'Введите корректный email' },
+        ]"
       >
-        <a-input
-            v-model:value="form.email"
-            placeholder="company@mail.ru"
-            class="custom-input"
-        />
+        <a-input v-model:value="form.email" placeholder="company@mail.ru" class="custom-input" />
       </a-form-item>
 
       <!-- Телефон -->
       <a-form-item
-          label="Телефон"
-          name="phone"
-          :rules="[
-            { required: true, message: 'Введите номер телефона' },
-            {
-              pattern: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
-              message: 'Введите номер в формате +7 (999) 000-00-00'
-            }
-          ]"
+        label="Телефон"
+        name="phone"
+        :rules="[
+          { required: true, message: 'Введите номер телефона' },
+          {
+            pattern: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
+            message: 'Введите номер в формате +7 (999) 000-00-00',
+          },
+        ]"
       >
         <a-input
-            v-model:value="form.phone"
-            placeholder="+7 (999) 000-00-00"
-            class="custom-input"
+          v-model:value="form.phone"
+          v-mask="'+7 (###) ###-##-##'"
+          placeholder="+7 (999) 000-00-00"
+          class="custom-input"
         />
       </a-form-item>
     </div>

@@ -30,11 +30,18 @@ export const generateEmployer = (i)=> {
       first_name: fakerRU.person.firstName(),
       last_name: fakerRU.person.lastName(),
       middle_name: fakerRU.person.middleName(),
-      position: fakerRU.person.jobTitle(),
       phone: '+7'+fakerRU.phone.number('(###) ###-##-##'),
       status: _.sample(statuses),
       role: 'employer'
     }
   })
 
+}
+export const generateAdmin = ()=> {
+  return {
+    email: 'admin@gmail.com',
+    id: id++,
+    password: 'admin1',
+    role: 'admin'
+  }
 }

@@ -5,8 +5,6 @@ import { Button } from '@/shared/ui/button'
 import { useAuthStore } from '@/entities/user'
 import { reactive, watch, ref, computed } from 'vue'
 import { mask } from 'vue-the-mask'
-import { useQuery } from '@tanstack/vue-query'
-import { getFilters } from '@/shared/api/get-filters.ts'
 
 const vMask = mask
 
@@ -50,7 +48,6 @@ watch(
 )
 
 const onFinish = () => {
-  form.id = data.id
   flag_form.value = true
   updateData.mutate(form)
 }
@@ -119,17 +116,7 @@ const onFinish = () => {
             />
           </a-form-item>
 
-          <!-- Категория (заголовок и место для селекта) -->
-          <a-form-item label="Категория" name="category">
-            <a-select
-              :disabled="flag_form"
-              v-model:value="form.category"
-              class="custom-select"
-              popupClassName="custom-select-dropdown"
-            >
-              <a-select-option v-for="item of data?.category" :key="item.value" :value="item.key">{{item.name}}</a-select-option>
-            </a-select>
-          </a-form-item>
+
         </div>
 
         <!-- Правая колонка -->

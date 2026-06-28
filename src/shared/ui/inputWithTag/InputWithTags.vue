@@ -12,8 +12,9 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: 'Введите пункт...',
 })
 
+const items = defineModel<string[]>()
+
 const inputValue = ref('')
-const items = ref<string[]>([])
 
 const addItem = () => {
   if (inputValue.value.trim()) {
@@ -45,7 +46,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
 
 
     <div class="button-wrapper">
-      <Button type="none-back-red" class="add-button" @click="addItem">
+      <Button  type="none-back-red" class="add-button" @click.prevent="addItem">
         + Добавить пункт
       </Button>
     </div>
@@ -61,7 +62,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
           <span class="bullet"></span>
           <Typography type="regular-20-black">{{ item }}</Typography>
         </div>
-        <button class="remove-button" @click="removeItem(index)">
+        <button  class="remove-button" @click.prevent="removeItem(index)">
           <CloseIcon />
         </button>
       </div>

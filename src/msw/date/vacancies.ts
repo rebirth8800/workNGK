@@ -1,16 +1,24 @@
 import { fakerRU } from '@faker-js/faker'
 import _ from 'lodash'
 import { filters } from './paramsRefines.ts'
+import { Employers } from '@/msw/date/auth.ts'
+import category from '@/pages/vacancy/ui/Category.vue'
 const statuses = ['Опубликована', 'На модерации', 'Отклонена']
 
+const curent_employers = Employers.filter(item =>{
+  return item.status === 'Одобрен'
+})
+let n = 0
 
-const zapoln = ()=>{
-  return _.times(57, function(n){
+const zapoln = (i, status)=>{
+  return _.times(i, function(){
     const category = _.sample(filters().category)
+    const employer = _.sample(curent_employers)
+    n++
     return {
       id: n+1,
       title: fakerRU.person.jobTitle(),
-      company_name: fakerRU.company.name(),
+      company_name: employer.company_name,
       city: fakerRU.location.city(),
       salary: fakerRU.number.int({ min: 15000, max: 300000 }),
       responsibilities: _.times(_.random(1,4), function(){
@@ -22,22 +30,26 @@ const zapoln = ()=>{
       conditions: _.times(_.random(1,4), function(){
         return fakerRU.lorem.sentence()
       }),
-      contact_email: fakerRU.internet.email(),
-      contact_phone: '+7'+fakerRU.phone.number('(###) ###-##-##'),
-      contact_person: fakerRU.person.fullName(),
+      contact_email: employer.email,
+      contact_phone: employer.phone,
+      contact_person: employer.last_name+ ' '+ employer.first_name+' '+ employer.middle_name,
       category: category.name,
       work_format: _.map(_.sampleSize(filters().work_format, _.random(1,4)), (elem)=> elem.name),
       employment: _.map(_.sampleSize(filters().employment, _.random(1,4)), (elem)=> elem.name),
       schedule: _.map(_.sampleSize(filters().schedule, _.random(1,4)), (elem)=> elem.name),
       svg: category.svg,
       date: fakerRU.date.past({ years: 1 }).toISOString().split('T')[0],
+      status: status,
     }
   })
 }
+const vacancies = []
+vacancies.push(...zapoln(67, 'Опубликована'))
+vacancies.push(...zapoln(10, 'На модерации'))
+vacancies.push(...zapoln(10, 'Отклонена'))
 
-const vacancies = zapoln()
 
-const profileVacancy = _.sampleSize(vacancies, 5)
+const profileVacancy = _.sampleSize(vacancies.filter(item=> item.status === 'Опубликована'), 5)
 
 export const getVacancy = (id) => {
   for (let item of vacancies) {
@@ -58,6 +70,11 @@ export const getVacancies = (page, per_page, category, schedule, work_format, em
 
 
   for (let item of vacancies) {
+
+    if (item.status !== 'Опубликована'){
+      continue
+    }
+
     const search_param = item.title+'_'+item.company_name
     if (!search_param.toLowerCase().includes(search.toLowerCase())) {
       continue
@@ -121,12 +138,35 @@ export const getOtcliki = (page, per_page)=>{
   }
 }
 
-export const getVacancyEmployer = (page, per_page)=>{
-  profileVacancy.forEach(elem => {
-    elem.status = _.sample(statuses)
-  })
+export const getVacancyEmployer = (id, page, per_page)=>{
+  const user = Employers.find(item=>item.id == id)
+  const responce = vacancies.filter(item=>item.contact_email == user.email)
   return {
-    len: profileVacancy.length,
-    items: profileVacancy.slice(+page*+per_page-+per_page, +per_page*+page)
+    len: responce.length,
+    items: responce.slice(+page*+per_page-+per_page, +per_page*+page)
+  }
+}
+
+export const postVacancy = (data)=>{
+  const id = vacancies.at(-1).id+1
+  data.id = id
+  data.category = filters().category.find(item => item.value === data.category)?.name
+  data.work_format = data.work_format.map(elem => filters().work_format.find(item => item.value === elem)?.name)
+  data.schedule = data.schedule.map(elem => filters().schedule.find(item => item.value === elem)?.name)
+  data.employment = data.employment.map(elem => filters().employment.find(item => item.value === elem)?.name)
+  console.log(data)
+  vacancies.push(data)
+  return {
+    message: "Вакансия успешно создана"
+  }
+}
+
+export const getAdminVacancy = (page, per_page)=>{
+  const responce = vacancies.filter(elem => elem.status == 'На модерации')
+
+  return {
+    len: responce.length,
+    items: responce.slice(+page*+per_page-+per_page, +per_page*+page)
+
   }
 }

@@ -6,6 +6,11 @@ import { useQuery } from '@tanstack/vue-query'
 import { getOtcliki } from '@/features/otclicki/api/get-otcliki.ts'
 import { reactive } from 'vue'
 import Card from '@/features/otclicki/ui/Card.vue'
+import { useAuthStore } from '@/entities/user'
+
+const authStore = useAuthStore()
+
+const user = authStore.user
 
 const pagination = reactive({
   page: 1,
@@ -15,7 +20,10 @@ const pagination = reactive({
 const { isPending, isError, data, error, refetch } = useQuery({
   queryKey: ['vacancies'],
   queryFn: async () => {
-    const response = await getOtcliki({ page: pagination.page, per_page: pagination.per_page })
+    const response = await getOtcliki(user?.id, {
+      page: pagination.page,
+      per_page: pagination.per_page,
+    })
     return response.data
   },
 })
@@ -34,10 +42,10 @@ const pageChange = () => {
           <Card v-for="(item, index) in data.items" :key="item.id" :item="item" />
         </div>
         <Pagination
-            :len="data?.len"
-            :per_page="pagination.per_page"
-            :pageChange="pageChange"
-            v-model="pagination.page"
+          :len="data?.len"
+          :per_page="pagination.per_page"
+          :pageChange="pageChange"
+          v-model="pagination.page"
         />
       </div>
     </ProfileObertka>
@@ -45,7 +53,6 @@ const pageChange = () => {
 </template>
 
 <style scoped>
-
 .otkliki-container {
   display: block !important;
   width: 100% !important;
@@ -56,7 +63,6 @@ const pageChange = () => {
 
 .otkliki-container * {
   margin: 0 !important;
-
 }
 
 .block {
@@ -78,7 +84,6 @@ const pageChange = () => {
   margin-top: 30px !important;
   padding: 0 !important;
 }
-
 
 .card_list > * {
   margin: 0 !important;

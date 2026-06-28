@@ -5,6 +5,6 @@ type Params = {
   per_page: Number,
 }
 
-export const getVacancyEmployer = (params: Params) => {
-  return apiClient.get('/profile/employer/vacancies', {params: params})
+export const getVacancyEmployer = (id:string, params: Params) => {
+  return apiClient.get(`/profile/employer/${id}/vacancies`, {params: params})
 }

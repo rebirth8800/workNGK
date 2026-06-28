@@ -5,6 +5,6 @@ type Params = {
   per_page: Number,
 }
 
-export const getOtcliki = (params: Params) => {
-  return apiClient.get('/profile/student/vacancies', {params: params})
+export const getOtcliki = (id: string, params: Params) => {
+  return apiClient.get(`/profile/student/${id}/vacancies`, {params: params})
 }
