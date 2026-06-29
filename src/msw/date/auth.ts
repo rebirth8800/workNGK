@@ -55,6 +55,7 @@ export const Login = (data)=>{
       success: true,
       message: 'Вход выполнен успешно!',
       user: {...userWithoutPassword},
+      token: accessToken,
     }),
     {
       status: 200,
@@ -67,23 +68,7 @@ export const Login = (data)=>{
   return response
 }
 
-export const GetData = (cookie)=>{
-  console.log(cookie)
-  if (!cookie) {
-    return HttpResponse.json({
-      success: false,
-      message: 'Не авторизован',
-    }, { status: 401 });
-  }
-
-  // Парсим cookie
-  const cookies = cookie.split('; ').reduce((acc: any, item) => {
-    const [key, value] = item.split('=');
-    acc[key] = value;
-    return acc;
-  }, {});
-
-  const token = cookies['access_token'];
+export const GetData = (token)=>{
   if (!token) {
     return HttpResponse.json({
       success: false,
@@ -111,17 +96,10 @@ export const GetData = (cookie)=>{
       }, { status: 404 });
     }
 
+    const {password, ...userWithoutPassword} = user
     return HttpResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        lastname: user.lastname,
-        role: user.role,
-        company: user.company || null,
-        university: user.university || null,
-      }
+      user: {...userWithoutPassword},
     }, { status: 200 });
 
   } catch (error) {

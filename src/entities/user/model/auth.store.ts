@@ -55,6 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
             content: data.message,
             class: 'custom-message-large',
           })
+          localStorage.setItem('accessToken', data.token)
           user.value = data.user
           isAuthenticated.value = true
           router.push({name: 'home'})
@@ -69,26 +70,22 @@ export const useAuthStore = defineStore('auth', () => {
 
   // ============ 👤 ПРОВЕРКА АВТОРИЗАЦИИ ============
   const useCheckAuth = () => {
-    return useQuery({
-      queryKey: ['auth', 'me'],
-      queryFn: async () => {
-        const response = await getCheck()
+    return useMutation({
+      mutationFn: async () => {
+        const response = await getCheck(localStorage.getItem('accessToken') )
         return response.data
       },
-      retry: false,
-      staleTime: 0,
-      refetchOnMount: true,
-      refetchOnWindowFocus: true,
       onSuccess: (data) => {
         if (data.success) {
           user.value = data.user
+          console.log(user.value)
           isAuthenticated.value = true
         }
       },
       onError: () => {
         user.value = null
         isAuthenticated.value = false
-      }
+      },
     })
   }
 
@@ -128,6 +125,7 @@ export const useAuthStore = defineStore('auth', () => {
       },
       onSuccess: (data) => {
         if (data.success) {
+          localStorage.removeItem('accessToken')
           user.value = null
           isAuthenticated.value = false
           message.success({

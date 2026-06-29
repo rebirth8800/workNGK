@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router'
 import { useAuthStore } from '@/entities/user'
 import { message } from 'ant-design-vue'
+import { computed } from 'vue'
 
 
 export function setupRouterGuards(router: Router) {
@@ -8,12 +9,13 @@ export function setupRouterGuards(router: Router) {
   router.beforeEach(async (to, from) => {
     // Получаем store
     const authStore = useAuthStore()
-
+    const isAuthenticated = computed(() => authStore.isAuthenticated)
+    const user = computed(() => authStore.user)
+    console.log(user.value)
     // ============ ПРОВЕРКА НА АВТОРИЗАЦИЮ ============
     // Если маршрут требует авторизации
     if (to.meta.requiresAuth) {
-
-      if (!authStore.isAuthenticated) {
+      if (!isAuthenticated) {
 
         message.warning({
           content: 'Для доступа к этой странице необходимо войти',
@@ -24,7 +26,7 @@ export function setupRouterGuards(router: Router) {
 
       if (to.meta.roles){
         const requiredRoles = to.meta.roles as string[]
-        if (requiredRoles == 'employer' && authStore.user?.role !== 'employer'){
+        if (requiredRoles == 'employer' && user.value?.role === 'student'){
           message.error({
             content: 'Создать вакансию может только работодатель',
             class: 'custom-message-large',
@@ -35,7 +37,7 @@ export function setupRouterGuards(router: Router) {
 
       // ============ ПРОВЕРКА НА АДМИНА ============
       if (to.meta.requiresAdmin) {
-        if (authStore.user?.role !== 'admin') {
+        if (user.value?.role !== 'admin') {
           message.error({
             content: 'Требуются права администратора',
             class: 'custom-message-large',
@@ -48,7 +50,7 @@ export function setupRouterGuards(router: Router) {
     // ============ ГОСТЕВЫЕ МАРШРУТЫ ============
     // Если маршрут только для гостей (логин/регистрация)
     if (to.meta.requiresGuest) {
-      if (authStore.isAuthenticated) {
+      if (isAuthenticated) {
         // Если пользователь уже авторизован - отправляем на главную
         return ({ name: 'home' })
       }
