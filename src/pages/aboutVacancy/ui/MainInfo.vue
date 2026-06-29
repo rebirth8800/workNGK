@@ -39,6 +39,7 @@ const date = (date: string): string => {
 .container{
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .info-left{
   display: flex;

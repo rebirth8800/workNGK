@@ -18,7 +18,7 @@ const zapoln = (i, status)=>{
     return {
       id: n+1,
       title: fakerRU.person.jobTitle(),
-      company_name: employer.company_name,
+      company_name: employer.company_name || '',
       city: fakerRU.location.city(),
       salary: fakerRU.number.int({ min: 15000, max: 300000 }),
       responsibilities: _.times(_.random(1,4), function(){

@@ -64,8 +64,8 @@ export const handlers = [
     return Login(data)
   }),
   http.get('https://api.ngk-rabota.ru/v1/profile/me', async ({ request }) => {
-    const cookie = request.headers.get('Cookie')
-    return GetData(cookie)
+    const url = new URL(request.url)
+    return GetData(url.searchParams.get('data'))
   }),
   http.get('https://api.ngk-rabota.ru/v1/profile/student/:id/vacancies', ({request, params}) => {
     const { id } = params
