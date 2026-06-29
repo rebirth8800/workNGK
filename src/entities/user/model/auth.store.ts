@@ -78,8 +78,8 @@ export const useAuthStore = defineStore('auth', () => {
       onSuccess: (data) => {
         if (data.success) {
           user.value = data.user
-          console.log(user.value)
           isAuthenticated.value = true
+          console.log(isAuthenticated.value)
         }
       },
       onError: () => {

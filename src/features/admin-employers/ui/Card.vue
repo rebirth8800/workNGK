@@ -5,9 +5,11 @@ import { Typography } from '@/shared/ui/typography'
 interface Item {
   id: string
   company_name: string
-  contact_person: string
-  contact_email: string
-  contact_phone: string
+  last_name: string
+  first_name: string
+  middle_name: string
+  email: string
+  phone: string
   date: string
 }
 
@@ -22,13 +24,13 @@ defineProps<Props>()
   <div class="card">
     <div class="content-left">
       <div class="content-title">
-        <Typography type="semibold-24-black">{{ item.company_name || 'Без названия' }}</Typography>
-        <Typography type="regular-20-almost-black">{{ item.contact_person || 'Нет контакта' }}</Typography>
-        <Typography type="regular-20-almost-black">Дата заявки: {{ item.date || 'Нет даты' }}</Typography>
+        <Typography type="semibold-24-black">{{ item?.company_name }}</Typography>
+        <Typography type="regular-20-almost-black">{{ item?.last_name  }} {{item?.first_name}} {{item?.middle_name}}</Typography>
+        <Typography type="regular-20-almost-black">Дата заявки: {{ item?.date || 'Нет даты' }}</Typography>
       </div>
       <div class="content-footer">
-        <Typography type="regular-16-almost-black">{{ item.contact_email || 'Нет email' }}</Typography>
-        <Typography type="regular-16-almost-black">{{ item.contact_phone || 'Нет телефона' }}</Typography>
+        <Typography type="regular-16-almost-black">{{ item?.email }}</Typography>
+        <Typography type="regular-16-almost-black">{{ item?.phone }}</Typography>
       </div>
     </div>
     <div class="content-right">

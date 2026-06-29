@@ -11,12 +11,11 @@ export function setupRouterGuards(router: Router) {
     const authStore = useAuthStore()
     const isAuthenticated = computed(() => authStore.isAuthenticated)
     const user = computed(() => authStore.user)
-    console.log(user.value)
+
     // ============ ПРОВЕРКА НА АВТОРИЗАЦИЮ ============
     // Если маршрут требует авторизации
     if (to.meta.requiresAuth) {
-      if (!isAuthenticated) {
-
+      if (!isAuthenticated.value) {
         message.warning({
           content: 'Для доступа к этой странице необходимо войти',
           class: 'custom-message-large',
@@ -50,7 +49,9 @@ export function setupRouterGuards(router: Router) {
     // ============ ГОСТЕВЫЕ МАРШРУТЫ ============
     // Если маршрут только для гостей (логин/регистрация)
     if (to.meta.requiresGuest) {
-      if (isAuthenticated) {
+
+      console.log(isAuthenticated.value)
+      if (isAuthenticated.value) {
         // Если пользователь уже авторизован - отправляем на главную
         return ({ name: 'home' })
       }
