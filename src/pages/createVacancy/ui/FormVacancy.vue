@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch, ref } from 'vue'
+import { reactive, watch } from 'vue'
 import { Typography } from '@/shared/ui/typography'
 import InputWithTags from '@/shared/ui/inputWithTag/InputWithTags.vue'
 import { Button } from '@/shared/ui/button'
@@ -42,7 +42,7 @@ const form = reactive({
   city: '',
   address: '',
   work_format: [] as string[],
-  category: [] as string[],
+  category: '',
   employment: [] as string[],
   schedule: [] as string[],
   email: '',
@@ -50,7 +50,6 @@ const form = reactive({
   responsibilities: [] as string[],
   requirements: [] as string[],
   conditions: [] as string[],
-
 })
 
 watch(
@@ -83,8 +82,8 @@ const { mutate } = useMutation({
       content: data.message,
       class: 'custom-message-large',
     })
-    router.push({name: 'home'})
-  }
+    router.push({ name: 'home' })
+  },
 })
 
 const onFinish = () => {
@@ -93,28 +92,16 @@ const onFinish = () => {
 </script>
 
 <template>
-  <a-form
-      :model="form"
-      class="container"
-      name="createVacancy"
-      layout="vertical"
-      @finish="onFinish"
-  >
-
+  <a-form :model="form" class="container" name="createVacancy" layout="vertical" @finish="onFinish">
     <Typography type="semibold-32-black">Основная информация</Typography>
 
     <div class="form-group">
-
       <a-form-item
           label="Название компании"
           name="company"
           :rules="[{ required: true, message: 'Введите название компании' }]"
       >
-        <a-input
-            v-model:value="form.company"
-            placeholder="ООО Рога и Копыта"
-            class="custom-input"
-        />
+        <a-input v-model:value="form.company" placeholder="ООО Рога и Копыта" class="custom-input" />
       </a-form-item>
 
       <a-form-item
@@ -122,11 +109,7 @@ const onFinish = () => {
           name="title"
           :rules="[{ required: true, message: 'Введите название вакансии' }]"
       >
-        <a-input
-            v-model:value="form.title"
-            placeholder="Frontend-разработчик"
-            class="custom-input"
-        />
+        <a-input v-model:value="form.title" placeholder="Frontend-разработчик" class="custom-input" />
       </a-form-item>
 
       <a-form-item
@@ -140,9 +123,11 @@ const onFinish = () => {
 
     <Typography type="semibold-32-black">Характеристики</Typography>
 
+    <!-- ===== ТРИ КОЛОНКИ ===== -->
     <div class="specifications">
-
+      <!-- Левая колонка -->
       <div class="col">
+        <!-- Город -->
         <a-form-item
             label="Город"
             name="city"
@@ -151,6 +136,10 @@ const onFinish = () => {
           <a-input v-model:value="form.city" placeholder="Москва" class="custom-input" />
         </a-form-item>
 
+        <!-- Горизонтальная линия -->
+        <div class="divider-horizontal"></div>
+
+        <!-- Формат работы -->
         <a-form-item
             name="work_format"
             :rules="[{ validator: validateCheckbox(form.work_format), trigger: 'change' }]"
@@ -172,32 +161,11 @@ const onFinish = () => {
             </div>
           </div>
         </a-form-item>
-
-        <a-form-item
-            name="category"
-            :rules="[{ validator: validateCheckbox(form.category), trigger: 'change' }]"
-        >
-          <div class="checkbox-wrapper">
-            <Typography type="semibold-24-black">Категория <span class="required-star">*</span></Typography>
-            <div class="checkbox-grid">
-              <div class="checkbox-item" v-for="option in data?.category" :key="option.value">
-                <input
-                    type="checkbox"
-                    :id="'category-' + option.value"
-                    :value="option.value"
-                    v-model="form.category"
-                />
-                <label :for="'category-' + option.value">
-                  <Typography type="regular-20-black">{{ option.name }}</Typography>
-                </label>
-              </div>
-            </div>
-          </div>
-        </a-form-item>
       </div>
 
+      <!-- Средняя колонка -->
       <div class="col">
-
+        <!-- Адрес -->
         <a-form-item
             label="Фактический адрес"
             name="address"
@@ -210,6 +178,10 @@ const onFinish = () => {
           />
         </a-form-item>
 
+        <!-- Горизонтальная линия -->
+        <div class="divider-horizontal"></div>
+
+        <!-- Занятость -->
         <a-form-item
             name="employment"
             :rules="[{ validator: validateCheckbox(form.employment), trigger: 'change' }]"
@@ -231,7 +203,31 @@ const onFinish = () => {
             </div>
           </div>
         </a-form-item>
+      </div>
 
+      <!-- Правая колонка -->
+      <div class="col">
+        <!-- Категория -->
+        <a-form-item
+            label="Категория"
+            name="category"
+            :rules="[{ required: true, message: 'Выберите категорию' }]"
+        >
+          <a-select
+              v-model:value="form.category"
+              placeholder="Выберите категорию"
+              class="custom-select"
+          >
+            <a-select-option v-for="option in data?.category" :key="option.value" :value="option.value">
+              {{ option.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <!-- Горизонтальная линия -->
+        <div class="divider-horizontal"></div>
+
+        <!-- График -->
         <a-form-item
             name="schedule"
             :rules="[{ validator: validateCheckbox(form.schedule), trigger: 'change' }]"
@@ -289,11 +285,9 @@ const onFinish = () => {
       />
     </a-form-item>
 
-
     <Typography type="semibold-32-black">Контакты</Typography>
 
     <div class="form-group">
-
       <a-form-item
           label="Email"
           name="email"
@@ -304,7 +298,6 @@ const onFinish = () => {
       >
         <a-input v-model:value="form.email" placeholder="company@mail.ru" class="custom-input" />
       </a-form-item>
-
 
       <a-form-item
           label="Телефон"
@@ -368,20 +361,29 @@ const onFinish = () => {
   width: 100% !important;
 }
 
+/* ===== ТРИ КОЛОНКИ ===== */
 .specifications {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 30px;
   width: 100%;
 }
 
 .col {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  width: 100%;
+  gap: 20px;
 }
 
+/* ===== ГОРИЗОНТАЛЬНАЯ ЛИНИЯ ===== */
+.divider-horizontal {
+  width: 100%;
+  height: 1px;
+  background-color: #CBCACA;
+  margin: 4px 0;
+}
+
+/* ===== ЧЕКБОКСЫ ===== */
 .checkbox-wrapper {
   display: flex;
   flex-direction: column;
@@ -391,18 +393,18 @@ const onFinish = () => {
 .checkbox-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .checkbox-item {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .checkbox-item input[type="checkbox"] {
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
   accent-color: var(--color-primary-red);
   cursor: pointer;
   flex-shrink: 0;
@@ -418,6 +420,7 @@ const onFinish = () => {
   margin-left: 4px;
 }
 
+/* ===== СТИЛИ ДЛЯ FORM ITEMS ===== */
 :deep(.ant-form-item) {
   width: 100% !important;
   margin: 0 !important;
@@ -458,6 +461,7 @@ const onFinish = () => {
   width: 100% !important;
 }
 
+/* ===== СТИЛИ ДЛЯ ИНПУТОВ ===== */
 :deep(.custom-input) {
   width: 100% !important;
   padding: 15px !important;
@@ -485,6 +489,66 @@ const onFinish = () => {
   box-shadow: none !important;
 }
 
+/* ===== СТИЛИ ДЛЯ СЕЛЕКТА ===== */
+:deep(.custom-select) {
+  width: 100% !important;
+}
 
+:deep(.custom-select .ant-select-selector) {
+  padding: 15px !important;
+  border: 1px solid var(--color-grey-light) !important;
+  border-radius: 10px !important;
+  background: var(--color-white) !important;
+  color: var(--color-black) !important;
+  font-size: 1.125rem !important;
+  height: auto !important;
+  min-height: 54px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  transition: border-color 0.3s !important;
+}
 
+:deep(.custom-select .ant-select-selection-placeholder) {
+  color: var(--color-grey-light) !important;
+  font-size: 1.125rem !important;
+}
+
+:deep(.custom-select .ant-select-selection-item) {
+  font-size: 1.125rem !important;
+  color: var(--color-black) !important;
+}
+
+:deep(.custom-select .ant-select-arrow) {
+  color: var(--color-grey-light) !important;
+  font-size: 1.125rem !important;
+}
+
+:deep(.custom-select .ant-select-selector:hover) {
+  border-color: var(--color-almost-black) !important;
+}
+
+:deep(.custom-select.ant-select-focused .ant-select-selector) {
+  border-color: var(--color-almost-black) !important;
+  box-shadow: none !important;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1024px) {
+  .specifications {
+    flex-wrap: wrap;
+  }
+  .col {
+    flex: 1 1 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .specifications {
+    flex-direction: column;
+  }
+  .col {
+    flex: 1 1 100%;
+  }
+}
 </style>

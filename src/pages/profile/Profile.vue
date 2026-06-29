@@ -11,9 +11,7 @@ const name = {
 }
 
 const authStore = useAuthStore()
-
 const user = authStore.user
-
 const logout = authStore.useLogout()
 </script>
 
@@ -22,24 +20,39 @@ const logout = authStore.useLogout()
     <div class="background">
       <div class="container">
         <ProfileEmployer v-if="user.role == 'employer'" />
-        <ProfileStudent v-if="user.role == 'student'"/>
-        <Button @click="logout.mutate()">Выход из аккаунта</Button>
+        <ProfileStudent v-if="user.role == 'student'" />
+
+        <div class="logout-wrapper">
+          <Button @click="logout.mutate()" class="logout-btn">Выход из аккаунта</Button>
+        </div>
       </div>
     </div>
-
   </DefaultLayout>
 </template>
 
 <style scoped>
-.background{
+.background {
   width: 100%;
   background-color: var(--color-background-grey);
 }
+
 .container {
   background-color: var(--color-background-grey);
   padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.logout-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.logout-btn {
+  padding: 15px 45px !important;
 }
 </style>
