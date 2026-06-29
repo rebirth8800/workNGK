@@ -27,8 +27,8 @@ a{
 }
 
 .logo-square {
-  width: 76.63px;
-  height: 76.63px;
+  width: 54px;
+  height: 54px;
   background-color: var(--color-primary-red);
   border-radius: 10px;
   display: flex;
@@ -38,8 +38,8 @@ a{
 }
 
 .logo-icon {
-  width: 67.92px;
-  height: 67.92px;
+  width: 45px;
+  height: 45px;
   display: block;
 }
 
@@ -50,7 +50,7 @@ a{
 }
 
 .h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: var(--color-black);
   margin: 0;
@@ -58,7 +58,7 @@ a{
 }
 
 .h2 {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 300;
   color: var(--color-black);
   margin: 0;
