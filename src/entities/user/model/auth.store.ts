@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Состояние
   const user = ref(null)
   const isAuthenticated = ref(false)
+  const _initialized = ref(false)
 
   // ============ 📝 РЕГИСТРАЦИЯ (заявка) ============
   const useRegisterRequest = () => {
@@ -58,6 +59,7 @@ export const useAuthStore = defineStore('auth', () => {
           localStorage.setItem('accessToken', data.token)
           user.value = data.user
           isAuthenticated.value = true
+          _initialized.value = true
           router.push({name: 'home'})
         }
       },
@@ -79,6 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
         if (data.success) {
           user.value = data.user
           isAuthenticated.value = true
+          _initialized.value = true
           console.log(isAuthenticated.value)
         }
       },
@@ -143,7 +146,7 @@ export const useAuthStore = defineStore('auth', () => {
     // Состояние
     user,
     isAuthenticated,
-
+    _initialized,
 
     // Только хуки!
     useRegisterRequest,

@@ -12,8 +12,8 @@ import InputWithTags from "@/shared/ui/inputWithTag/InputWithTags.vue";
     <Typography type="bold-64-red">найти работу</Typography>
     <Typography type="regular-32-almost-black">Актуальные вакансии от проверенных <br> работодателей — специально для студентов и <br> выпускников колледжа</Typography>
     <div class="button_block">
-      <Button type="default" :svg="SearchIcon">Смотреть вакансии</Button>
-      <Button type="none-back-black" :svg="FileIcon">Разместить вакансию</Button>
+      <RouterLink to="/vacancies"><Button type="default" :svg="SearchIcon">Смотреть вакансии</Button></RouterLink>
+      <RouterLink to="/vacancies/create"><Button type="none-back-black" :svg="FileIcon">Разместить вакансию</Button></RouterLink>
     </div>
   </div>
 </template>

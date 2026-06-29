@@ -5,6 +5,7 @@ import Antd from 'ant-design-vue';
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import router from './app/router'
 import 'ant-design-vue/es/pagination/style/index';
+import { useAuthStore } from '@/entities/user'
 
 
 async function prepareApp(){
@@ -31,7 +32,6 @@ const pinia = createPinia()
 const app = createApp(App)
 
 app.use(router).use(VueQueryPlugin).use(Antd).use(pinia)
-
 
 prepareApp().then(() => {
   app.mount('#app')

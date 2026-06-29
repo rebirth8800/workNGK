@@ -1,16 +1,35 @@
 import type { Router } from 'vue-router'
 import { useAuthStore } from '@/entities/user'
 import { message } from 'ant-design-vue'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 
 export function setupRouterGuards(router: Router) {
   // Глобальный гард (beforeEach)
   router.beforeEach(async (to, from) => {
+
     // Получаем store
     const authStore = useAuthStore()
     const isAuthenticated = computed(() => authStore.isAuthenticated)
     const user = computed(() => authStore.user)
+
+
+    if (!authStore._initialized) {
+      console.log('⏳ Ожидание проверки авторизации...')
+
+      // Ждем, пока _initialized станет true
+      await new Promise<void>((resolve) => {
+        const unwatch = watch(
+          () => authStore._initialized,
+          (val) => {
+            if (val) {
+              unwatch()
+              resolve()
+            }
+          },
+          { immediate: true }
+        )
+      })}
 
     // ============ ПРОВЕРКА НА АВТОРИЗАЦИЮ ============
     // Если маршрут требует авторизации
@@ -50,7 +69,6 @@ export function setupRouterGuards(router: Router) {
     // Если маршрут только для гостей (логин/регистрация)
     if (to.meta.requiresGuest) {
 
-      console.log(isAuthenticated.value)
       if (isAuthenticated.value) {
         // Если пользователь уже авторизован - отправляем на главную
         return ({ name: 'home' })
