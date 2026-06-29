@@ -1,5 +1,83 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Button } from '@/shared/ui/button'
+import { Typography } from '@/shared/ui/typography'
 
-<template></template>
+interface Item {
+  id: string
+  company_name: string
+  contact_person: string
+  contact_email: string
+  contact_phone: string
+  date: string
+}
 
-<style scoped></style>
+interface Props {
+  item: Item
+}
+
+defineProps<Props>()
+</script>
+
+<template>
+  <div class="card">
+    <div class="content-left">
+      <div class="content-title">
+        <Typography type="semibold-24-black">{{ item.company_name || 'Без названия' }}</Typography>
+        <Typography type="regular-20-almost-black">{{ item.contact_person || 'Нет контакта' }}</Typography>
+        <Typography type="regular-20-almost-black">Дата заявки: {{ item.date || 'Нет даты' }}</Typography>
+      </div>
+      <div class="content-footer">
+        <Typography type="regular-16-almost-black">{{ item.contact_email || 'Нет email' }}</Typography>
+        <Typography type="regular-16-almost-black">{{ item.contact_phone || 'Нет телефона' }}</Typography>
+      </div>
+    </div>
+    <div class="content-right">
+      <Button type="default">Одобрить</Button>
+      <Button type="none-back-red">Отклонить</Button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: var(--color-white);
+  border: 1px solid #BBB9B9;
+  border-radius: 10px;
+  padding: 30px 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.content-left {
+  display: flex;
+  gap: 30px;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.content-title {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.content-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.content-right {
+  flex-shrink: 0;
+  margin-left: auto;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+</style>

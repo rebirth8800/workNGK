@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { reactive, watch, ref } from 'vue'
 import { Typography } from '@/shared/ui/typography'
 import InputWithTags from '@/shared/ui/inputWithTag/InputWithTags.vue'
 import { Button } from '@/shared/ui/button'
@@ -14,37 +14,55 @@ import router from '@/app/router'
 const vMask = mask
 
 const authStore = useAuthStore()
-
 const user = authStore.user
+
+// Кастомные валидаторы
+const validateCheckbox = (field: string[]) => {
+  return (_rule: any, value: string[]) => {
+    if (!value || value.length === 0) {
+      return Promise.reject('Выберите хотя бы один вариант')
+    }
+    return Promise.resolve()
+  }
+}
+
+const validateTags = (field: any[]) => {
+  return (_rule: any, value: any[]) => {
+    if (!value || value.length === 0) {
+      return Promise.reject('Добавьте хотя бы один пункт')
+    }
+    return Promise.resolve()
+  }
+}
 
 const form = reactive({
   company: '',
   title: '',
   salary: '',
   city: '',
-  work_format: '',
-  category: '',
-  employment: '',
-  schedule: '',
   address: '',
+  work_format: [] as string[],
+  category: [] as string[],
+  employment: [] as string[],
+  schedule: [] as string[],
   email: '',
   phone: '',
-  responsibilities: [],
-  requirements: [],
-  conditions: [],
-  status: user?.role == 'admin' ? 'Опубликована' : 'На модерации',
+  responsibilities: [] as string[],
+  requirements: [] as string[],
+  conditions: [] as string[],
+
 })
 
 watch(
-  () => user,
-  (newUser) => {
-    if (newUser) {
-      form.company = newUser?.company_name || ''
-      form.email = newUser.email || ''
-      form.phone = newUser.phone || ''
-    }
-  },
-  { immediate: true },
+    () => user,
+    (newUser) => {
+      if (newUser) {
+        form.company = newUser?.company_name || ''
+        form.email = newUser.email || ''
+        form.phone = newUser.phone || ''
+      }
+    },
+    { immediate: true },
 )
 
 const { isPending, isError, data, error } = useQuery({
@@ -56,8 +74,8 @@ const { isPending, isError, data, error } = useQuery({
 })
 
 const { mutate } = useMutation({
-  mutationFn: async (form) => {
-    const response = await postVacancy(form)
+  mutationFn: async (formData) => {
+    const response = await postVacancy(formData)
     return response.data
   },
   onSuccess: (data) => {
@@ -69,198 +87,217 @@ const { mutate } = useMutation({
   }
 })
 
-
-
-
 const onFinish = () => {
   mutate(form)
 }
 </script>
 
 <template>
-  <a-form :model="form" class="container" name="createVacancy" layout="vertical" @finish="onFinish">
-    <!-- ===== ОСНОВНАЯ ИНФОРМАЦИЯ ===== -->
+  <a-form
+      :model="form"
+      class="container"
+      name="createVacancy"
+      layout="vertical"
+      @finish="onFinish"
+  >
+
     <Typography type="semibold-32-black">Основная информация</Typography>
 
     <div class="form-group">
-      <!-- Название компании -->
+
       <a-form-item
-        label="Название компании"
-        name="company"
-        :rules="[{ required: true, message: 'Введите название компании' }]"
+          label="Название компании"
+          name="company"
+          :rules="[{ required: true, message: 'Введите название компании' }]"
       >
         <a-input
-          v-model:value="form.company"
-          placeholder="ООО Рога и Копыта"
-          class="custom-input"
+            v-model:value="form.company"
+            placeholder="ООО Рога и Копыта"
+            class="custom-input"
         />
       </a-form-item>
 
-      <!-- Название вакансии -->
       <a-form-item
-        label="Название вакансии"
-        name="title"
-        :rules="[{ required: true, message: 'Введите название вакансии' }]"
+          label="Название вакансии"
+          name="title"
+          :rules="[{ required: true, message: 'Введите название вакансии' }]"
       >
         <a-input
-          v-model:value="form.title"
-          placeholder="Frontend-разработчик"
-          class="custom-input"
+            v-model:value="form.title"
+            placeholder="Frontend-разработчик"
+            class="custom-input"
         />
       </a-form-item>
 
-      <!-- Зарплата -->
       <a-form-item
-        label="Зарплата"
-        name="salary"
-        :rules="[{ required: true, message: 'Введите зарплату' }]"
+          label="Зарплата"
+          name="salary"
+          :rules="[{ required: true, message: 'Введите зарплату' }]"
       >
         <a-input v-model:value="form.salary" placeholder="от 100 000 ₽" class="custom-input" />
       </a-form-item>
     </div>
 
-    <!-- ===== ХАРАКТЕРИСТИКИ ===== -->
     <Typography type="semibold-32-black">Характеристики</Typography>
 
     <div class="specifications">
-      <!-- ЛЕВАЯ КОЛОНКА -->
+
       <div class="col">
-        <!-- Город -->
         <a-form-item
-          label="Город"
-          name="city"
-          :rules="[{ required: true, message: 'Введите город' }]"
+            label="Город"
+            name="city"
+            :rules="[{ required: true, message: 'Введите город' }]"
         >
           <a-input v-model:value="form.city" placeholder="Москва" class="custom-input" />
         </a-form-item>
 
-        <!-- Формат работы -->
         <a-form-item
-          label="Формат работы"
-          name="workFormat"
-          :rules="[{ required: false, message: 'Выберите формат работы' }]"
+            name="work_format"
+            :rules="[{ validator: validateCheckbox(form.work_format), trigger: 'change' }]"
         >
-          <a-select
-            v-model:value="form.work_format"
-            placeholder="Выберите формат работы"
-            class="custom-select"
-            popupClassName="custom-select-dropdown"
-          >
-            <a-select-option
-              v-for="option in data?.work_format"
-              :key="option.value"
-              :value="option?.value"
-            >
-              {{ option.name }}
-            </a-select-option>
-          </a-select>
+          <div class="checkbox-wrapper">
+            <Typography type="semibold-24-black">Формат работы <span class="required-star">*</span></Typography>
+            <div class="checkbox-grid">
+              <div class="checkbox-item" v-for="option in data?.work_format" :key="option.value">
+                <input
+                    type="checkbox"
+                    :id="'work_format-' + option.value"
+                    :value="option.value"
+                    v-model="form.work_format"
+                />
+                <label :for="'work_format-' + option.value">
+                  <Typography type="regular-20-black">{{ option.name }}</Typography>
+                </label>
+              </div>
+            </div>
+          </div>
         </a-form-item>
 
-        <!-- Категория -->
         <a-form-item
-          label="Категория"
-          name="category"
-          :rules="[{ required: true, message: 'Выберите категорию' }]"
+            name="category"
+            :rules="[{ validator: validateCheckbox(form.category), trigger: 'change' }]"
         >
-          <a-select
-            v-model:value="form.category"
-            placeholder="Выберите категорию"
-            class="custom-select"
-            popupClassName="custom-select-dropdown"
-          >
-            <a-select-option
-              v-for="option in data?.category"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.name }}
-            </a-select-option>
-          </a-select>
+          <div class="checkbox-wrapper">
+            <Typography type="semibold-24-black">Категория <span class="required-star">*</span></Typography>
+            <div class="checkbox-grid">
+              <div class="checkbox-item" v-for="option in data?.category" :key="option.value">
+                <input
+                    type="checkbox"
+                    :id="'category-' + option.value"
+                    :value="option.value"
+                    v-model="form.category"
+                />
+                <label :for="'category-' + option.value">
+                  <Typography type="regular-20-black">{{ option.name }}</Typography>
+                </label>
+              </div>
+            </div>
+          </div>
         </a-form-item>
       </div>
 
-      <!-- ПРАВАЯ КОЛОНКА -->
       <div class="col">
-        <!-- Занятость -->
-        <a-form-item
-          label="Занятость"
-          name="employment"
-          :rules="[{ required: true, message: 'Выберите занятость' }]"
-        >
-          <a-select
-            v-model:value="form.employment"
-            placeholder="Выберите занятость"
-            class="custom-select"
-            popupClassName="custom-select-dropdown"
-          >
-            <a-select-option
-              v-for="option in data?.employment"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.name }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
 
-        <!-- График -->
         <a-form-item
-          label="График"
-          name="schedule"
-          :rules="[{ required: true, message: 'Выберите график' }]"
-        >
-          <a-select
-            v-model:value="form.schedule"
-            placeholder="Выберите график"
-            class="custom-select"
-            popupClassName="custom-select-dropdown"
-          >
-            <a-select-option
-              v-for="option in data?.schedule"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.name }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <!-- Фактический адрес -->
-        <a-form-item
-          label="Фактический адрес"
-          name="address"
-          :rules="[{ required: true, message: 'Введите адрес' }]"
+            label="Фактический адрес"
+            name="address"
+            :rules="[{ required: true, message: 'Введите адрес' }]"
         >
           <a-input
-            v-model:value="form.address"
-            placeholder="г. Москва, ул. Тверская, д. 1"
-            class="custom-input"
+              v-model:value="form.address"
+              placeholder="г. Москва, ул. Тверская, д. 1"
+              class="custom-input"
           />
+        </a-form-item>
+
+        <a-form-item
+            name="employment"
+            :rules="[{ validator: validateCheckbox(form.employment), trigger: 'change' }]"
+        >
+          <div class="checkbox-wrapper">
+            <Typography type="semibold-24-black">Занятость <span class="required-star">*</span></Typography>
+            <div class="checkbox-grid">
+              <div class="checkbox-item" v-for="option in data?.employment" :key="option.value">
+                <input
+                    type="checkbox"
+                    :id="'employment-' + option.value"
+                    :value="option.value"
+                    v-model="form.employment"
+                />
+                <label :for="'employment-' + option.value">
+                  <Typography type="regular-20-black">{{ option.name }}</Typography>
+                </label>
+              </div>
+            </div>
+          </div>
+        </a-form-item>
+
+        <a-form-item
+            name="schedule"
+            :rules="[{ validator: validateCheckbox(form.schedule), trigger: 'change' }]"
+        >
+          <div class="checkbox-wrapper">
+            <Typography type="semibold-24-black">График <span class="required-star">*</span></Typography>
+            <div class="checkbox-grid">
+              <div class="checkbox-item" v-for="option in data?.schedule" :key="option.value">
+                <input
+                    type="checkbox"
+                    :id="'schedule-' + option.value"
+                    :value="option.value"
+                    v-model="form.schedule"
+                />
+                <label :for="'schedule-' + option.value">
+                  <Typography type="regular-20-black">{{ option.name }}</Typography>
+                </label>
+              </div>
+            </div>
+          </div>
         </a-form-item>
       </div>
     </div>
 
-    <!-- ===== ЧТО ВЫ БУДЕТЕ ДЕЛАТЬ ===== -->
     <Typography type="semibold-32-black">Что вы будете делать</Typography>
-    <InputWithTags v-model="form.responsibilities" placeholder="Укажите обязанности сотрудника" />
+    <a-form-item
+        name="responsibilities"
+        :rules="[{ validator: validateTags(form.responsibilities), trigger: 'change' }]"
+    >
+      <InputWithTags
+          v-model="form.responsibilities"
+          placeholder="Укажите обязанности сотрудника"
+      />
+    </a-form-item>
 
-    <!-- ===== МЫ ЖДЁМ ОТ ВАС ===== -->
     <Typography type="semibold-32-black">Мы ждём от вас</Typography>
-    <InputWithTags v-model="form.requirements" placeholder="Укажите ожидания от сотрудника (образование, навыки и тд)" />
+    <a-form-item
+        name="requirements"
+        :rules="[{ validator: validateTags(form.requirements), trigger: 'change' }]"
+    >
+      <InputWithTags
+          v-model="form.requirements"
+          placeholder="Укажите ожидания от сотрудника (образование, навыки и тд)"
+      />
+    </a-form-item>
 
-    <!-- ===== УСЛОВИЯ РАБОТЫ ===== -->
     <Typography type="semibold-32-black">Условия работы</Typography>
-    <InputWithTags v-model="form.conditions" placeholder="Укажите условия работы (занятость, бонусы, зарплата и тд)" />
+    <a-form-item
+        name="conditions"
+        :rules="[{ validator: validateTags(form.conditions), trigger: 'change' }]"
+    >
+      <InputWithTags
+          v-model="form.conditions"
+          placeholder="Укажите условия работы (занятость, бонусы, зарплата и тд)"
+      />
+    </a-form-item>
 
-    <!-- ===== КОНТАКТЫ ===== -->
+
     <Typography type="semibold-32-black">Контакты</Typography>
 
     <div class="form-group">
-      <!-- Email -->
+
       <a-form-item
-        label="Email"
-        name="email"
-        :rules="[
+          label="Email"
+          name="email"
+          :rules="[
           { required: true, message: 'Введите email' },
           { type: 'email', message: 'Введите корректный email' },
         ]"
@@ -268,11 +305,11 @@ const onFinish = () => {
         <a-input v-model:value="form.email" placeholder="company@mail.ru" class="custom-input" />
       </a-form-item>
 
-      <!-- Телефон -->
+
       <a-form-item
-        label="Телефон"
-        name="phone"
-        :rules="[
+          label="Телефон"
+          name="phone"
+          :rules="[
           { required: true, message: 'Введите номер телефона' },
           {
             pattern: /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/,
@@ -281,10 +318,10 @@ const onFinish = () => {
         ]"
       >
         <a-input
-          v-model:value="form.phone"
-          v-mask="'+7 (###) ###-##-##'"
-          placeholder="+7 (999) 000-00-00"
-          class="custom-input"
+            v-model:value="form.phone"
+            v-mask="'+7 (###) ###-##-##'"
+            placeholder="+7 (999) 000-00-00"
+            class="custom-input"
         />
       </a-form-item>
     </div>
@@ -315,7 +352,6 @@ const onFinish = () => {
   gap: 25px;
 }
 
-/* ===== КНОПКА ОТПРАВКИ - ЦЕНТРИРУЕМ ===== */
 .submit-button {
   display: flex !important;
   justify-content: center !important;
@@ -332,7 +368,6 @@ const onFinish = () => {
   width: 100% !important;
 }
 
-/* ===== БЛОК ХАРАКТЕРИСТИКИ ===== */
 .specifications {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -347,7 +382,42 @@ const onFinish = () => {
   width: 100%;
 }
 
-/* ===== СТИЛИ ДЛЯ FORM ITEMS ===== */
+.checkbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.checkbox-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 35px;
+  height: 35px;
+  accent-color: var(--color-primary-red);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-item label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.required-star {
+  color: var(--color-primary-red);
+  margin-left: 4px;
+}
+
 :deep(.ant-form-item) {
   width: 100% !important;
   margin: 0 !important;
@@ -388,7 +458,6 @@ const onFinish = () => {
   width: 100% !important;
 }
 
-/* ===== ИНПУТ ===== */
 :deep(.custom-input) {
   width: 100% !important;
   padding: 15px !important;
@@ -416,72 +485,6 @@ const onFinish = () => {
   box-shadow: none !important;
 }
 
-/* ===== СЕЛЕКТ ===== */
-:deep(.custom-select) {
-  width: 100% !important;
-}
 
-:deep(.custom-select .ant-select-selector) {
-  padding: 15px !important;
-  border: 1px solid var(--color-grey-light) !important;
-  border-radius: 10px !important;
-  background: var(--color-white) !important;
-  color: var(--color-black) !important;
-  font-size: 1.125rem !important;
-  height: auto !important;
-  min-height: 54px !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-  transition: border-color 0.3s !important;
-}
 
-:deep(.custom-select .ant-select-selection-placeholder) {
-  color: var(--color-grey-light) !important;
-  font-size: 1.125rem !important;
-}
-
-:deep(.custom-select .ant-select-selection-item) {
-  font-size: 1.125rem !important;
-  color: var(--color-black) !important;
-}
-
-:deep(.custom-select .ant-select-arrow) {
-  color: var(--color-grey-light) !important;
-  font-size: 1.125rem !important;
-}
-
-:deep(.custom-select .ant-select-selector:hover) {
-  border-color: var(--color-almost-black) !important;
-}
-
-:deep(.custom-select.ant-select-focused .ant-select-selector) {
-  border-color: var(--color-almost-black) !important;
-  box-shadow: none !important;
-}
-
-/* ===== АДАПТИВ ===== */
-@media (max-width: 768px) {
-  .container {
-    padding: 20px 16px;
-  }
-  .specifications {
-    grid-template-columns: 1fr;
-    gap: 20px !important;
-  }
-}
-</style>
-
-<!-- ===== ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА ===== -->
-<style>
-.custom-select-dropdown .ant-select-item {
-  font-size: 20px !important;
-  padding: 14px 20px !important;
-  min-height: 56px !important;
-  line-height: 1.5 !important;
-}
-
-.custom-select-dropdown .ant-select-item-option-content {
-  font-size: 20px !important;
-}
 </style>

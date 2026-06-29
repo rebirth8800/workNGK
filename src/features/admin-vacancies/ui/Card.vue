@@ -32,8 +32,9 @@ defineProps<Props>()
       </div>
     </div>
     <div class="content-right">
-      <Button type="none-back-black">Редактировать</Button>
-      <Button type="none-back-red">Удалить</Button>
+      <Button type="none-back-black">Просмотреть</Button>
+      <Button type="default">Опубликовать</Button>
+      <Button type="none-back-red">Отклонить</Button>
     </div>
   </div>
 </template>

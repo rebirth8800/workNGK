@@ -33,7 +33,7 @@ const pageChange = () => {
         <Typography type="semibold-32-black">Вакансии на рассмотрение</Typography>
       </div>
       <div class="card_list">
-        {{data?.len}}
+<!--        {{data?.len}}-->
         <Card v-for="item in data?.items" :key="item.id" :item="item"/>
       </div>
       <Pagination
