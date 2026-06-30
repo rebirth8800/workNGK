@@ -41,8 +41,8 @@ const model = defineModel<string[]>({ default: () => [] })
   margin-left: 0;
 }
 input {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   /* background-color: var(--color-background-grey); */
   /* border: 1px solid var(--color-grey-light); */
   /* border-radius: 5px; */

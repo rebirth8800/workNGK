@@ -43,7 +43,7 @@ span {
   color: var(--color-almost-black);
 }
 .red-light {
-  padding: 2px 16px;
+  padding: 6px 16px;
   background-color: var(--color-red-light);
   font-weight: 600;
   color: var(--color-primary-red);

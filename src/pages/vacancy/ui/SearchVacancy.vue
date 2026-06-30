@@ -33,7 +33,7 @@ const search = defineModel({
   background-color: var(--color-background-grey);
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
-  padding: 20px 20px;
+  padding: 20px 15px;
   box-sizing: border-box;
 }
 

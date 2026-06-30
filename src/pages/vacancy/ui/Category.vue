@@ -47,14 +47,14 @@ const flag = ref(false)
 .block {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   margin-left: 0;
 }
 
 .dropdown-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 303px;
 }
 
 .toggle-btn {
@@ -63,7 +63,7 @@ const flag = ref(false)
   color: var(--color-primary-red);
   font-family: 'Inter', sans-serif;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   cursor: pointer;
   padding: 10px 16px;
   text-align: left;

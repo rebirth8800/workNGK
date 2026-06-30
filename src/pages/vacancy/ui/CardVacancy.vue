@@ -73,15 +73,15 @@ a{
   margin-right: 0;
 }
 .card {
-  max-width: 585px;
-  min-width: 520px;
-  max-height: 437px;
-  padding: 30px 20px;
+  max-width: 470px;
+  min-width: 470px;
+  max-height: 380px;
+  padding: 20px 20px;
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 }
 
 .tags {

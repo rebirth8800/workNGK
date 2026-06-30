@@ -19,7 +19,7 @@ import { Logo } from '@/shared/ui/logo'
   justify-content: space-between;
   padding: 1rem 0;
   width: 100%;
-  max-width: 1600px;
+  max-width: 1300px;
   margin: 0 auto;
   box-sizing: border-box;
 }

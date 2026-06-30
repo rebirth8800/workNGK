@@ -43,8 +43,8 @@ const { isPending, isError, data, error } = useQuery({
 }
 
 .card_list > * {
-  flex: 0 0 515px;
-  width: 515px;
-  height: 375px;
+  flex: 0 0 420px;
+  width: 420px;
+  height: 314px;
 }
 </style>

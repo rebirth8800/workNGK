@@ -43,8 +43,8 @@ const onInput = (event: Event, model: any) => {
 
 .salary-input {
   width: 130px;
-  padding: 20px 20px;
-  font-size: 1.5rem;
+  padding: 15px 15px;
+  font-size: 1.25rem;
   background-color: var(--color-background-grey);
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
@@ -57,7 +57,7 @@ const onInput = (event: Event, model: any) => {
 }
 
 .line {
-  width: 30px;
+  width: 20px;
   height: 1px;
   background-color: var(--color-almost-black);
 }

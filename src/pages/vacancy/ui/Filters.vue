@@ -47,8 +47,8 @@ const { isPending, isError, data, error } = useQuery({
     <CheckBox name="Формат работы" :item="data.work_format" v-model="selectedFilters.work_format" />
     <Zarplata v-model:min="selectedFilters.salary_min" v-model:max="selectedFilters.salary_max" />
     <div class="button_block">
-      <Button type="default" @click="() => updateParam?.()">Применить фильтры</Button>
-      <Button type="text-black" @click="() => deleteParam?.()">Сбросить фильтры</Button>
+      <Button type="default" class="filter-btn" @click="() => updateParam?.()">Применить фильтры</Button>
+      <Button type="text-black" class="filter-btn" @click="() => deleteParam?.()">Сбросить фильтры</Button>
     </div>
   </div>
 </template>
@@ -57,12 +57,29 @@ const { isPending, isError, data, error } = useQuery({
 .block {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   margin-left: 0;
 }
+
 .button_block {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+/* ===== ВЫРАВНИВАНИЕ КНОПОК ПО ЦЕНТРУ ===== */
+.filter-btn {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.filter-btn :deep(*) {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
 }
 </style>

@@ -46,11 +46,11 @@ defineProps<Props>()
 
 <style scoped>
 .card {
-  width: 515px;
-  height: 375px;
-  min-width: 515px;
-  min-height: 375px;
-  padding: 35px 25px;
+  width: 420px;
+  height: 314px;
+  min-width: 420px;
+  min-height: 314px;
+  padding: 20px 25px;
   text-align: left;
   display: flex;
   flex-direction: column;

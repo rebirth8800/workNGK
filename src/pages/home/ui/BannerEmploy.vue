@@ -37,7 +37,7 @@ const text = ['Бесплатное размещение', 'Быстрая мо�
   margin: 2.5rem auto;
   background-color: var(--color-black);
   padding: 50px;
-  width: 1350px;
+  width: 1200px;
   display: flex;
   align-items: center;
   border-radius: 10px;
@@ -46,7 +46,7 @@ const text = ['Бесплатное размещение', 'Быстрая мо�
 .info_flex{
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   width: 100%;
 }
 
