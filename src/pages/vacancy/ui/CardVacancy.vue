@@ -73,8 +73,8 @@ a{
   margin-right: 0;
 }
 .card {
-  max-width: 470px;
-  min-width: 470px;
+  max-width: 395px;
+  min-width: 395px;
   max-height: 380px;
   padding: 20px 20px;
   border: 1px solid var(--color-grey-light);

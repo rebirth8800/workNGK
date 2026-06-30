@@ -48,7 +48,8 @@ const { isPending, isError, data, error } = useQuery({
   padding: 23px 0;
 }
 .main-info {
-  width: 83.25rem;
+  width: 1080px;
+  margin: 0 auto;
 }
 .section {
   margin: 0;

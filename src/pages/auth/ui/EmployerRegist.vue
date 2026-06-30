@@ -408,7 +408,7 @@ const validateConfirmPassword = (_rule: any, value: string) => {
 .link {
   color: var(--color-primary-red) !important;
   text-decoration: none !important;
-  font-size: 1.125rem !important;
+  font-size: 0.85rem !important;
 }
 
 .link:hover {
@@ -450,8 +450,8 @@ const validateConfirmPassword = (_rule: any, value: string) => {
 }
 
 :deep(.custom-checkbox .ant-checkbox .ant-checkbox-inner) {
-  width: 34px !important;
-  height: 34px !important;
+  width: 30px !important;
+  height: 30px !important;
   border-radius: 8px !important;
   border: 2px solid var(--color-grey-light) !important;
   background-color: white !important;
@@ -471,7 +471,7 @@ const validateConfirmPassword = (_rule: any, value: string) => {
   top: 50% !important;
   transform: translate(-50%, -50%) rotate(45deg) !important;
   width: 10px !important;
-  height: 18px !important;
+  height: 12px !important;
   border: solid white !important;
   border-width: 0 3px 3px 0 !important;
   content: '' !important;
@@ -486,7 +486,7 @@ const validateConfirmPassword = (_rule: any, value: string) => {
 
 /* ===== ТЕКСТ ЧЕКБОКСА 18px ===== */
 .checkbox-label {
-  font-size: 1.125rem !important;
+  font-size: 1rem !important;
   color: var(--color-black) !important;
   line-height: 1.5 !important;
 }
@@ -494,7 +494,7 @@ const validateConfirmPassword = (_rule: any, value: string) => {
 .link {
   color: var(--color-primary-red) !important;
   text-decoration: none !important;
-  font-size: 1.125rem !important;
+  font-size: 1rem !important;
 }
 
 .link:hover {

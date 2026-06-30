@@ -28,7 +28,7 @@ const isLogin = ref(true)
 
 <style scoped>
 .container {
-  width: 800px;
+  width: 600px;
   display: flex;
   flex-direction: column;
   gap: 2rem;

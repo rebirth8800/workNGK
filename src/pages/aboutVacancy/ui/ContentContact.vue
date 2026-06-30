@@ -14,7 +14,7 @@ defineProps<Props>()
     <Typography type="semibold-32-black">{{ title }}</Typography>
     <ul class="content-list">
       <li v-for="(item, index) in items" :key="index">
-        <Typography type="regular-24-black">{{ item }}</Typography>
+        <Typography type="regular-20-black">{{ item }}</Typography>
       </li>
     </ul>
   </div>
