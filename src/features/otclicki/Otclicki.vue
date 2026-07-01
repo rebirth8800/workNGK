@@ -71,7 +71,6 @@ const pageChange = () => {
   max-width: 100% !important;
   background-color: var(--color-white) !important;
   border-radius: 10px !important;
-  //padding: 5px 10px !important;
   box-sizing: border-box !important;
   margin: 0 !important;
 }
