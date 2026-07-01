@@ -1,0 +1,1 @@
+import{i as e}from"./index-BfY9GB4B.js";var t=()=>e.get(`/filters`);export{t};
