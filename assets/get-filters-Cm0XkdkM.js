@@ -1,0 +1,1 @@
+import{i as e}from"./index-DKSP1v9M.js";var t=()=>e.get(`/filters`);export{t};
