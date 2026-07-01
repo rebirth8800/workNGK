@@ -9,7 +9,6 @@ import { useAuthStore } from '@/entities/user'
 
 
 async function prepareApp(){
-  if (import.meta.env.DEV) {
     try {
       const {worker} = await import('./msw/browser')
       return worker.start({
@@ -24,7 +23,7 @@ async function prepareApp(){
     }catch (error) {
       console.warn('⚠️ MSW не запустился:', error)
     }
-  }
+
 
 
 }
