@@ -5,7 +5,7 @@ import { computed, onMounted, ref } from 'vue'
 import Profile from '@/features/button-block/ui/Profile.vue'
 
 const authStore = useAuthStore()
-const user = computed(() => authStore.user)
+const user = computed(() => authStore.user || '')
 
 
 </script>
