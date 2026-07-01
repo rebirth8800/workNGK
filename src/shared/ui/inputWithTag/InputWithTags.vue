@@ -51,7 +51,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
       </Button>
     </div>
 
-    <!-- Список добавленных элементов -->
+
     <div v-if="items.length > 0" class="items-list">
       <div
           v-for="(item, index) in items"

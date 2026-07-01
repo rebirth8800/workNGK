@@ -89,6 +89,13 @@ const { mutate } = useMutation({
 const onFinish = () => {
   mutate(form)
 }
+
+// Функция для ограничения ввода только цифр
+const formatSalary = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  input.value = input.value.replace(/\D/g, '')
+  form.salary = input.value
+}
 </script>
 
 <template>
@@ -117,7 +124,12 @@ const onFinish = () => {
           name="salary"
           :rules="[{ required: true, message: 'Введите зарплату' }]"
       >
-        <a-input v-model:value="form.salary" placeholder="от 100 000 ₽" class="custom-input" />
+        <a-input
+            v-model:value="form.salary"
+            placeholder="100 000 ₽"
+            class="custom-input"
+            @input="formatSalary"
+        />
       </a-form-item>
     </div>
 
