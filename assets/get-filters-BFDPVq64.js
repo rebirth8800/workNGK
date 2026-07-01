@@ -1,1 +1,0 @@
-import{i as e}from"./index-CbkR_eFf.js";var t=()=>e.get(`/filters`);export{t};
