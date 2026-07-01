@@ -105,18 +105,7 @@ const onFinish = () => {
             />
           </a-form-item>
 
-          <a-form-item
-              label="Должность"
-              name="position"
-              :rules="[{ required: true, message: 'Введите должность' }]"
-          >
-            <a-input
-                v-model:value="form.position"
-                :disabled="flag_form"
-                placeholder="Директор по персоналу"
-                class="custom-input"
-            />
-          </a-form-item>
+
         </div>
 
         <!-- Правая колонка -->

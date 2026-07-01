@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { Logo } from '../src/shared/ui/logo'
 
-// Мок для RouterLink
 const RouterLinkStub = {
   template: '<a href="/"><slot /></a>',
 }
