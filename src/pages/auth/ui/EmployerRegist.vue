@@ -14,15 +14,15 @@ const register = authStore.useRegisterRequest()
 const vMask = mask
 
 const form = reactive({
-  company: 'dgfdfs',
-  firstName: 'fsds',
-  lastName: 'fdf',
-  middleName: 'ffws',
-  email: 'deviap999@gmail.com',
-  phone: '79999999999',
-  password: 'ggg33566',
-  confirmPassword: 'ggg33566',
-  agreement: true,
+  company: '',
+  firstName: '',
+  lastName: '',
+  middleName: '',
+  email: '',
+  phone: '',
+  password: '',
+  confirmPassword: '',
+  agreement: false,
 })
 
 
