@@ -44,7 +44,6 @@ export const Login = (data)=>{
     )
   }
 
-  console.log(user.role !== data.role)
   if (user.role !== data.role){
     if (user.role !== 'admin'){
       return HttpResponse.json(
