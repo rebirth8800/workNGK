@@ -11,14 +11,12 @@ const user = computed(() => authStore.user || '')
 </script>
 
 <template>
-  <div class="main">
-    <div class="block" v-if="user != null">
+  <div class="main" v-if="authStore._initialized">
+    <div class="block" v-if="user != ''">
       <RouterLink v-if="user?.role == 'admin'" to="/admin"><Button>Админ панель</Button></RouterLink>
       <Profile v-else :lastname="user?.last_name" :name="user?.first_name" />
     </div>
     <RouterLink v-else to="/auth"><Button>Войти</Button></RouterLink>
-
-
 
   </div>
 </template>
