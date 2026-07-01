@@ -12,14 +12,19 @@ async function prepareApp(){
     try {
       const {worker} = await import('./msw/browser')
       return worker.start({
-        onUnhandledRequest: 'bypass',
+        onUnhandledRequest: (req) => {
+          console.warn('⚠️ Необработанный запрос:', req.url)
+        },
         // Включаем поддержку cookie
+        url: '/workNGK/mockServiceWorker.js',
         serviceWorker: {
+          scope: '/workNGK/',
           options: {
             credentials: 'include', // <--- КЛЮЧЕВОЙ МОМЕНТ!
           },
         },
       })
+      console.log('✅ MSW запущен!')
     }catch (error) {
       console.warn('⚠️ MSW не запустился:', error)
     }
