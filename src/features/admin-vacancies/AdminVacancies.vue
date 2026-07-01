@@ -32,15 +32,17 @@ const pageChange = () => {
       <div class="title">
         <Typography type="semibold-32-black">Вакансии на рассмотрение</Typography>
       </div>
-      <div class="card_list">
+      <div class="card_list" v-if="data?.len>0">
         <Card v-for="item in data?.items" :key="item.id" :item="item" />
       </div>
       <Pagination
+        v-if="data?.len>0"
         :len="data?.len"
         :per_page="pagination.per_page"
         :pageChange="pageChange"
         v-model="pagination.page"
       />
+      <Typography type="regular-16-almost-black" v-else>Нет вакансий на рассмотрение</Typography>
     </div>
   </ProfileObertka>
 </template>

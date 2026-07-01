@@ -3,7 +3,15 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import BlockInfa from "@/shared/ui/blockInfa/BlockInfa.vue";
 import IconInfo from '@/shared/svg/info.svg'
-import IconTime from '@/shared/svg/time-forward.svg'
+import { useAuthStore } from '@/entities/user'
+
+const authStore = useAuthStore()
+
+const login = authStore.useLogin()
+
+const Login = ()=>{
+  login.mutate({email: 'email6@gmail.com', password: 'password6', role: 'student'})
+}
 </script>
 
 <template>
@@ -14,7 +22,7 @@ import IconTime from '@/shared/svg/time-forward.svg'
     </div>
     <BlockInfa :svg="IconInfo" type="red">Для входа используется единая система авторизации Moodle. Отдельный пароль создавать не нужно</BlockInfa>
     <div class="button_block">
-      <Button class="login-button">Войти через Moodle</Button>
+      <Button class="login-button" @click="Login()">Войти через Moodle</Button>
       <Typography type="regular-20-almost-black">Будет перенаправление на портал Moodle для авторизации</Typography>
     </div>
   </div>

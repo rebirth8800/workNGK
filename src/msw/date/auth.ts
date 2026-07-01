@@ -44,6 +44,13 @@ export const Login = (data)=>{
     )
   }
 
+  if (user.status && user.status === 'На модерации'){
+      return HttpResponse.json(
+        { success: false, message: 'Неверный email или пароль' },
+        { status: 401 },
+      )
+
+  }
   if (user.role !== data.role){
     if (user.role !== 'admin'){
       return HttpResponse.json(
