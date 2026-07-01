@@ -44,6 +44,17 @@ export const Login = (data)=>{
     )
   }
 
+  console.log(user.role !== data.role)
+  if (user.role !== data.role){
+    if (user.role !== 'admin'){
+      return HttpResponse.json(
+        { success: false, message: 'Неверный email или пароль' },
+        { status: 401 },
+      )
+    }
+
+  }
+
   const accessToken = generateJWT({
     id: user.id,
     email: user.email,
@@ -158,5 +169,28 @@ export const getAdminEmployers = (page, per_page)=>{
     len: responce.length,
     items: responce.slice(+page*+per_page-+per_page, +per_page*+page)
 
+  }
+}
+
+export const putAdminEmployer = (id: string, status)=>{
+  users.forEach((item, index)=>{
+    if (item.id == id){
+      users[index].status = status
+    }
+  })
+
+  return {
+    message: 'Аккаунт работодателя успешно одобрен'
+  }
+}
+
+export const deleteAdminEmployer = (id: string)=>{
+  users.forEach((item, index)=>{
+    if (item.id == id){
+      users.splice(index, 1)
+    }
+  })
+  return {
+    message: 'Аккаунт работодателя успешно отклонен'
   }
 }

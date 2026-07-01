@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { putVacancy } from '@/features/admin-vacancies/api/put-vacancy-status.ts'
+import { message } from 'ant-design-vue'
 
 interface Item {
   id: string
@@ -15,8 +18,27 @@ interface Props {
   item: Item
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
+const queryClient = useQueryClient()
+
+const { mutate } = useMutation({
+  mutationFn: async (status: string) => {
+    const responce = await putVacancy(props.item.id, status)
+    return responce.data
+  },
+  onSuccess: (data) => {
+    message.success({
+      content: data.message,
+      class: 'custom-message-large',
+    })
+    queryClient.invalidateQueries({ queryKey: ['admin-vacancies'] })
+  },
+})
+
+const vacancy_update = (status: string) => {
+  mutate(status)
+}
 </script>
 
 <template>
@@ -32,9 +54,11 @@ defineProps<Props>()
       </div>
     </div>
     <div class="content-right">
-      <Button type="none-back-black">Просмотреть</Button>
-      <Button type="default">Опубликовать</Button>
-      <Button type="none-back-red">Отклонить</Button>
+      <RouterLink :to="`/vacancies/${item.id}`"
+        ><Button type="none-back-black">Просмотреть</Button></RouterLink
+      >
+      <Button type="default" @click="() => vacancy_update('Опубликована')">Опубликовать</Button>
+      <Button type="none-back-red" @click="vacancy_update('Отклонена')">Отклонить</Button>
     </div>
   </div>
 </template>
@@ -45,7 +69,7 @@ defineProps<Props>()
   max-width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white);
-  border: 1px solid #BBB9B9;
+  border: 1px solid #bbb9b9;
   border-radius: 10px;
   padding: 30px 35px;
   display: flex;

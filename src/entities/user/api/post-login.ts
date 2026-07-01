@@ -6,5 +6,6 @@ type LoginType = {
 }
 
 export const login = (data: LoginType) => {
+  console.log(data)
   return apiClient.post('/profile/login', { data })
 }

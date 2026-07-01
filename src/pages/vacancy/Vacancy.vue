@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { useQueryClient, useInfiniteQuery, useQuery, useMutation } from '@tanstack/vue-query'
+import {
+  useQueryClient,
+  useInfiniteQuery,
+  useQuery,
+  useMutation,
+  keepPreviousData,
+} from '@tanstack/vue-query'
 import { getVacancy } from '@/pages/vacancy/api/get-vacancy'
 import VacancyListLayout from '@/app/layout/VacancyListLayout.vue'
 import Filters from '@/pages/vacancy/ui/Filters.vue'
@@ -68,6 +74,7 @@ const { isPending, isError, data, error, refetch } = useQuery({
     const response = await getVacancy(params.value)
     return response.data
   },
+  placeholderData: keepPreviousData,
 })
 </script>
 

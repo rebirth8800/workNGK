@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { message } from 'ant-design-vue'
+import { putEmployer } from '@/features/admin-employers/api/put-employer.ts'
+import { deleteEmployer } from '@/features/admin-employers/api/delete-employer.ts'
 
 interface Item {
   id: string
@@ -17,7 +21,37 @@ interface Props {
   item: Item
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const queryClient = useQueryClient()
+
+const { mutate: approveEmployer} = useMutation({
+  mutationFn: async () => {
+    const responce = await putEmployer(props.item.id, "Одобрен")
+    return responce.data
+  },
+  onSuccess: (data) => {
+    message.success({
+      content: data.message,
+      class: 'custom-message-large',
+    })
+    queryClient.invalidateQueries({ queryKey: ['admin-employers'] })
+  },
+})
+
+const { mutate: delEmployer} = useMutation({
+  mutationFn: async (status: string) => {
+    const responce = await deleteEmployer(props.item.id)
+    return responce.data
+  },
+  onSuccess: (data) => {
+    message.success({
+      content: data.message,
+      class: 'custom-message-large',
+    })
+    queryClient.invalidateQueries({ queryKey: ['admin-employers'] })
+  },
+})
 </script>
 
 <template>
@@ -25,8 +59,12 @@ defineProps<Props>()
     <div class="content-left">
       <div class="content-title">
         <Typography type="semibold-24-black">{{ item?.company_name }}</Typography>
-        <Typography type="regular-20-almost-black">{{ item?.last_name  }} {{item?.first_name}} {{item?.middle_name}}</Typography>
-        <Typography type="regular-20-almost-black">Дата заявки: {{ item?.date || 'Нет даты' }}</Typography>
+        <Typography type="regular-20-almost-black"
+          >{{ item?.last_name }} {{ item?.first_name }} {{ item?.middle_name }}</Typography
+        >
+        <Typography type="regular-20-almost-black"
+          >Дата заявки: {{ item?.date || 'Нет даты' }}</Typography
+        >
       </div>
       <div class="content-footer">
         <Typography type="regular-16-almost-black">{{ item?.email }}</Typography>
@@ -34,8 +72,8 @@ defineProps<Props>()
       </div>
     </div>
     <div class="content-right">
-      <Button type="default">Одобрить</Button>
-      <Button type="none-back-red">Отклонить</Button>
+      <Button type="default" @click="approveEmployer()">Одобрить</Button>
+      <Button type="none-back-red" @click="delEmployer()">Отклонить</Button>
     </div>
   </div>
 </template>
@@ -46,7 +84,7 @@ defineProps<Props>()
   max-width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white);
-  border: 1px solid #BBB9B9;
+  border: 1px solid #bbb9b9;
   border-radius: 10px;
   padding: 30px 35px;
   display: flex;

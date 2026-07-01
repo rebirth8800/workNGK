@@ -19,6 +19,7 @@ const onFinish = () => {
 const form = reactive({
   email: 'admin@gmail.com',
   password: 'admin1',
+  role: 'employer'
 })
 </script>
 

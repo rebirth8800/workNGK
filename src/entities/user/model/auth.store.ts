@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const router = useRouter()
 
-  // Состояние
+  // Состояния
   const user = ref(null)
   const isAuthenticated = ref(false)
   const _initialized = ref(false)
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
           message.error(data.message)
         }
       },
-      onError: (error) => {
+      onError: () => {
         message.error('Неверная почта или пароль')
       }
     })

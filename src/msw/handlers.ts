@@ -6,17 +6,21 @@ import {
   getOtcliki,
   getVacancyEmployer,
   postVacancy,
-  getAdminVacancy,
+  getAdminVacancy, putAdminVacancy,
 } from '@/msw/date/vacancies.ts'
 import { filters, sorts } from '@/msw/date/paramsRefines'
 import {
+  deleteAdminEmployer,
   getAdminEmployers,
   GetData,
   Login,
   Logout,
+  putAdminEmployer,
   PutUser,
   RegisterEmployer,
 } from '@/msw/date/auth.ts'
+import _default from 'ant-design-vue/es/vc-slick/inner-slider'
+import data = _default.data
 
 
 const getUrl = (url: string) => {
@@ -94,10 +98,26 @@ export const handlers = [
     const url = new URL(request.url)
     return HttpResponse.json(getAdminVacancy(url.searchParams.get('page'), url.searchParams.get('per_page')))
   }),
+  http.put('https://api.ngk-rabota.ru/v1/admin/vacancies/:id', async ({request, params}) => {
+    const { id } = params
+    const body = await request.json()
+    return HttpResponse.json(putAdminVacancy(id, body))
+  }),
+
   http.get('https://api.ngk-rabota.ru/v1/admin/employers', ({request}) => {
     const url = new URL(request.url)
     return HttpResponse.json(getAdminEmployers(url.searchParams.get('page'), url.searchParams.get('per_page')))
   }),
+  http.put('https://api.ngk-rabota.ru/v1/admin/employers/:id', async ({request, params}) => {
+    const { id } = params
+    const body = await request.json()
+    return HttpResponse.json(putAdminEmployer(id, body))
+  }),
+  http.delete('https://api.ngk-rabota.ru/v1/admin/employers/:id', async ({ params}) => {
+    const { id } = params
+    return HttpResponse.json(deleteAdminEmployer(id))
+  }),
+
 
 
 

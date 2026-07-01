@@ -170,3 +170,21 @@ export const getAdminVacancy = (page, per_page)=>{
 
   }
 }
+
+export const putAdminVacancy = (id, status)=>{
+  vacancies.forEach((item, index)=>{
+    if (item.id == id){
+      vacancies[index].status = status
+    }
+  })
+
+  if (status == 'Опубликована'){
+    return {
+      message: 'Вакансия успешно опубликована'
+    }
+  } else {
+    return {
+      message: 'Вакансия успешно отклонена'
+    }
+  }
+}
