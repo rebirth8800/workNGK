@@ -1,0 +1,1 @@
+import{i as e}from"./index-PpuIe4kE.js";var t=()=>e.get(`/filters`);export{t};
