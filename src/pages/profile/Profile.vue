@@ -46,7 +46,7 @@ const logout = authStore.useLogout()
 
 .logout-wrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
   padding: 0 16px;
   box-sizing: border-box;
