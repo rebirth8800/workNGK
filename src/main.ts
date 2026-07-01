@@ -5,16 +5,13 @@ import Antd from 'ant-design-vue';
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import router from './app/router'
 import 'ant-design-vue/es/pagination/style/index';
-import { useAuthStore } from '@/entities/user'
 
 
 async function prepareApp(){
     try {
       const {worker} = await import('./msw/browser')
       return worker.start({
-        onUnhandledRequest: (req) => {
-          console.warn('⚠️ Необработанный запрос:', req.url)
-        },
+        onUnhandledRequest: 'bypass',
         // Включаем поддержку cookie
         url: '/workNGK/mockServiceWorker.js',
         serviceWorker: {
