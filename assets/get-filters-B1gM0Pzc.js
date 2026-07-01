@@ -1,1 +1,0 @@
-import{i as e}from"./index-WWgRO4Pw.js";var t=()=>e.get(`/filters`);export{t};
