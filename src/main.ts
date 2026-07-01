@@ -13,8 +13,9 @@ async function prepareApp(){
       return worker.start({
         onUnhandledRequest: 'bypass',
         // Включаем поддержку cookie
-        url: '/workNGK/mockServiceWorker.js',
+
         serviceWorker: {
+          url: '/workNGK/mockServiceWorker.js',
           scope: '/workNGK/',
           options: {
             credentials: 'include', // <--- КЛЮЧЕВОЙ МОМЕНТ!
