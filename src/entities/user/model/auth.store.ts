@@ -14,12 +14,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   const router = useRouter()
 
-  // Состояние
   const user = ref(null)
   const isAuthenticated = ref(false)
   const _initialized = ref(false)
 
-  // ============ 📝 РЕГИСТРАЦИЯ (заявка) ============
   const useRegisterRequest = () => {
     return useMutation({
       mutationFn: async (data: any) => {
@@ -43,7 +41,6 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  // ============ 🔑 ЛОГИН ============
   const useLogin = () => {
     return useMutation({
       mutationFn: async (data: any) => {
@@ -70,7 +67,6 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  // ============ 👤 ПРОВЕРКА АВТОРИЗАЦИИ ============
   const useCheckAuth = () => {
     return useMutation({
       mutationFn: async () => {
@@ -117,9 +113,6 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-
-
-  // ============ 🚪 ВЫХОД ============
   const useLogout = () => {
     return useMutation({
       mutationFn: async () => {
@@ -143,12 +136,10 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return {
-    // Состояние
     user,
     isAuthenticated,
     _initialized,
 
-    // Только хуки!
     useRegisterRequest,
     useLogin,
     useUpdateData,

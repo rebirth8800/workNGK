@@ -67,11 +67,10 @@ span {
   color: var(--color-orange-brown);
 }
 
-/* Добавляем отступы для тегов в строке */
 .status-red,
 .status-green,
 .status-yellow {
-  margin: 0 5px; /* ← ДОБАВЛЯЕМ горизонтальные отступы */
+  margin: 0 5px;
 }
 
 @media (max-width: 1440px) {

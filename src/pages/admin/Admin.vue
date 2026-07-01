@@ -17,11 +17,13 @@ const activeKey = ref(1)
   <DefaultLayout name="Админ панель">
     <div class="background">
       <div class="container">
-        <a-tabs v-model:activeKey="activeKey">
+        <a-tabs v-model:activeKey="activeKey" class="tabs-full-width">
           <a-tab-pane :key="1" tab="Вакансии на модерацию"><AdminVacancies/></a-tab-pane>
           <a-tab-pane :key="2" tab="Заявки работодателей" force-render><AdminEmployers/></a-tab-pane>
         </a-tabs>
-        <Button @click="logout.mutate()">Выход из аккаунта</Button>
+        <div class="button-wrapper">
+          <Button @click="logout.mutate()" class="logout-button">Выход из аккаунта</Button>
+        </div>
       </div>
     </div>
 
@@ -43,6 +45,22 @@ const activeKey = ref(1)
   gap: 1rem;
 }
 
+.tabs-full-width {
+  width: 100%;
+}
+
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logout-button {
+  font-size: 1rem;
+  padding: 10px 20px;
+  height: auto;
+  min-height: 2.5rem;
+}
 
 :deep(.ant-tabs-tab) {
   font-size: 1.5rem;
@@ -64,6 +82,7 @@ const activeKey = ref(1)
 
 :deep(.ant-tabs-content-holder) {
   margin-left: 0;
+  width: 100%;
 }
 
 :deep(.ant-tabs-tab:hover) {

@@ -26,7 +26,6 @@ defineProps<Props>()
       <div class="content-title">
         <Typography type="semibold-24-black">{{ item?.company_name }}</Typography>
         <Typography type="regular-20-almost-black">{{ item?.last_name  }} {{item?.first_name}} {{item?.middle_name}}</Typography>
-        <Typography type="regular-20-almost-black">Дата заявки: {{ item?.date || 'Нет даты' }}</Typography>
       </div>
       <div class="content-footer">
         <Typography type="regular-16-almost-black">{{ item?.email }}</Typography>
