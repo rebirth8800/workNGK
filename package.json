@@ -9,6 +9,8 @@
     "test:ui": "vitest --ui",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "format": "prettier --write --experimental-cli src/"

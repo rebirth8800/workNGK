@@ -13,6 +13,7 @@ export default defineConfig({
     vueDevTools(),
     svgLoader()
   ],
+  base: '/workNGK/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
