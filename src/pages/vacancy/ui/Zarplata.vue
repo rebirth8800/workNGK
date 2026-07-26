@@ -19,7 +19,7 @@ const onInput = (event: Event, model: any) => {
 
 <template>
   <div class="block">
-    <Typography type="semibold-24-black">Зарплата, ₽</Typography>
+    <Typography type="semibold-20-black">Зарплата, ₽</Typography>
     <div class="salary">
       <input @input="onInput($event, salary_min)" v-model="salary_min" type="text" placeholder="от 20 000" class="salary-input" />
       <span class="line"></span>
@@ -38,13 +38,13 @@ const onInput = (event: Event, model: any) => {
 .salary {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5625rem;
 }
 
 .salary-input {
-  width: 130px;
+  width: 85px;
   padding: 15px 15px;
-  font-size: 1.25rem;
+  font-size: 0.9375rem;
   background-color: var(--color-background-grey);
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
@@ -57,7 +57,7 @@ const onInput = (event: Event, model: any) => {
 }
 
 .line {
-  width: 20px;
+  width: 16px;
   height: 1px;
   background-color: var(--color-almost-black);
 }

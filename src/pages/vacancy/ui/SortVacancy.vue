@@ -25,7 +25,7 @@ const { isPending, isError, data, error } = useQuery({
 
 <template>
   <div class="select">
-    <Typography type="light-24-black">Сортировка:</Typography>
+    <Typography type="light-15-black">Сортировка:</Typography>
 
     <div class="sort-selector">
       <select class="sort-label" v-model="selectedSort" @change="updateSort?.()">
@@ -48,7 +48,7 @@ select {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 40px 12px 20px;
+  padding: 14px 13px 14px 11px;
   background-color: var(--color-background-grey);
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
@@ -57,7 +57,7 @@ select {
 
 .sort-label {
   font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
+  font-size: 0.9375rem;
   font-weight: 400;
   color: var(--color-black);
 

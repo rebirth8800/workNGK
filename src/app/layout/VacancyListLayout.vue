@@ -14,7 +14,7 @@ defineProps({
   <Header />
   <div class="background">
     <div class="container">
-      <Typography type="semibold-36-black">{{ name }}</Typography>
+      <Typography type="semibold-32-black">{{ name }}</Typography>
     </div>
   </div>
   <main>

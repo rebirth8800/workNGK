@@ -47,10 +47,10 @@ const selectedPage = defineModel<number>({ default: 1 })
 }
 
 :deep(.ant-pagination-item) {
-  min-width: 50px !important;
-  height: 50px !important;
-  line-height: 48px !important;
-  font-size: 18px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  font-size: 0.9375rem !important;
   border-radius: 12px !important;
   border: 1px solid var(--color-grey-light) !important;
   background: var(--color-background-grey) !important;
@@ -90,8 +90,8 @@ const selectedPage = defineModel<number>({ default: 1 })
 /* ===== КНОПКИ НАЗАД/ВПЕРЕД ===== */
 :deep(.ant-pagination-prev),
 :deep(.ant-pagination-next) {
-  min-width: 50px !important;
-  height: 50px !important;
+  min-width: 40px !important;
+  height: 40px !important;
   border-radius: 12px !important;
   border: 1px solid var(--color-grey-light) !important;
   background: var(--color-background-grey) !important;
@@ -109,7 +109,7 @@ const selectedPage = defineModel<number>({ default: 1 })
 
 :deep(.ant-pagination-prev .ant-pagination-item-link),
 :deep(.ant-pagination-next .ant-pagination-item-link) {
-  font-size: 20px !important;
+  font-size: 0.9375rem !important;
   color: var(--color-black) !important;
   display: flex !important;
   align-items: center !important;
@@ -121,8 +121,8 @@ const selectedPage = defineModel<number>({ default: 1 })
 /* ===== ТРИ ТОЧКИ ===== */
 :deep(.ant-pagination-jump-prev),
 :deep(.ant-pagination-jump-next) {
-  min-width: 50px !important;
-  height: 50px !important;
+  min-width: 40px !important;
+  height: 40px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -158,7 +158,7 @@ const selectedPage = defineModel<number>({ default: 1 })
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 20px !important;
+  font-size: 0.9375rem !important;
   line-height: 1 !important;
 }
 

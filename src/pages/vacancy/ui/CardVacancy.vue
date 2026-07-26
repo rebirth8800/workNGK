@@ -3,7 +3,7 @@ import { Typography } from '@/shared/ui/typography'
 import { Tag } from '@/shared/ui/tag'
 import { IconBox } from '@/shared/ui/iconBox'
 import { Button } from '@/shared/ui/button'
-import IconAdress from '@/shared/svg/adress-tag.svg'
+import IconAdress from '@/shared/svg/adress-red.svg'
 import IconTime from "@/shared/svg/time-forward.svg";
 
 interface Item {
@@ -42,8 +42,8 @@ const date = (date: string): string => {
       <div class="content">
         <div class="title">
           <div class="title-name">
-            <Typography class="title-text" type="semibold-32-black">{{ item.title }}</Typography>
-            <Typography class="company-text" type="regular-20-black">{{ item.company_name }}</Typography>
+            <Typography class="title-text" type="semibold-20-black">{{ item.title }}</Typography>
+            <Typography class="company-text" type="regular-15-black">{{ item.company_name }}</Typography>
           </div>
 
           <div class="title-squre">
@@ -53,16 +53,15 @@ const date = (date: string): string => {
         </div>
       </div>
 
-      <Tag :svg="IconAdress"> {{ item.city }}</Tag>
-      <Tag :svg="IconTime"> {{ item.employment[0] }}</Tag>
+      <Tag :svg="IconAdress" class="city"> {{ item.city }}</Tag>
 
-      <Typography type="regular-16-almost-black">Опубликована: {{date(item.date)}}</Typography>
+      <Typography type="regular-12-almost-black">Опубликована: {{date(item.date)}}</Typography>
 
 
     </div>
     <span class="line"></span>
     <div class="footer-content">
-      <Typography type="semibold-32-black">от {{ item.salary }} ₽</Typography>
+      <Typography type="semibold-20-black">от {{ item.salary }} ₽</Typography>
       <RouterLink :to="`/vacancies/${item.id}`"><Button type="text-red" class="more-infa" >Подробнее</Button></RouterLink>
     </div>
   </div>
@@ -73,15 +72,15 @@ a{
   margin-right: 0;
 }
 .card {
-  max-width: 395px;
-  min-width: 395px;
-  max-height: 380px;
-  padding: 20px 20px;
+  max-width: 490px;
+  min-width: 464px;
+  max-height: 231px;
+  padding: 20px 15px;
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .tags {
@@ -108,7 +107,7 @@ a{
   max-width: 362px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   padding: 0;
   margin: 0;
 }
@@ -122,7 +121,7 @@ a{
 .content {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -131,7 +130,7 @@ a{
 .line {
   width: 100%;
   height: 1px;
-  background-color: var(--color-almost-black);
+  background-color: var(--color-grey-light);
 }
 
 .footer-content {

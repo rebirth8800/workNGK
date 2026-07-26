@@ -4,10 +4,10 @@ import { Typography } from '@/shared/ui/typography'
 
 <template>
   <div class="block">
-    <Typography type="semibold-32-black">Навигация</Typography>
-    <RouterLink to=""><Typography type="regular-20-almost-black">Вакансии</Typography></RouterLink>
-    <RouterLink to=""><Typography type="regular-20-almost-black">Создать вакансию</Typography></RouterLink>
-    <RouterLink to=""><Typography type="regular-20-almost-black">Контакты</Typography></RouterLink>
+    <Typography type="semibold-20-black">Навигация</Typography>
+    <RouterLink to=""><Typography type="regular-12-almost-black">Вакансии</Typography></RouterLink>
+    <RouterLink to=""><Typography type="regular-12-almost-black">Создать вакансию</Typography></RouterLink>
+    <RouterLink to=""><Typography type="regular-12-almost-black">Контакты</Typography></RouterLink>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import { Typography } from '@/shared/ui/typography'
 .block{
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.7rem;
 
 }
 a{

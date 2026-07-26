@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 
 interface Props {
   svg?: Component
-  type?: 'grey' | 'red-light' | 'status-red' | 'status-green' | 'status-yellow'
+  type?: 'grey' | 'red-light' | 'status-red' | 'status-green' | 'status-yellow' | 'city'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,20 +24,28 @@ span {
   align-items: center;
   gap: 5px;
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 0.6875rem;
   margin: 0 auto;
   margin-left: 0;
 }
 
 .tag-icon {
-  width: 28px;
-  height: 28px;
+  width: 17px;
+  height: 17px;
   display: block;
   flex-shrink: 0;
 }
 
+.tag-icon svg {
+  max-width: 17px;
+  max-height: 17px;
+  width: auto;
+  height: auto;
+  display: block;
+}
+
 .grey {
-  padding: 5px 10px;
+  padding: 5px 5px;
   background-color: var(--color-grey-light);
   font-weight: 400;
   color: var(--color-almost-black);
@@ -72,15 +80,20 @@ span {
 .status-yellow {
   margin: 0 5px;
 }
-
+.city{
+  background-color: #FFE4E4;
+  font-weight: 400;
+  color: var(--color-primary-red);
+  gap: 2px;
+}
 @media (max-width: 1440px) {
   span {
-    font-size: 1rem;
+    font-size: 0.6875rem;
     gap: 2px;
   }
   .tag-icon {
-    width: 24px;
-    height: 24px;
+    width: 17px;
+    height: 17px;
   }
   .grey,
   .red-light {
@@ -96,7 +109,7 @@ span {
 
 @media (max-width: 768px) {
   span {
-    font-size: 0.875rem;
+    font-size: 0.625rem;
     gap: 2px;
   }
   .tag-icon {
@@ -118,7 +131,7 @@ span {
 @media (max-width: 360px) {
   span {
     border-radius: 5px;
-    font-size: 0.875rem;
+    font-size: 0.625rem;
     gap: 2px;
   }
   .tag-icon {

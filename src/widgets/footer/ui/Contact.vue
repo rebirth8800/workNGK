@@ -4,16 +4,16 @@ import { Typography } from '@/shared/ui/typography'
 
 <template>
   <div class="block">
-    <Typography type="semibold-32-black">Контакты</Typography>
+    <Typography type="semibold-20-black">Контакты</Typography>
 
     <div class="flex">
-      <Typography type="regular-20-almost-black">Нижний Новгород, Московское шоссе 1</Typography>
+      <Typography type="regular-12-almost-black">Нижний Новгород, Московское шоссе 1</Typography>
     </div>
     <div class="flex">
-      <Typography type="regular-20-almost-black">+ 7 908 724 16 98</Typography>
+      <Typography type="regular-12-almost-black">+ 7 908 724 16 98</Typography>
     </div>
     <div class="flex">
-      <Typography type="regular-20-almost-black">info@ngk-rabota.ru</Typography>
+      <Typography type="regular-12-almost-black">info@ngk-rabota.ru</Typography>
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ import { Typography } from '@/shared/ui/typography'
 .block{
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.7rem;
   text-align: left;
 }
 .flex{

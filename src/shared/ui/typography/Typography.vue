@@ -1,7 +1,9 @@
 <script setup lang="ts">
 interface Props {
   type?:
-      | 'light-24-black'
+      | 'light-15-black'
+      | 'regular-15-black'
+      | 'regular-12-almost-black'
       | 'regular-16-almost-black'
       | 'regular-20-black'
       | 'regular-20-grey-light'
@@ -12,7 +14,10 @@ interface Props {
       | 'regular-24-grey-light'
       | 'regular-24-almost-black'
       | 'regular-32-almost-black'
+      | 'medium-15-black'
       | 'medium-16-primary-red'
+      | 'medium-16-black'
+      | 'medium-20-almost-black'
       | 'medium-24-almost-black'
       | 'medium-24-black'
       | 'medium-24-primary-red'
@@ -61,10 +66,20 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 
-.light-24-black {
-  font-size: 1.25rem;
+.light-15-black {
+  font-size: 0.9375rem;
   font-weight: 300;
   color: var(--color-black);
+}
+.regular-15-black{
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--color-black);
+}
+.regular-12-almost-black {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-almost-black);
 }
 .regular-16-almost-black {
   font-size: 0.9375rem;
@@ -116,17 +131,32 @@ const props = withDefaults(defineProps<Props>(), {
   font-weight: 400;
   color: var(--color-almost-black);
 }
-
+.medium-15-black {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-black);
+}
+.medium-16-black {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-black);
+}
 .medium-16-primary-red {
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--color-primary-red);
 }
-.medium-24-almost-black {
-  font-size: 1.25rem;
+.medium-20-almost-black {
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--color-almost-black);
 }
+.medium-24-almost-black {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-almost-black);
+}
+
 .medium-24-black {
   font-size: 1.25rem;
   font-weight: 500;

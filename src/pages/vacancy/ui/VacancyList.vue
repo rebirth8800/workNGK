@@ -2,8 +2,8 @@
   <div class="block">
     <div class="header-info">
       <div class="info">
-        <Typography type="light-24-black">Найдено:</Typography>
-        <Typography type="medium-24-black">{{ len }} вакансий</Typography>
+        <Typography type="light-15-black">Найдено:</Typography>
+        <Typography type="medium-15-black">{{ len }} вакансий</Typography>
       </div>
 
       <SortVacancy class="sort" v-model="selectedSort" :updateSort="updateSort" />
@@ -44,14 +44,14 @@ defineProps<Props>()
 .block {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 10px;
   margin-right: 0;
 }
 
 .card_list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 0.75rem;
 }
 
 .header-info {
@@ -73,27 +73,4 @@ defineProps<Props>()
 
 
 
-/* ===== АДАПТИВ ===== */
-@media (max-width: 768px) {
-  .card_list {
-    grid-template-columns: 1fr;
-  }
-
-  .header-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .sort {
-    margin-right: 0;
-    width: 100%;
-  }
-
-
-}
-
-@media (max-width: 480px) {
-
-}
 </style>

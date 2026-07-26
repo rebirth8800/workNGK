@@ -19,8 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 <style scoped>
 .icon-box {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -37,8 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 .icon-box-svg {
-  width: 42px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
 }
 
 @media (max-width: 1440px) {

@@ -10,7 +10,7 @@ const search = defineModel({
 
 <template>
 <div class="block">
-  <Typography type="semibold-24-black">Поиск</Typography>
+  <Typography type="semibold-20-black">Поиск</Typography>
   <div class="search">
     <SearchIcon class="icon-search"/>
     <input type="text" class="search-input" v-model="search" placeholder="Название вакансии...">
@@ -33,20 +33,20 @@ const search = defineModel({
   background-color: var(--color-background-grey);
   border: 1px solid var(--color-grey-light);
   border-radius: 10px;
-  padding: 20px 15px;
+  padding: 15px 15px;
   box-sizing: border-box;
 }
 
 .icon-search {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .search-input {
   border: none;
   outline: none;
   background: transparent;
-  font-size: 1.25rem;
+  font-size: 0.9375rem;
   font-weight: 400;
   color: var(--color-almost-black);
   font-family: 'Inter', sans-serif;

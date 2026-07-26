@@ -19,7 +19,7 @@ const flag = ref(false)
 
 <template>
   <div class="block">
-    <Typography type="semibold-24-black">Категория</Typography>
+    <Typography type="semibold-20-black">Категория</Typography>
 
     <div class="dropdown-wrapper">
       <button @click="flag = !flag" class="toggle-btn">
@@ -29,7 +29,7 @@ const flag = ref(false)
 
       <div v-if="flag" class="dropdown-list">
         <Typography
-            type="regular-20-black"
+            type="regular-15-black"
             v-for="option in item"
             :key="option.value"
             class="radio"
@@ -47,14 +47,14 @@ const flag = ref(false)
 .block {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.5rem;
   margin-left: 0;
 }
 
 .dropdown-wrapper {
   display: flex;
   flex-direction: column;
-  width: 303px;
+  width: 264px;
 }
 
 .toggle-btn {
@@ -63,7 +63,7 @@ const flag = ref(false)
   color: var(--color-primary-red);
   font-family: 'Inter', sans-serif;
   font-weight: 500;
-  font-size: 1.25rem;
+  font-size: 1rem;
   cursor: pointer;
   padding: 10px 16px;
   text-align: left;
@@ -72,7 +72,7 @@ const flag = ref(false)
   gap: 5rem;
   border-radius: 6px;
   width: 100%;
-  height: 60px;
+  height: 53px;
   box-sizing: border-box;
 }
 

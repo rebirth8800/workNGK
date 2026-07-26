@@ -6,7 +6,7 @@ import { Logo } from '@/shared/ui/logo'
 <template>
   <div class="block">
     <Logo/>
-    <Typography type="regular-20-almost-black">Платформа трудоустройства студентов Нижегородского Губернского колледжа</Typography>
+    <Typography type="regular-12-almost-black">Платформа трудоустройства студентов Нижегородского Губернского колледжа</Typography>
   </div>
 
 </template>
@@ -16,7 +16,7 @@ import { Logo } from '@/shared/ui/logo'
   display: flex;
   flex-direction: column;
   margin: 0;
-  gap: 1.3rem;
+  gap: 0.5rem;
 }
 
 </style>

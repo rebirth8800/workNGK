@@ -10,7 +10,7 @@ defineProps({
 
 <template>
   <div class="profile">
-    <Typography type="medium-24-almost-black">{{name}} {{lastname}}</Typography>
+    <Typography type="medium-20-almost-black">{{name}} {{lastname}}</Typography>
     <RouterLink to="/profile" class="profile-content">
       <IconProf />
     </RouterLink>
@@ -26,8 +26,8 @@ defineProps({
 }
 
 .profile-content {
-  width: 61px;
-  height: 61px;
+  width: 45px;
+  height: 45px;
   border-radius: 100%;
   background-color: var(--color-primary-red);
   display: flex;

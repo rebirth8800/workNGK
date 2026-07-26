@@ -57,7 +57,7 @@ const { isPending, isError, data, error } = useQuery({
 .block {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.7rem;
   margin-left: 0;
 }
 
